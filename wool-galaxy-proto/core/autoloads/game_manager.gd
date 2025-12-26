@@ -26,7 +26,7 @@ var current_state: GameState = GameState.NONE
 #region Methods
 
 func init_state(new_state: GameState) -> void:
-	print("[GameManager] init_state: ", GameState.keys()[new_state])
+	LogManager.info("init_state: %s" % GameState.keys()[new_state], "GameManager")
 	current_state = new_state
 
 func change_state(new_state: GameState) -> void:
@@ -34,7 +34,7 @@ func change_state(new_state: GameState) -> void:
 		return
 	var old_state := current_state
 	current_state = new_state
-	print("[GameManager] change_state: ", GameState.keys()[old_state], " -> ", GameState.keys()[new_state])
+	LogManager.info("change_state: %s -> %s" % [GameState.keys()[old_state], GameState.keys()[new_state]], "GameManager")
 	state_changed.emit(new_state)
 	# TODO: 씬 변경 로직 추가
 

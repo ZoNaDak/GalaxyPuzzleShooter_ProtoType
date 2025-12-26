@@ -18,6 +18,7 @@ config/icon="uid://cpau44w7jmq8y"
 
 [autoload]
 
+LogManager="*res://core/autoloads/log_manager.gd"
 GameManager="*res://core/autoloads/game_manager.gd"
 
 [rendering]
