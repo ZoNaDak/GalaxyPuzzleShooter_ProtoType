@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # Godot 4.5 게임 개발 .cursorrules
 
 ## 핵심 개발 가이드라인
