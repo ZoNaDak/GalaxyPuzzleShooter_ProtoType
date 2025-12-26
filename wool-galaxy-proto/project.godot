@@ -10,9 +10,11 @@ config_version=5
 
 [application]
 
-config/name="WoolGalaxy_Proto"
+config/name="WoolGalaxy"
+config/version="0.0.1"
+run/main_scene="res://game/scenes/title_scene.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://cpau44w7jmq8y"
 
 [autoload]
 
