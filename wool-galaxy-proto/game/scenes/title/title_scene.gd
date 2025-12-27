@@ -1,5 +1,5 @@
 # title_scene.gd
-extends Node
+extends BaseScene
 
 #region Signals
 
@@ -11,11 +11,11 @@ extends Node
 
 #region Lifecycle
 
-func _ready() -> void:
-	GameManager.init_state(GameManager.GameState.TITLE)
-
 #endregion
 
 #region Methods
+
+func _get_scene_state() -> GameManager.GameState:
+	return GameManager.GameState.TITLE
 
 #endregion
