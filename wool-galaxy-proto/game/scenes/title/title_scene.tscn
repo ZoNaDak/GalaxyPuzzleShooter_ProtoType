@@ -1,27 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://bulynr00po4no"]
+[gd_scene load_steps=5 format=3 uid="uid://bulynr00po4no"]
 
 [ext_resource type="Script" uid="uid://dy26uqrn0vdd4" path="res://game/scenes/title/title_scene.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bnnwxevexgw03" path="res://game/scenes/title/resources/background.png" id="2_gydy4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
-bg_color = Color(0.0, 0.85, 0.85, 1.0)
+bg_color = Color(0, 0.85, 0.85, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1.0, 0.4, 0.7, 1.0)
+border_color = Color(1, 0.4, 0.7, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
-bg_color = Color(0.0, 0.6, 0.6, 1.0)
+bg_color = Color(0, 0.6, 0.6, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.75, 0.3, 0.5, 1.0)
+border_color = Color(0.75, 0.3, 0.5, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
@@ -94,13 +94,15 @@ custom_minimum_size = Vector2(400, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_colors/font_color = Color(0.1, 0.08, 0.2, 1.0)
+theme_override_colors/font_color = Color(0.1, 0.08, 0.2, 1)
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_normal")
 text = "Game Start"
 
 [node name="BottomSpacer" type="Control" parent="UI/Control/Content/Layout"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+
+[connection signal="pressed" from="UI/Control/Content/Layout/StartButton" to="." method="_on_start_button_pressed"]
