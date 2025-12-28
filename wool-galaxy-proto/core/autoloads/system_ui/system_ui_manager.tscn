@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://ea2cq7ncanth"]
+
+[ext_resource type="Script" uid="uid://kw3cqrlx1fh" path="res://core/autoloads/system_ui/system_ui_manager.gd" id="1_script"]
+
+[node name="SystemUIManager" type="Node" node_paths=PackedStringArray("_fade_rect")]
+script = ExtResource("1_script")
+_fade_rect = NodePath("CanvasLayer/FadeRect")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="FadeRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

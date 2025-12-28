@@ -10,13 +10,22 @@ config_version=5
 
 [application]
 
-config/name="WoolGalaxy_Proto"
+config/name="WoolGalaxy"
+config/version="0.0.1"
+run/main_scene="res://game/scenes/title/title_scene.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://cpau44w7jmq8y"
 
 [autoload]
 
+LogManager="*res://core/autoloads/log_manager.gd"
 GameManager="*res://core/autoloads/game_manager.gd"
+SystemUIManager="*res://core/autoloads/system_ui/system_ui_manager.tscn"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
 
 [rendering]
 
