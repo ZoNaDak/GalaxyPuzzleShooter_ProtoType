@@ -11,6 +11,10 @@ extends BaseScene
 
 #region Lifecycle
 
+func _ready() -> void:
+	super._ready()
+	await SystemUIManager.fade_in(0.5)
+
 #endregion
 
 #region Methods
