@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=4 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
+[ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_board/missile_board.tscn" id="3_exta3"]
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_lxwxr")
@@ -54,4 +55,21 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.50534403, 0.5053441, 0.50534403, 1)
+color = Color(0.22579157, 0.24015701, 0.31443942, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Canvas/VBoxContainer/BottomUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="MissileBoard" parent="Canvas/VBoxContainer/BottomUI/MarginContainer" instance=ExtResource("3_exta3")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
