@@ -3,10 +3,11 @@
 [ext_resource type="Script" uid="uid://b3emmlrhpx045" path="res://game/ui/missile_board/missile_board.gd" id="1_qfnol"]
 [ext_resource type="Texture2D" uid="uid://crf7iqk8yal3c" path="res://game/ui/missile_board/resources/MissileBoardBack.png" id="2_1pjqi"]
 
-[node name="MissileBoard" type="Control"]
+[node name="MissileBoard" type="Control" node_paths=PackedStringArray("_back_board")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_qfnol")
+_back_board = NodePath("BackBoard")
 
 [node name="BackBoard" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(576, 384)
