@@ -16,6 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
 [node name="GameViewportContainer" type="SubViewportContainer" parent="Canvas/VBoxContainer"]
 clip_contents = true
@@ -26,20 +27,18 @@ stretch = true
 
 [node name="GameViewport" type="SubViewport" parent="Canvas/VBoxContainer/GameViewportContainer"]
 handle_input_locally = false
-size = Vector2i(720, 701)
+size = Vector2i(180, 176)
 render_target_update_mode = 4
 
 [node name="GameView" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport"]
 
 [node name="Background" type="Parallax2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView"]
-scroll_offset = Vector2(1865, 392)
-repeat_size = Vector2(640, 640)
-autoscroll = Vector2(0, 100)
+repeat_size = Vector2(160, 160)
+autoscroll = Vector2(0, 50)
 repeat_times = 4
 
 [node name="Sprite" type="Sprite2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/Background"]
-position = Vector2(434.00003, 320)
-scale = Vector2(5, 5)
+position = Vector2(90, 0)
 texture = ExtResource("2_n0hcn")
 region_rect = Rect2(0, 0, 639.89, 640)
 
@@ -64,9 +63,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="MissileBoard" parent="Canvas/VBoxContainer/BottomUI/MarginContainer" instance=ExtResource("3_exta3")]
 layout_mode = 2
