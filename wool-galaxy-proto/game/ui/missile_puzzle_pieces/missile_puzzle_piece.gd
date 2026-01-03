@@ -30,22 +30,22 @@ const LARGE_SIZE := Vector2(64, 16)
 
 @export var _missile_texture: TextureRect
 
-var _color_type: MissileColorType = MissileColorType.RED
-var _size_type: MissileSizeType = MissileSizeType.SMALL
+var color_type: MissileColorType = MissileColorType.RED
+var size_type: MissileSizeType = MissileSizeType.SMALL
 
 #endregion
 
 #region Lifecycle
 
 func _init(
-	color_type: MissileColorType = _color_type, 
-	size_type: MissileSizeType = _size_type):
+	color: MissileColorType = color_type, 
+	missile_size: MissileSizeType = size_type):
 	LogManager.warning(
-		"%s, %s" % [MissileColorType.keys()[color_type], MissileSizeType.keys()[size_type]], 
+		"%s, %s" % [MissileColorType.keys()[color], MissileSizeType.keys()[missile_size]], 
 		"MissilePuzzlePiece")
 
-	_color_type = color_type
-	_size_type = size_type
+	color_type = color
+	size_type = missile_size
 
 func _ready():
 	_update_size()
@@ -58,7 +58,7 @@ func _ready():
 #region OnReady
 
 func _update_size():
-	match _size_type:
+	match size_type:
 		MissileSizeType.SMALL:
 			size = SMALL_SIZE
 		MissileSizeType.MEDIUM:
@@ -79,7 +79,7 @@ func _get_sprite_path() -> String:
 	return "res://game/ui/missile_puzzle_pieces/resources/%s_missile_%s.png" % [_get_color_name(), _get_size_name()]
 
 func _get_color_name() -> String:
-	match _color_type:
+	match color_type:
 		MissileColorType.RED:
 			return "red"
 		MissileColorType.BLUE:
@@ -94,7 +94,7 @@ func _get_color_name() -> String:
 			return "red"
 
 func _get_size_name() -> String:
-	match _size_type:
+	match size_type:
 		MissileSizeType.SMALL:
 			return "s"
 		MissileSizeType.MEDIUM:
