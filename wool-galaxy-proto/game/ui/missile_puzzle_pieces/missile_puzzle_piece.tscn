@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://pkqx1hawwdqv"]
+
+[ext_resource type="Texture2D" uid="uid://bdxsxlr15ti3b" path="res://game/ui/missile_puzzle_pieces/resources/red_missile_s.png" id="1_hj63n"]
+
+[node name="MissilePuzzlePiece" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 32.0
+offset_bottom = 16.0
+scale = Vector2(2, 2)
+
+[node name="Sprite2D" type="TextureRect" parent="."]
+layout_mode = 0
+texture = ExtResource("1_hj63n")
