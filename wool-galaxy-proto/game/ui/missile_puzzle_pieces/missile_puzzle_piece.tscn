@@ -14,4 +14,6 @@ _missile_texture = NodePath("TextureRect")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
+offset_right = 32.0
+offset_bottom = 16.0
 texture = ExtResource("1_hj63n")
