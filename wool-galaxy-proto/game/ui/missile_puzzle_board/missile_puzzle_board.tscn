@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://1semffj55mi0"]
+
+[ext_resource type="Script" uid="uid://b3emmlrhpx045" path="res://game/ui/missile_puzzle_board/missile_puzzle_board.gd" id="1_qfnol"]
+[ext_resource type="Texture2D" uid="uid://crf7iqk8yal3c" path="res://game/ui/missile_puzzle_board/resources/MissileBoardBack.png" id="2_1pjqi"]
+
+[node name="MissilePuzzleBoard" type="Control" node_paths=PackedStringArray("_layout")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_qfnol")
+_layout = NodePath("Layout")
+
+[node name="Layout" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 576.0
+offset_bottom = 384.0
+
+[node name="BackBoard" type="TextureRect" parent="Layout"]
+custom_minimum_size = Vector2(576, 384)
+layout_mode = 0
+offset_right = 576.0
+offset_bottom = 384.0
+texture = ExtResource("2_1pjqi")
+stretch_mode = 1

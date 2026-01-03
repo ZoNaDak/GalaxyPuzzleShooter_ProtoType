@@ -9,7 +9,7 @@ const BASE_SIZE := Vector2(576, 384)
 
 #region Variables
 
-@export var _back_board: TextureRect
+@export var _layout: Control
 
 #endregion
 
@@ -43,11 +43,11 @@ func _update_layout():
 	
 	# 스케일 계산
 	var scale_factor = min(size.x / BASE_SIZE.x, size.y / BASE_SIZE.y)
-	_back_board.scale = Vector2(scale_factor, scale_factor)
+	_layout.scale = Vector2(scale_factor, scale_factor)
 	
-	# 하단 중앙 정렬
+	# 중앙 정렬
 	var scaled_size = BASE_SIZE * scale_factor
-	_back_board.position.x = (size.x - scaled_size.x) / 2
-	_back_board.position.y = size.y - scaled_size.y
+	_layout.position.x = (size.x - scaled_size.x) / 2
+	_layout.position.y = (size.y - scaled_size.y) / 2
 
 #endregion
