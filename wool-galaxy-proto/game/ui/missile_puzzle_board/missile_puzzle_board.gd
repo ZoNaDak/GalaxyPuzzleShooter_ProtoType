@@ -4,12 +4,17 @@ extends Control
 #region Consts
 
 const BASE_SIZE := Vector2(576, 384)
+const GRID_WIDTH := 18
+const GRID_HEIGHT := 12
+const CELL_SIZE := 32
 
 #endregion
 
 #region Variables
 
 @export var _layout: Control
+
+var grid: Array[Array] = []
 
 #endregion
 
@@ -18,6 +23,7 @@ const BASE_SIZE := Vector2(576, 384)
 func _ready():
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
+	_initialize_grid()
 	_update_layout()
 
 #endregion
@@ -35,8 +41,16 @@ func _on_resized():
 
 #region Methods
 
-func _update_layout():
+func _initialize_grid():
+	grid.clear()
+	for y in range(GRID_HEIGHT):
+		var row: Array = []
+		row.resize(GRID_WIDTH)
+		for x in range(GRID_WIDTH):
+			row[x] = null
+		grid.append(row)
 
+func _update_layout():
 	# 크기가 0이면 아직 레이아웃이 안된 것
 	if size.x <= 0 or size.y <= 0:
 		return
