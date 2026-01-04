@@ -1,4 +1,7 @@
+# missile_puzzle_piece.gd
 extends Control
+
+class_name MissilePuzzlePiece
 
 #region Enums
 
@@ -34,11 +37,16 @@ var color_type: MissileColorType = MissileColorType.RED
 var size_type: MissileSizeType = MissileSizeType.SMALL
 var direction_type: Enums.Direction4Way = Enums.Direction4Way.DOWN
 
+var grid_pos: Vector2i = Vector2i.ZERO
+
 #endregion
 
 #region Lifecycle
 
-func _init(
+func _init():
+	initialize()
+
+func initialize(
 	color: MissileColorType = color_type, 
 	missile_size: MissileSizeType = size_type,
 	direction: Enums.Direction4Way = direction_type):
@@ -121,6 +129,31 @@ func _setup_rotation():
 			rotation_degrees = 180
 		Enums.Direction4Way.DOWN:
 			rotation_degrees = -90
+
+#endregion
+
+#region Setup Grid Pos
+
+func set_grid_pos(x: int, y: int):
+	grid_pos = Vector2i(x, y)
+
+	position = Vector2(
+		grid_pos.x * MissilePuzzleBoard.CELL_SIZE, 
+		grid_pos.y * MissilePuzzleBoard.CELL_SIZE) + _get_grid_pos_offset()
+
+func _get_grid_pos_offset() -> Vector2:
+	
+	match direction_type:
+		Enums.Direction4Way.LEFT:
+			return Vector2(pivot_offset.x, pivot_offset.y)
+		Enums.Direction4Way.UP:
+			return Vector2(size.y - pivot_offset.x, size.x - pivot_offset.y)
+		Enums.Direction4Way.RIGHT:
+			return Vector2(pivot_offset.x, pivot_offset.y)
+		Enums.Direction4Way.DOWN:
+			return Vector2(size.y - pivot_offset.x, size.x - pivot_offset.y)
+		_:
+			return Vector2(0, 0)
 
 #endregion
 

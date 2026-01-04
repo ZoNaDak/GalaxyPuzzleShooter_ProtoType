@@ -17,3 +17,4 @@ layout_mode = 0
 offset_right = 32.0
 offset_bottom = 16.0
 texture = ExtResource("1_hj63n")
+stretch_mode = 2
