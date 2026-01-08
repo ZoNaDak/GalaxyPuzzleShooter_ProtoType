@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
-[ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
+[ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_lxwxr")

@@ -10,7 +10,7 @@ const GRID_WIDTH := 18
 const GRID_HEIGHT := 12
 const CELL_SIZE := 32
 
-const MissilePuzzlePieceScene = preload("res://game/ui/missile_puzzle_pieces/missile_puzzle_piece.tscn")
+const MissilePuzzlePieceScene = preload("res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn")
 
 #endregion
 
@@ -93,9 +93,11 @@ func _spawn_missile_piece(grid_x: int, grid_y: int,
 		
 	var missile = MissilePuzzlePieceScene.instantiate()
 	missile.name = "Missile_%s" % [missile.get_instance_id()]
-	missile.initialize(color_type, size_type, direction)
 	_missile_parent.add_child(missile)
-	missile.set_grid_pos(grid_x, grid_y)
+
+	var missile_data = MissilePuzzlePiece.MissileData.new(
+		Vector2i(grid_x, grid_y), color_type, size_type, direction)
+	missile.initialize(missile_data)
 
 	for cell in missile.get_grid_cells(Vector2i(GRID_WIDTH, GRID_HEIGHT)):
 		grid[cell.y][cell.x] = missile.get_instance_id()

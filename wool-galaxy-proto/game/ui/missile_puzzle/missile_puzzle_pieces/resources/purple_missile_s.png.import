@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpi5ark0p1fc8"
-path="res://.godot/imported/purple_missile_l.png-7bbd4fc4d4a05fc0c0a8123565913ad7.ctex"
+uid="uid://cnq86tfsl814v"
+path="res://.godot/imported/purple_missile_s.png-5e04816920c83323279d77432a2262db.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/ui/missile_puzzle_pieces/resources/purple_missile_l.png"
-dest_files=["res://.godot/imported/purple_missile_l.png-7bbd4fc4d4a05fc0c0a8123565913ad7.ctex"]
+source_file="res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/purple_missile_s.png"
+dest_files=["res://.godot/imported/purple_missile_s.png-5e04816920c83323279d77432a2262db.ctex"]
 
 [params]
 

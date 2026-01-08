@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://57ara7y3j1lj"
-path="res://.godot/imported/green_missile_m.png-e53cc176c9a2ea055be2c142ee3b6386.ctex"
+path="res://.godot/imported/green_missile_m.png-9cb9dc0ad3509d0bb968c65b059dac50.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/ui/missile_puzzle_pieces/resources/green_missile_m.png"
-dest_files=["res://.godot/imported/green_missile_m.png-e53cc176c9a2ea055be2c142ee3b6386.ctex"]
+source_file="res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/green_missile_m.png"
+dest_files=["res://.godot/imported/green_missile_m.png-9cb9dc0ad3509d0bb968c65b059dac50.ctex"]
 
 [params]
 

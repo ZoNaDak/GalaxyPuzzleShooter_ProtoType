@@ -33,30 +33,21 @@ const LARGE_SIZE := Vector2(64, 16)
 
 @export var _missile_texture: TextureRect
 
-var color_type: MissileColorType = MissileColorType.RED
-var size_type: MissileSizeType = MissileSizeType.SMALL
-var direction_type: Enums.Direction4Way = Enums.Direction4Way.DOWN
-
-var grid_pos: Vector2i = Vector2i.ZERO
+var missile_data: MissileData = MissileData.new(
+	Vector2i.ZERO, MissileColorType.RED, MissileSizeType.SMALL, Enums.Direction4Way.DOWN)
 
 #endregion
 
 #region Lifecycle
 
 func _init():
-	initialize()
+	initialize(missile_data)
 
-func initialize(
-	color: MissileColorType = color_type, 
-	missile_size: MissileSizeType = size_type,
-	direction: Enums.Direction4Way = direction_type):
-	LogManager.warning(
-		"%s, %s" % [MissileColorType.keys()[color], MissileSizeType.keys()[missile_size]], 
-		"MissilePuzzlePiece")
-
-	color_type = color
-	size_type = missile_size
-	direction_type = direction
+func initialize(data: MissileData):
+	missile_data = data
+	position = Vector2(
+		missile_data.grid_pos.x * MissilePuzzleBoard.CELL_SIZE, 
+		missile_data.grid_pos.y * MissilePuzzleBoard.CELL_SIZE) + _get_grid_pos_offset()
 
 func _ready():
 	DebugUtils.center_if_root(self)
@@ -72,7 +63,7 @@ func _ready():
 #region OnReady
 
 func _setup_size():
-	match size_type:
+	match missile_data.size:
 		MissileSizeType.SMALL:
 			size = SMALL_SIZE
 		MissileSizeType.MEDIUM:
@@ -94,7 +85,7 @@ func _get_sprite_path() -> String:
 	return "res://game/ui/missile_puzzle_pieces/resources/%s_missile_%s.png" % [_get_color_name(), _get_size_name()]
 
 func _get_color_name() -> String:
-	match color_type:
+	match missile_data.color:
 		MissileColorType.RED:
 			return "red"
 		MissileColorType.BLUE:
@@ -109,7 +100,7 @@ func _get_color_name() -> String:
 			return "red"
 
 func _get_size_name() -> String:
-	match size_type:
+	match missile_data.size:
 		MissileSizeType.SMALL:
 			return "s"
 		MissileSizeType.MEDIUM:
@@ -120,7 +111,7 @@ func _get_size_name() -> String:
 			return "m"
 
 func _setup_rotation():
-	match direction_type:
+	match missile_data.direction:
 		Enums.Direction4Way.LEFT:
 			rotation_degrees = 0
 		Enums.Direction4Way.UP:
@@ -132,18 +123,11 @@ func _setup_rotation():
 
 #endregion
 
-#region Setup Grid Pos
-
-func set_grid_pos(x: int, y: int):
-	grid_pos = Vector2i(x, y)
-
-	position = Vector2(
-		grid_pos.x * MissilePuzzleBoard.CELL_SIZE, 
-		grid_pos.y * MissilePuzzleBoard.CELL_SIZE) + _get_grid_pos_offset()
+#region Grid
 
 func _get_grid_pos_offset() -> Vector2:
 	
-	match direction_type:
+	match missile_data.direction:
 		Enums.Direction4Way.LEFT:
 			return Vector2(pivot_offset.x, pivot_offset.y)
 		Enums.Direction4Way.UP:
@@ -155,13 +139,11 @@ func _get_grid_pos_offset() -> Vector2:
 		_:
 			return Vector2(0, 0)
 
-#endregion
-
 func get_grid_cells(grid_size: Vector2i) -> Array[Vector2i]:
-	var result: Array[Vector2i] = [grid_pos]
+	var result: Array[Vector2i] = [missile_data.grid_pos]
 	
 	var offset := Vector2i.ZERO
-	match direction_type:
+	match missile_data.direction:
 		Enums.Direction4Way.LEFT:
 			offset = Vector2i(1, 0)
 		Enums.Direction4Way.UP:
@@ -174,7 +156,7 @@ func get_grid_cells(grid_size: Vector2i) -> Array[Vector2i]:
 			offset = Vector2i.ZERO
 
 	var length := 0
-	match size_type:
+	match missile_data.size:
 		MissileSizeType.SMALL:
 			length = 1
 		MissileSizeType.MEDIUM:
@@ -185,12 +167,31 @@ func get_grid_cells(grid_size: Vector2i) -> Array[Vector2i]:
 			length = 1
 
 	for i in length:
-		var pos = grid_pos + offset * (i + 1);
+		var pos = missile_data.grid_pos + offset * (i + 1);
 		if pos.x < 0 or pos.x >= grid_size.x or pos.y < 0 or pos.y >= grid_size.y:
 			break
 
 		result.append(pos)
 
 	return result
+
+#endregion
+
+#endregion
+
+#region Missile data
+
+class MissileData:
+	var grid_pos: Vector2i
+	var color: MissilePuzzlePiece.MissileColorType
+	var size: MissilePuzzlePiece.MissileSizeType
+	var direction: Enums.Direction4Way
+	
+	func _init(p: Vector2i, c: MissilePuzzlePiece.MissileColorType, 
+		s: MissilePuzzlePiece.MissileSizeType, d: Enums.Direction4Way):
+		grid_pos = p
+		color = c
+		size = s
+		direction = d
 
 #endregion

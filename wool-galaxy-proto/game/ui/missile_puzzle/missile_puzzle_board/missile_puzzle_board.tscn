@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://1semffj55mi0"]
 
-[ext_resource type="Script" uid="uid://b3emmlrhpx045" path="res://game/ui/missile_puzzle_board/missile_puzzle_board.gd" id="1_qfnol"]
-[ext_resource type="Texture2D" uid="uid://crf7iqk8yal3c" path="res://game/ui/missile_puzzle_board/resources/MissileBoardBack.png" id="2_1pjqi"]
+[ext_resource type="Script" uid="uid://b3emmlrhpx045" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.gd" id="1_qfnol"]
+[ext_resource type="Texture2D" uid="uid://crf7iqk8yal3c" path="res://game/ui/missile_puzzle/missile_puzzle_board/resources/MissileBoardBack.png" id="2_1pjqi"]
 
 [node name="MissilePuzzleBoard" type="Control" node_paths=PackedStringArray("_layout", "_missile_parent")]
 layout_mode = 3

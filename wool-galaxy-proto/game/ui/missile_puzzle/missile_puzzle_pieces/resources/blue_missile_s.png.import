@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdxsxlr15ti3b"
-path="res://.godot/imported/red_missile_s.png-e18b498a7508a2be0d3793238552f363.ctex"
+uid="uid://bxq1hsiuuwu7u"
+path="res://.godot/imported/blue_missile_s.png-e95d522021b9be53d70f5fae7b1dbbdd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/ui/missile_puzzle_pieces/resources/red_missile_s.png"
-dest_files=["res://.godot/imported/red_missile_s.png-e18b498a7508a2be0d3793238552f363.ctex"]
+source_file="res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/blue_missile_s.png"
+dest_files=["res://.godot/imported/blue_missile_s.png-e95d522021b9be53d70f5fae7b1dbbdd.ctex"]
 
 [params]
 
