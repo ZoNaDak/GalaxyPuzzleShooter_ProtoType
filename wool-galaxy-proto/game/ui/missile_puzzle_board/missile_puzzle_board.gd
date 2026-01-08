@@ -29,7 +29,7 @@ var missiles: Array[MissilePuzzlePiece] = []
 func _ready():
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
-		
+
 	_initialize_grid()
 	_update_layout()
 
@@ -81,18 +81,10 @@ func _update_layout():
 #region Setup Missile Puzzle Board
 
 func _setup_missile_puzzle_board():
-	_spawn_missile_piece(0, 0, 
-		MissilePuzzlePiece.MissileColorType.RED, 
-		MissilePuzzlePiece.MissileSizeType.SMALL, 
-		Enums.Direction4Way.DOWN)
-	_spawn_missile_piece(1, 0, 
-		MissilePuzzlePiece.MissileColorType.BLUE, 
-		MissilePuzzlePiece.MissileSizeType.MEDIUM, 
-		Enums.Direction4Way.DOWN)
 	_spawn_missile_piece(2, 0, 
 		MissilePuzzlePiece.MissileColorType.GREEN, 
 		MissilePuzzlePiece.MissileSizeType.LARGE, 
-		Enums.Direction4Way.DOWN)
+		Enums.Direction4Way.UP)
 
 func _spawn_missile_piece(grid_x: int, grid_y: int, 
 	color_type: MissilePuzzlePiece.MissileColorType, 
@@ -100,10 +92,14 @@ func _spawn_missile_piece(grid_x: int, grid_y: int,
 	direction: Enums.Direction4Way):
 		
 	var missile = MissilePuzzlePieceScene.instantiate()
-	missile.name = "Missile_%s" % [missiles.size()]
+	missile.name = "Missile_%s" % [missile.get_instance_id()]
 	missile.initialize(color_type, size_type, direction)
 	_missile_parent.add_child(missile)
 	missile.set_grid_pos(grid_x, grid_y)
+
+	for cell in missile.get_grid_cells(Vector2i(GRID_WIDTH, GRID_HEIGHT)):
+		grid[cell.y][cell.x] = missile.get_instance_id()
+
 	missiles.append(missile)
 
 #endregion

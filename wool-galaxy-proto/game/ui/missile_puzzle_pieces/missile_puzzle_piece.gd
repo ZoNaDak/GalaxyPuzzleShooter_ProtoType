@@ -157,4 +157,40 @@ func _get_grid_pos_offset() -> Vector2:
 
 #endregion
 
+func get_grid_cells(grid_size: Vector2i) -> Array[Vector2i]:
+	var result: Array[Vector2i] = [grid_pos]
+	
+	var offset := Vector2i.ZERO
+	match direction_type:
+		Enums.Direction4Way.LEFT:
+			offset = Vector2i(1, 0)
+		Enums.Direction4Way.UP:
+			offset = Vector2i(0, 1)
+		Enums.Direction4Way.RIGHT:
+			offset = Vector2i(1, 0)
+		Enums.Direction4Way.DOWN:
+			offset = Vector2i(0, 1)
+		_:
+			offset = Vector2i.ZERO
+
+	var length := 0
+	match size_type:
+		MissileSizeType.SMALL:
+			length = 1
+		MissileSizeType.MEDIUM:
+			length = 2
+		MissileSizeType.LARGE:
+			length = 3
+		_:
+			length = 1
+
+	for i in length:
+		var pos = grid_pos + offset * (i + 1);
+		if pos.x < 0 or pos.x >= grid_size.x or pos.y < 0 or pos.y >= grid_size.y:
+			break
+
+		result.append(pos)
+
+	return result
+
 #endregion
