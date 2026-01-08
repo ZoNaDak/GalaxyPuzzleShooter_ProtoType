@@ -29,9 +29,12 @@ var missiles: Array[MissilePuzzlePiece] = []
 func _ready():
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
+		
 	_initialize_grid()
 	_update_layout()
-	_setup_missile_puzzle_board()
+
+	if not Engine.is_editor_hint():
+		_setup_missile_puzzle_board()
 
 #endregion
 
