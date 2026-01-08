@@ -3,24 +3,6 @@ extends Control
 
 class_name MissilePuzzlePiece
 
-#region Enums
-
-enum MissileColorType {
-	RED,
-	BLUE,
-	GREEN,
-	YELLOW,
-	PURPLE,
-}
-
-enum MissileSizeType {
-	SMALL,
-	MEDIUM,
-	LARGE,
-}
-
-#endregion
-
 #region Consts
 
 const SMALL_SIZE := Vector2(32, 16)
@@ -34,27 +16,37 @@ const LARGE_SIZE := Vector2(64, 16)
 @export var _missile_texture: TextureRect
 
 var missile_data: MissileData = MissileData.new(
-	Vector2i.ZERO, MissileColorType.RED, MissileSizeType.SMALL, Enums.Direction4Way.DOWN)
+	Vector2i.ZERO, Enums.MissileColorType.RED, Enums.MissileSizeType.SMALL, Enums.Direction4Way.DOWN)
+
+var _is_initialized: bool = false
 
 #endregion
 
 #region Lifecycle
 
-func _init():
-	initialize(missile_data)
-
-func initialize(data: MissileData):
-	missile_data = data
-	position = Vector2(
-		missile_data.grid_pos.x * MissilePuzzleBoard.CELL_SIZE, 
-		missile_data.grid_pos.y * MissilePuzzleBoard.CELL_SIZE) + _get_grid_pos_offset()
-
 func _ready():
-	DebugUtils.center_if_root(self)
+	if DebugUtils.try_center_if_root(self):
+		initialize(missile_data, true)
+
+func initialize(data: MissileData, is_root: bool = false):
+	if _is_initialized:
+		return
+
+	missile_data = data
 
 	_setup_size()
 	_load_sprite()
 	_setup_rotation()
+	if not is_root:
+		position = Vector2(
+			missile_data.grid_pos.x * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE, 
+			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) + _get_grid_pos_offset()
+
+	LogManager.info("initialize : %s %s %s" % 
+		[missile_data.grid_pos, _get_grid_pos_offset(), position], 
+		"MissilePuzzlePiece")
+
+	_is_initialized = true
 
 #endregion
 
@@ -64,11 +56,11 @@ func _ready():
 
 func _setup_size():
 	match missile_data.size:
-		MissileSizeType.SMALL:
+		Enums.MissileSizeType.SMALL:
 			size = SMALL_SIZE
-		MissileSizeType.MEDIUM:
+		Enums.MissileSizeType.MEDIUM:
 			size = MEDIUM_SIZE
-		MissileSizeType.LARGE:
+		Enums.MissileSizeType.LARGE:
 			size = LARGE_SIZE
 	pivot_offset = size / 2.0
 
@@ -77,35 +69,35 @@ func _load_sprite():
 	var texture := load(sprite_path) as Texture2D
 	if texture:
 		_missile_texture.texture = texture
-		LogManager.info("Sprite Load Success: %s" % sprite_path, "MissilePuzzlePiece")
+		# LogManager.info("Sprite Load Success: %s" % sprite_path, "MissilePuzzlePiece")
 	else:
 		LogManager.error("Sprite Load Fail: %s" % sprite_path, "MissilePuzzlePiece")
 
 func _get_sprite_path() -> String:
-	return "res://game/ui/missile_puzzle_pieces/resources/%s_missile_%s.png" % [_get_color_name(), _get_size_name()]
+	return "res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/%s_missile_%s.png" % [_get_color_name(), _get_size_name()]
 
 func _get_color_name() -> String:
 	match missile_data.color:
-		MissileColorType.RED:
+		Enums.MissileColorType.RED:
 			return "red"
-		MissileColorType.BLUE:
+		Enums.MissileColorType.BLUE:
 			return "blue"
-		MissileColorType.GREEN:
+		Enums.MissileColorType.GREEN:
 			return "green"
-		MissileColorType.YELLOW:
+		Enums.MissileColorType.YELLOW:
 			return "yellow"
-		MissileColorType.PURPLE:
+		Enums.MissileColorType.PURPLE:
 			return "purple"
 		_:
 			return "red"
 
 func _get_size_name() -> String:
 	match missile_data.size:
-		MissileSizeType.SMALL:
+		Enums.MissileSizeType.SMALL:
 			return "s"
-		MissileSizeType.MEDIUM:
+		Enums.MissileSizeType.MEDIUM:
 			return "m"
-		MissileSizeType.LARGE:
+		Enums.MissileSizeType.LARGE:
 			return "l"
 		_:
 			return "m"
@@ -126,7 +118,6 @@ func _setup_rotation():
 #region Grid
 
 func _get_grid_pos_offset() -> Vector2:
-	
 	match missile_data.direction:
 		Enums.Direction4Way.LEFT:
 			return Vector2(pivot_offset.x, pivot_offset.y)
@@ -139,11 +130,16 @@ func _get_grid_pos_offset() -> Vector2:
 		_:
 			return Vector2(0, 0)
 
-func get_grid_cells(grid_size: Vector2i) -> Array[Vector2i]:
-	var result: Array[Vector2i] = [missile_data.grid_pos]
+func get_my_grid_cells() -> Array[Vector2i]:
+	return get_grid_cells(Vector2i(Consts.MISSILE_PUZZLE_BOARD_GRID_WIDTH, Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT),
+		missile_data.grid_pos, missile_data.size, missile_data.direction)
+
+static func get_grid_cells(grid_size: Vector2i, grid_pos: Vector2i,
+	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> Array[Vector2i]:
+	var result: Array[Vector2i] = [grid_pos]
 	
 	var offset := Vector2i.ZERO
-	match missile_data.direction:
+	match direction:
 		Enums.Direction4Way.LEFT:
 			offset = Vector2i(1, 0)
 		Enums.Direction4Way.UP:
@@ -156,18 +152,18 @@ func get_grid_cells(grid_size: Vector2i) -> Array[Vector2i]:
 			offset = Vector2i.ZERO
 
 	var length := 0
-	match missile_data.size:
-		MissileSizeType.SMALL:
+	match missile_size:
+		Enums.MissileSizeType.SMALL:
 			length = 1
-		MissileSizeType.MEDIUM:
+		Enums.MissileSizeType.MEDIUM:
 			length = 2
-		MissileSizeType.LARGE:
+		Enums.MissileSizeType.LARGE:
 			length = 3
 		_:
 			length = 1
 
 	for i in length:
-		var pos = missile_data.grid_pos + offset * (i + 1);
+		var pos = grid_pos + offset * (i + 1);
 		if pos.x < 0 or pos.x >= grid_size.x or pos.y < 0 or pos.y >= grid_size.y:
 			break
 
@@ -176,22 +172,5 @@ func get_grid_cells(grid_size: Vector2i) -> Array[Vector2i]:
 	return result
 
 #endregion
-
-#endregion
-
-#region Missile data
-
-class MissileData:
-	var grid_pos: Vector2i
-	var color: MissilePuzzlePiece.MissileColorType
-	var size: MissilePuzzlePiece.MissileSizeType
-	var direction: Enums.Direction4Way
-	
-	func _init(p: Vector2i, c: MissilePuzzlePiece.MissileColorType, 
-		s: MissilePuzzlePiece.MissileSizeType, d: Enums.Direction4Way):
-		grid_pos = p
-		color = c
-		size = s
-		direction = d
 
 #endregion
