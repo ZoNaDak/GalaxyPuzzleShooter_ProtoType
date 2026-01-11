@@ -9,6 +9,9 @@ const BASE_SIZE := Vector2(576, 384)
 const GRID_WIDTH := Consts.MISSILE_PUZZLE_BOARD_GRID_WIDTH
 const GRID_HEIGHT := Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT
 
+const MAX_BACKTRACK_COUNT := 10000
+const MAX_RETRY_COUNT := 10
+
 const MissilePuzzlePieceScene = preload("res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn")
 
 #endregion
@@ -20,6 +23,8 @@ const MissilePuzzlePieceScene = preload("res://game/ui/missile_puzzle/missile_pu
 
 var grid: Array[Array] = []
 var missiles: Array[MissilePuzzlePiece] = []
+
+var _backtrack_count := 0
 
 #endregion
 
@@ -80,24 +85,34 @@ func _update_layout():
 #region Setup Missile Puzzle Board
 
 func _setup_missile_puzzle_board():
-	var _temp_grid: Array[Array] = []
-	for y in range(GRID_HEIGHT):
-		var row: Array = []
-		row.resize(GRID_WIDTH)
-		for x in range(GRID_WIDTH):
-			row[x] = null
-		_temp_grid.append(row)
-	var _temp_missile_data_arr: Array[MissileData] = []
+	for retry_count in MAX_RETRY_COUNT:
+		_backtrack_count = 0
+		
+		var _temp_grid: Array[Array] = []
+		for y in range(GRID_HEIGHT):
+			var row: Array = []
+			row.resize(GRID_WIDTH)
+			for x in range(GRID_WIDTH):
+				row[x] = null
+			_temp_grid.append(row)
+		var _temp_missile_data_arr: Array[MissileData] = []
 
-	if _fill_board_randomly(_temp_grid, _temp_missile_data_arr):
-		_assign_random_colors(_temp_missile_data_arr)
-		LogManager.info("Board Fill Completed! Missile Num: %d" % _temp_missile_data_arr.size(), "MissilePuzzleBoard")
-		for data in _temp_missile_data_arr:
-			_spawn_missile_piece(data)
-	else:
-		LogManager.error("Board Fill Failed!", "MissilePuzzleBoard")
+		if _fill_board_randomly(_temp_grid, _temp_missile_data_arr):
+			_assign_random_colors(_temp_missile_data_arr)
+			LogManager.info("Board Fill Completed! Retry: %d, Backtrack: %d, Missile Num: %d" \
+				% [retry_count + 1, _backtrack_count, _temp_missile_data_arr.size()], "MissilePuzzleBoard")
+			for data in _temp_missile_data_arr:
+				_spawn_missile_piece(data)
+			return
+		
+		LogManager.info("Retry %d failed (backtrack: %d), trying again..." % [retry_count + 1, _backtrack_count], "MissilePuzzleBoard")
+	
+	LogManager.error("Board Fill Failed after %d retries!" % MAX_RETRY_COUNT, "MissilePuzzleBoard")
 
 func _fill_board_randomly(temp_grid: Array[Array], temp_missile_data_arr: Array[MissileData]) -> bool:
+	if _backtrack_count >= MAX_BACKTRACK_COUNT:
+		return false
+	
 	var empty_cell := _find_first_empty_cell(temp_grid)
 	
 	if empty_cell == Vector2i(-1, -1):
@@ -133,6 +148,7 @@ func _fill_board_randomly(temp_grid: Array[Array], temp_missile_data_arr: Array[
 				return true
 			
 			# Remove Missile Data
+			_backtrack_count += 1
 			for cell in cells:
 				temp_grid[cell.y][cell.x] = null
 	
