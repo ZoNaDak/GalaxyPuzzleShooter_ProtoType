@@ -113,7 +113,8 @@ func _fill_board_randomly(temp_grid: Array[Array], temp_missile_data_arr: Array[
 			Enums.Direction4Way.LEFT if is_horizontal else Enums.Direction4Way.UP
 		)
 		
-		if _can_place_missile(temp_grid, empty_cell, missile_size, check_direction):
+		var cells := _get_placeable_cells(temp_grid, empty_cell, missile_size, check_direction)
+		if not cells.is_empty():
 			# decide real direction
 			var direction: Enums.Direction4Way
 			if is_horizontal:
@@ -124,8 +125,6 @@ func _fill_board_randomly(temp_grid: Array[Array], temp_missile_data_arr: Array[
 			var data := MissileData.new(empty_cell, Enums.MissileColorType.RED, missile_size, direction)
 			temp_missile_data_arr.append(data)
 
-			var cells := MissilePuzzlePiece.get_grid_cells(
-				Vector2i(GRID_WIDTH, GRID_HEIGHT), empty_cell, missile_size, check_direction)
 			for cell in cells:
 				temp_grid[cell.y][cell.x] = data
 			
@@ -137,7 +136,7 @@ func _fill_board_randomly(temp_grid: Array[Array], temp_missile_data_arr: Array[
 			for cell in cells:
 				temp_grid[cell.y][cell.x] = null
 	
-			temp_missile_data_arr.erase(data)
+			temp_missile_data_arr.pop_back()
 	
 	return false
 
@@ -169,22 +168,22 @@ func _assign_random_colors(temp_missile_data_arr: Array[MissileData]) -> void:
 	for data in temp_missile_data_arr:
 		data.color = colors[randi() % colors.size()]
 
-func _can_place_missile(
+func _get_placeable_cells(
 	temp_grid: Array[Array], grid_pos: Vector2i, 
-	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> bool:
-
+	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> Array[Vector2i]:
+	
 	if !MissilePuzzlePiece.get_is_on_board(
 		Vector2i(GRID_WIDTH, GRID_HEIGHT), grid_pos, missile_size, direction):
-		return false
+		return []
 	
 	var cells := MissilePuzzlePiece.get_grid_cells(
 		Vector2i(GRID_WIDTH, GRID_HEIGHT), grid_pos, missile_size, direction)
 	
 	for cell in cells:
 		if temp_grid[cell.y][cell.x] != null:
-			return false
+			return []
 	
-	return true
+	return cells
 
 func _spawn_missile_piece(missile_data: MissileData):
 	var missile = MissilePuzzlePieceScene.instantiate()
