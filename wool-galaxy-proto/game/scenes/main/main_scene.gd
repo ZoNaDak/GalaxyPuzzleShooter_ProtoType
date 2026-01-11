@@ -23,7 +23,3 @@ func _get_scene_state() -> GameManager.GameState:
 	return GameManager.GameState.MAIN
 
 #endregion
-
-#region Signal Callbacks
-
-#endregion

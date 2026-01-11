@@ -1,0 +1,6 @@
+# const.gd
+class_name Consts
+
+const MISSILE_PUZZLE_BOARD_GRID_WIDTH := 18
+const MISSILE_PUZZLE_BOARD_GRID_HEIGHT := 12
+const MISSILE_PUZZLE_BOARD_CELL_SIZE := 32
