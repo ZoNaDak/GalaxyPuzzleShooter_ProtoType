@@ -90,6 +90,7 @@ func _setup_missile_puzzle_board():
 	var _temp_missile_data_arr: Array[MissileData] = []
 
 	if _fill_board_randomly(_temp_grid, _temp_missile_data_arr):
+		_assign_random_colors(_temp_missile_data_arr)
 		LogManager.info("Board Fill Completed! Missile Num: %d" % _temp_missile_data_arr.size(), "MissilePuzzleBoard")
 		for data in _temp_missile_data_arr:
 			_spawn_missile_piece(data)
@@ -102,20 +103,29 @@ func _fill_board_randomly(temp_grid: Array[Array], temp_missile_data_arr: Array[
 	if empty_cell == Vector2i(-1, -1):
 		return true
 	
-	var combinations := _get_shuffled_missile_combinations()
+	var combinations := _get_shuffled_shape_combinations()
 	
 	for combo in combinations:
-		var color: Enums.MissileColorType = combo["color"]
 		var missile_size: Enums.MissileSizeType = combo["size"]
-		var direction: Enums.Direction4Way = combo["direction"]
+		var is_horizontal: bool = combo["is_horizontal"]
 		
-		if _can_place_missile(temp_grid, empty_cell, missile_size, direction):
-			# Add Missile Data
-			var data := MissileData.new(empty_cell, color, missile_size, direction)
+		var check_direction: Enums.Direction4Way = (
+			Enums.Direction4Way.LEFT if is_horizontal else Enums.Direction4Way.UP
+		)
+		
+		if _can_place_missile(temp_grid, empty_cell, missile_size, check_direction):
+			# decide real direction
+			var direction: Enums.Direction4Way
+			if is_horizontal:
+				direction = Enums.Direction4Way.LEFT if randi() % 2 == 0 else Enums.Direction4Way.RIGHT
+			else:
+				direction = Enums.Direction4Way.UP if randi() % 2 == 0 else Enums.Direction4Way.DOWN
+			
+			var data := MissileData.new(empty_cell, Enums.MissileColorType.RED, missile_size, direction)
 			temp_missile_data_arr.append(data)
 
 			var cells := MissilePuzzlePiece.get_grid_cells(
-				Vector2i(GRID_WIDTH, GRID_HEIGHT), empty_cell, missile_size, direction)
+				Vector2i(GRID_WIDTH, GRID_HEIGHT), empty_cell, missile_size, check_direction)
 			for cell in cells:
 				temp_grid[cell.y][cell.x] = data
 			
@@ -138,31 +148,39 @@ func _find_first_empty_cell(temp_grid: Array[Array]) -> Vector2i:
 				return Vector2i(x, y)
 	return Vector2i(-1, -1)
 
-func _get_shuffled_missile_combinations() -> Array[Dictionary]:
+func _get_shuffled_shape_combinations() -> Array[Dictionary]:
 	var combinations: Array[Dictionary] = []
 	
-	for color in Enums.MissileColorType.values():
-		for missile_size in Enums.MissileSizeType.values():
-			for direction in Enums.Direction4Way.values():
-				combinations.append({
-					"color": color,
-					"size": missile_size,
-					"direction": direction
-				})
+	for missile_size in Enums.MissileSizeType.values():
+		combinations.append({
+			"size": missile_size,
+			"is_horizontal": true
+		})
+		combinations.append({
+			"size": missile_size,
+			"is_horizontal": false
+		})
 	
 	combinations.shuffle()
 	return combinations
 
+func _assign_random_colors(temp_missile_data_arr: Array[MissileData]) -> void:
+	var colors := Enums.MissileColorType.values()
+	for data in temp_missile_data_arr:
+		data.color = colors[randi() % colors.size()]
+
 func _can_place_missile(
 	temp_grid: Array[Array], grid_pos: Vector2i, 
 	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> bool:
+
+	if !MissilePuzzlePiece.get_is_on_board(
+		Vector2i(GRID_WIDTH, GRID_HEIGHT), grid_pos, missile_size, direction):
+		return false
 	
 	var cells := MissilePuzzlePiece.get_grid_cells(
 		Vector2i(GRID_WIDTH, GRID_HEIGHT), grid_pos, missile_size, direction)
 	
 	for cell in cells:
-		if cell.x < 0 or cell.x >= GRID_WIDTH or cell.y < 0 or cell.y >= GRID_HEIGHT:
-			return false
 		if temp_grid[cell.y][cell.x] != null:
 			return false
 	

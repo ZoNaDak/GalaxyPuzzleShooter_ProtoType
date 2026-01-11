@@ -42,9 +42,9 @@ func initialize(data: MissileData, is_root: bool = false):
 			missile_data.grid_pos.x * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE, 
 			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) + _get_grid_pos_offset()
 
-	LogManager.info("initialize : %s %s %s" % 
-		[missile_data.grid_pos, _get_grid_pos_offset(), position], 
-		"MissilePuzzlePiece")
+	# LogManager.info("initialize : %s %s %s" % 
+	# 	 [missile_data.grid_pos, _get_grid_pos_offset(), position], 
+	# 	 "MissilePuzzlePiece")
 
 	_is_initialized = true
 
@@ -130,13 +130,40 @@ func _get_grid_pos_offset() -> Vector2:
 		_:
 			return Vector2(0, 0)
 
+static func get_is_on_board(grid_size: Vector2i, grid_pos: Vector2i,
+	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> bool:
+	var min_pos := grid_pos
+	var max_pos := grid_pos
+	var length := _get_missile_length(missile_size)
+	
+	if (direction == Enums.Direction4Way.LEFT
+		or direction == Enums.Direction4Way.RIGHT):
+		max_pos.x = grid_pos.x + length - 1
+	elif (direction == Enums.Direction4Way.UP
+		or direction == Enums.Direction4Way.DOWN):
+		max_pos.y = grid_pos.y + length - 1
+
+	return (min_pos.x >= 0 and max_pos.x < grid_size.x
+		and min_pos.y >= 0 and max_pos.y < grid_size.y)
+
+static func _get_missile_length(missile_size: Enums.MissileSizeType) -> int:
+	match missile_size:
+		Enums.MissileSizeType.SMALL:
+			return 2
+		Enums.MissileSizeType.MEDIUM:
+			return 3
+		Enums.MissileSizeType.LARGE:
+			return 4
+		_:
+			return 1
+
 func get_my_grid_cells() -> Array[Vector2i]:
 	return get_grid_cells(Vector2i(Consts.MISSILE_PUZZLE_BOARD_GRID_WIDTH, Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT),
 		missile_data.grid_pos, missile_data.size, missile_data.direction)
 
 static func get_grid_cells(grid_size: Vector2i, grid_pos: Vector2i,
 	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> Array[Vector2i]:
-	var result: Array[Vector2i] = [grid_pos]
+	var result: Array[Vector2i] = []
 	
 	var offset := Vector2i.ZERO
 	match direction:
@@ -151,19 +178,10 @@ static func get_grid_cells(grid_size: Vector2i, grid_pos: Vector2i,
 		_:
 			offset = Vector2i.ZERO
 
-	var length := 0
-	match missile_size:
-		Enums.MissileSizeType.SMALL:
-			length = 1
-		Enums.MissileSizeType.MEDIUM:
-			length = 2
-		Enums.MissileSizeType.LARGE:
-			length = 3
-		_:
-			length = 1
+	var length := _get_missile_length(missile_size)
 
 	for i in length:
-		var pos = grid_pos + offset * (i + 1);
+		var pos = grid_pos + offset * i
 		if pos.x < 0 or pos.x >= grid_size.x or pos.y < 0 or pos.y >= grid_size.y:
 			break
 
