@@ -5,7 +5,7 @@ class_name MissileSlotBoard
 
 #region Variables
 
-@export var missile_slots: Array[MissileSlot] = []
+@export var _missile_slots: Array[MissileSlot] = []
 
 #endregion
 
