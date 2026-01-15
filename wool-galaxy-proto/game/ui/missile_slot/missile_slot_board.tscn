@@ -3,12 +3,13 @@
 [ext_resource type="Script" uid="uid://xtcu0reemdo7" path="res://game/ui/missile_slot/missile_slot_board.gd" id="1_lcpb8"]
 [ext_resource type="PackedScene" uid="uid://frdkbp0s87l1" path="res://game/ui/missile_slot/missile_slot.tscn" id="2_arfh6"]
 
-[node name="MissileSlotBoard" type="Control"]
+[node name="MissileSlotBoard" type="Control" node_paths=PackedStringArray("missile_slots")]
 custom_minimum_size = Vector2(164, 24)
 layout_mode = 3
 anchors_preset = 0
 offset_bottom = 20.0
 script = ExtResource("1_lcpb8")
+missile_slots = [NodePath("Layout/MarginContainer/HBoxContainer/MissileSlot1"), NodePath("Layout/MarginContainer/HBoxContainer/MissileSlot2"), NodePath("Layout/MarginContainer/HBoxContainer/MissileSlot3")]
 
 [node name="Layout" type="Control" parent="."]
 layout_mode = 1

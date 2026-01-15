@@ -65,42 +65,13 @@ func _setup_size():
 	pivot_offset = size / 2.0
 
 func _load_sprite():
-	var sprite_path := _get_sprite_path()
+	var sprite_path := missile_data.get_my_sprite_path()
 	var texture := load(sprite_path) as Texture2D
 	if texture:
 		_missile_texture.texture = texture
 		# LogManager.info("Sprite Load Success: %s" % sprite_path, "MissilePuzzlePiece")
 	else:
 		LogManager.error("Sprite Load Fail: %s" % sprite_path, "MissilePuzzlePiece")
-
-func _get_sprite_path() -> String:
-	return "res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/%s_missile_%s.png" % [_get_color_name(), _get_size_name()]
-
-func _get_color_name() -> String:
-	match missile_data.color:
-		Enums.MissileColorType.RED:
-			return "red"
-		Enums.MissileColorType.BLUE:
-			return "blue"
-		Enums.MissileColorType.GREEN:
-			return "green"
-		Enums.MissileColorType.YELLOW:
-			return "yellow"
-		Enums.MissileColorType.PURPLE:
-			return "purple"
-		_:
-			return "red"
-
-func _get_size_name() -> String:
-	match missile_data.size:
-		Enums.MissileSizeType.SMALL:
-			return "s"
-		Enums.MissileSizeType.MEDIUM:
-			return "m"
-		Enums.MissileSizeType.LARGE:
-			return "l"
-		_:
-			return "m"
 
 func _setup_rotation():
 	match missile_data.direction:

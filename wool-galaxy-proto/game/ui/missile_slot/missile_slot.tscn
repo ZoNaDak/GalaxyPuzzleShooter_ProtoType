@@ -3,13 +3,15 @@
 [ext_resource type="Script" uid="uid://26j367q7qwlj" path="res://game/ui/missile_slot/missile_slot.gd" id="1_v1xbs"]
 [ext_resource type="Texture2D" uid="uid://cu3iphbh1uc2v" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/red_missile_m.png" id="2_gs14t"]
 
-[node name="MissileSlot" type="Control"]
+[node name="MissileSlot" type="Control" node_paths=PackedStringArray("_missile_texture", "_missile_amount")]
 custom_minimum_size = Vector2(52, 20)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 34.0
 offset_bottom = 18.0
 script = ExtResource("1_v1xbs")
+_missile_texture = NodePath("Control/MissileImage")
+_missile_amount = NodePath("Control/Label")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
