@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://frdkbp0s87l1"]
+[gd_scene load_steps=4 format=3 uid="uid://frdkbp0s87l1"]
 
 [ext_resource type="Script" uid="uid://26j367q7qwlj" path="res://game/ui/missile_slot/missile_slot.gd" id="1_v1xbs"]
+[ext_resource type="Texture2D" uid="uid://cifyq242kcl0v" path="res://game/ui/missile_slot/resources/missile_slot.png" id="2_0v7yj"]
 [ext_resource type="Texture2D" uid="uid://cu3iphbh1uc2v" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/red_missile_m.png" id="2_gs14t"]
 
 [node name="MissileSlot" type="Control" node_paths=PackedStringArray("_missile_texture", "_missile_amount")]
@@ -13,13 +14,18 @@ script = ExtResource("1_v1xbs")
 _missile_texture = NodePath("Control/MissileImage")
 _missile_amount = NodePath("Control/Label")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_0v7yj")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
