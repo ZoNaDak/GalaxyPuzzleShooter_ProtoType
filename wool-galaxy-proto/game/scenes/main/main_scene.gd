@@ -21,7 +21,14 @@ extends BaseScene
 
 func _ready() -> void:
 	super._ready()
+
+	_initialize()
+
 	await SystemUIManager.fade_in(0.5)
+
+func _initialize():
+	_player.initialize()
+	_player_ui.initialize(_player.player_data)
 
 #endregion
 
