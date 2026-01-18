@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=6 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
 [ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
 [ext_resource type="PackedScene" uid="uid://dburoiggif5h" path="res://game/ui/missile_slot/missile_slot_board.tscn" id="3_owm1g"]
+[ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/player/player.tscn" id="3_poqg5"]
 
 [node name="MainScene" type="Node" node_paths=PackedStringArray("_missile_slot_board", "_missile_puzzle_board")]
 script = ExtResource("1_lxwxr")
@@ -44,6 +45,9 @@ repeat_times = 4
 position = Vector2(90, 0)
 texture = ExtResource("2_n0hcn")
 region_rect = Rect2(0, 0, 639.89, 640)
+
+[node name="Player" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
+position = Vector2(90, 130)
 
 [node name="BottomUI" type="Control" parent="Canvas/VBoxContainer"]
 layout_mode = 2
