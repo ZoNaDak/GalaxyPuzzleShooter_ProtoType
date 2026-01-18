@@ -7,6 +7,11 @@ extends BaseScene
 
 #region Variables
 
+@export var _player: Player
+@export var _player_ui: PlayerUI
+
+@export var _reset_button: Button
+
 @export var _missile_slot_board: MissileSlotBoard
 @export var _missile_puzzle_board: MissilePuzzleBoard
 
