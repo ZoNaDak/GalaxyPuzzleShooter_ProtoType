@@ -8,6 +8,8 @@ class_name MissileSlot
 @export var _missile_texture: TextureRect
 @export var _missile_amount: Label
 
+var missile_data: MissileData = null
+
 #endregion
 
 #region Lifecycle
@@ -24,10 +26,10 @@ func setup_empty():
     _missile_texture.texture = null
     _missile_amount.visible = false
 
-func setup_missile_data(color: Enums.MissileColorType, amount: int):
+func setup_missile_data(data: MissileData):
+    missile_data = data
     _missile_amount.visible = true
-    var sprite_path := MissileData.get_sprite_path(color, Enums.MissileSizeType.MEDIUM)
-    _missile_texture.texture = load(sprite_path) as Texture2D
-    _missile_amount.text = str(amount)
+    _missile_texture.texture = load(missile_data.get_my_sprite_path()) as Texture2D
+    _missile_amount.text = str(missile_data.amount)
 
 #endregion
