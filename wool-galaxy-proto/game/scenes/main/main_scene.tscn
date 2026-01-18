@@ -5,8 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
 [ext_resource type="PackedScene" uid="uid://dburoiggif5h" path="res://game/ui/missile_slot/missile_slot_board.tscn" id="3_owm1g"]
 
-[node name="MainScene" type="Node"]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_missile_slot_board", "_missile_puzzle_board")]
 script = ExtResource("1_lxwxr")
+_missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
+_missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
 metadata/_custom_type_script = "uid://drvmeticmvie4"
 
 [node name="Canvas" type="CanvasLayer" parent="."]

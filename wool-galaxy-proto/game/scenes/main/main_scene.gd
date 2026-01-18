@@ -7,6 +7,9 @@ extends BaseScene
 
 #region Variables
 
+@export var _missile_slot_board: MissileSlotBoard
+@export var _missile_puzzle_board: MissilePuzzleBoard
+
 #endregion
 
 #region Lifecycle
