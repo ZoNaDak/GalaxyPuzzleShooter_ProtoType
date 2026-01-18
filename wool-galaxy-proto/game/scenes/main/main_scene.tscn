@@ -1,10 +1,57 @@
-[gd_scene load_steps=6 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=16 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
 [ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
 [ext_resource type="PackedScene" uid="uid://dburoiggif5h" path="res://game/ui/missile_slot/missile_slot_board.tscn" id="3_owm1g"]
 [ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/player/player.tscn" id="3_poqg5"]
+[ext_resource type="Texture2D" uid="uid://ck6hx5yqbhiai" path="res://assets/art/UI/Icon/reset.png" id="4_mgx4w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mgx4w"]
+bg_color = Color(1, 1, 1, 0.39215687)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyem0"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_by1y7"]
+bg_color = Color(1, 1, 1, 0.39215687)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3m0lk"]
+bg_color = Color(0, 0, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgx4w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3qem"]
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3qem"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_by1y7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
 
 [node name="MainScene" type="Node" node_paths=PackedStringArray("_missile_slot_board", "_missile_puzzle_board")]
 script = ExtResource("1_lxwxr")
@@ -47,7 +94,139 @@ texture = ExtResource("2_n0hcn")
 region_rect = Rect2(0, 0, 639.89, 640)
 
 [node name="Player" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
-position = Vector2(90, 130)
+position = Vector2(90, 120)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport"]
+
+[node name="Control" type="Control" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="PlayerUI" type="Control" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control"]
+custom_minimum_size = Vector2(120, 16)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -8.0
+offset_right = 60.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="PlayerHpUI" type="ProgressBar" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_mgx4w")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qyem0")
+value = 10.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI/HBoxContainer/PlayerHpUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.5
+offset_top = -11.5
+offset_right = 3.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "10/100"
+vertical_alignment = 1
+
+[node name="PlayerMpUI" type="ProgressBar" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_by1y7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_3m0lk")
+value = 80.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI/HBoxContainer/PlayerMpUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.5
+offset_top = -11.5
+offset_right = 3.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "1/10"
+vertical_alignment = 1
+
+[node name="Reset" type="Control" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -9.0
+offset_right = -4.0
+offset_bottom = 9.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ResetButton" type="Button" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 0
+theme_override_constants/h_separation = 0
+theme_override_icons/icon = ExtResource("4_mgx4w")
+theme_override_styles/normal = SubResource("StyleBoxTexture_mgx4w")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i3qem")
+theme_override_styles/hover = SubResource("StyleBoxTexture_i3qem")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_by1y7")
+theme_override_styles/focus = SubResource("StyleBoxTexture_3m0lk")
+icon_alignment = 1
 
 [node name="BottomUI" type="Control" parent="Canvas/VBoxContainer"]
 layout_mode = 2
