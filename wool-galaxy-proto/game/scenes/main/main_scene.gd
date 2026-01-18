@@ -27,9 +27,7 @@ func _ready() -> void:
 
 func _initialize():
 	var context: MainFlowContext = MainFlowContext.new()
-	
-	_player.initialize()
-	_player_ui.initialize(_player.player_data)
+	context.initialize(_player, _player_ui)
 
 	_main_flow.initialize(context)
 

@@ -13,7 +13,8 @@ func get_state_type() -> StateType:
     return StateType.SETUP_STAGE
 
 func begin() -> void:
-    pass
+    _context.player.initialize()
+    _context.player_ui.initialize(_context.player.player_data)
 
 func update(deltaTime: float) -> void:
     pass
