@@ -12,10 +12,9 @@ class_name MissileSlotBoard
 #region Lifecycle
 
 func _ready():
-    if DebugUtils.try_center_if_root(self):
-        missile_slots[0].setup_missile_data(Enums.MissileColorType.RED, 1)
-        missile_slots[1].setup_missile_data(Enums.MissileColorType.BLUE, 2)
-        missile_slots[2].setup_missile_data(Enums.MissileColorType.GREEN, 3)   
+	_missile_slots[0].setup_empty()
+	_missile_slots[1].setup_empty()
+	_missile_slots[2].setup_empty()
 
 #endregion
 
