@@ -13,6 +13,6 @@ var player_data: PlayerData
 
 func initialize():
 	player_data = PlayerData.new()
-	player_data.initialize()
+	player_data.initialize(100, 10)
 
 #endregion
