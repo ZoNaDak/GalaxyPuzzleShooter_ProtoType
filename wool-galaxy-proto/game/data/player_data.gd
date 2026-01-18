@@ -12,9 +12,9 @@ var equipped_missile_datas: Array[MissileData] = []
 
 #endregion
 
-#region Methods
+#region Lifecycle
 
-func initialize(hp: int, mp: int):
+func _init(hp: int, mp: int):
     max_hp = hp
     cur_hp = max_hp
     max_mp = mp
@@ -23,5 +23,11 @@ func initialize(hp: int, mp: int):
     equipped_missile_datas.resize(Consts.MISSILE_SLOT_COUNT)
     for i in equipped_missile_datas.size():
         equipped_missile_datas[i] = null
+
+#endregion
+
+#region Methods
+
+
 
 #endregion

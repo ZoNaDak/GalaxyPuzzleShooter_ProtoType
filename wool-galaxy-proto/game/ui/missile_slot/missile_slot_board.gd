@@ -16,9 +16,8 @@ func _ready():
 		initialize()
 
 func initialize():
-	_missile_slots[0].setup_empty()
-	_missile_slots[1].setup_empty()
-	_missile_slots[2].setup_empty()
+	for missile_slot in _missile_slots:
+		missile_slot.setup_empty()
 
 #endregion
 
