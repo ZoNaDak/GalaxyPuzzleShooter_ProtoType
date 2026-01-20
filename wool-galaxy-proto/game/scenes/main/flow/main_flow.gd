@@ -32,6 +32,14 @@ func initialize(context: MainFlowContext) -> void:
         state.initialize(context)
         _states[state_type] = state
 
+func _process(delta: float) -> void:
+    if _cur_state == null:
+        return
+
+    var next_state_type: StateType = _cur_state.update(delta)
+    if next_state_type != StateType.NONE:
+        change_flow(next_state_type)
+
 #endregion
 
 #region Methods

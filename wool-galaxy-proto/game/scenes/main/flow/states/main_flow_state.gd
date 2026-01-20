@@ -7,6 +7,8 @@ enum StateType
 {
     NONE = -1,
     SETUP_STAGE,
+    READY_STAGE,
+    COMMON_STAGE,
     COUNT,
 }
 
@@ -52,8 +54,9 @@ func get_state_type() -> StateType:
 func begin() -> void:
     assert(false, "Must override begin()")
 
-func update(deltaTime: float) -> void:
+func update(deltaTime: float) -> StateType:
     assert(false, "Must override update()")
+    return StateType.NONE
 
 func end() -> void:
     assert(false, "Must override end()")
