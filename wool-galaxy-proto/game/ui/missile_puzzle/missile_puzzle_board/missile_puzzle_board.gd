@@ -31,6 +31,11 @@ var _backtrack_count := 0
 #region Lifecycle
 
 func _ready():
+	if DebugUtils.try_center_if_root(self) \
+		or Engine.is_editor_hint():
+		initialize()
+
+func initialize():
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
 

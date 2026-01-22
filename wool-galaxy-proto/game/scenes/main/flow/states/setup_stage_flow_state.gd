@@ -13,8 +13,12 @@ func get_state_type() -> StateType:
     return StateType.SETUP_STAGE
 
 func begin() -> void:
-    _context.player.initialize()
-    _context.player_ui.initialize(_context.player.player_data)
+    await _context.player.initialize()
+    await _context.player_ui.initialize(_context.player.player_data)
+    await _context.missile_slot_board.initialize()
+    await _context.missile_puzzle_board.initialize()
+
+    await SystemUIManager.fade_in(0.5)
 
 func update(deltaTime: float) -> StateType:
     return StateType.READY_STAGE
