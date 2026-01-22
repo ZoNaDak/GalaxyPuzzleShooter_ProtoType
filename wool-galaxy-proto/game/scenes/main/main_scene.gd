@@ -1,11 +1,11 @@
 # main_scene.gd
+class_name MainScene
+
 extends BaseScene
 
-#region Signals
-
-#endregion
-
 #region Variables
+
+@export var _main_flow: MainFlow
 
 @export var _player: Player
 @export var _player_ui: PlayerUI
@@ -21,14 +21,14 @@ extends BaseScene
 
 func _ready() -> void:
 	super._ready()
-
 	_initialize()
-
-	await SystemUIManager.fade_in(0.5)
+	_main_flow.start_flow()
 
 func _initialize():
-	_player.initialize()
-	_player_ui.initialize(_player.player_data)
+	var context: MainFlowContext = MainFlowContext.new()
+	context.initialize(_player, _player_ui, _missile_slot_board, _missile_puzzle_board)
+
+	_main_flow.initialize(context)
 
 #endregion
 

@@ -1,4 +1,5 @@
 # game_manager.gd
+
 extends Node
 
 #region Enums

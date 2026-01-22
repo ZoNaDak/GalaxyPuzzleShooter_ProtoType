@@ -1,5 +1,6 @@
 # base_scene.gd
 class_name BaseScene
+
 extends Node
 
 #region Signals

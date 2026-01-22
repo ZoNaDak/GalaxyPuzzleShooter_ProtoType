@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=14 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
+[ext_resource type="PackedScene" uid="uid://1yv2fwak0riq" path="res://game/scenes/main/flow/main_flow.tscn" id="2_qyem0"]
 [ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
 [ext_resource type="PackedScene" uid="uid://dburoiggif5h" path="res://game/ui/missile_slot/missile_slot_board.tscn" id="3_owm1g"]
 [ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/player/player.tscn" id="3_poqg5"]
@@ -22,14 +23,17 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_player", "_player_ui", "_reset_button", "_missile_slot_board", "_missile_puzzle_board")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_reset_button", "_missile_slot_board", "_missile_puzzle_board")]
 script = ExtResource("1_lxwxr")
+_main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/Player")
 _player_ui = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
 _reset_button = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
 metadata/_custom_type_script = "uid://drvmeticmvie4"
+
+[node name="MainFlow" parent="." instance=ExtResource("2_qyem0")]
 
 [node name="Canvas" type="CanvasLayer" parent="."]
 
