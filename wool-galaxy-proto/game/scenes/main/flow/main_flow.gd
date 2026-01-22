@@ -14,6 +14,12 @@ const StateType = MainFlowState.StateType
 var _states: Dictionary[StateType, MainFlowState] = {}
 var _cur_state: MainFlowState
 
+var _is_change_state: bool = false
+
+#endregion
+
+#region Properties
+
 var cur_state_type: StateType:
     get:
         if _cur_state == null:
@@ -33,7 +39,7 @@ func initialize(context: MainFlowContext) -> void:
         _states[state_type] = state
 
 func _process(delta: float) -> void:
-    if _cur_state == null:
+    if _cur_state == null or _is_change_state:
         return
 
     var next_state_type: StateType = _cur_state.update(delta)
@@ -47,13 +53,19 @@ func _process(delta: float) -> void:
 func start_flow() -> void:
     change_flow(StateType.SETUP_STAGE)
 
+@warning_ignore("redundant_await")
 func change_flow(new_state_type: StateType) -> void:
     LogManager.info("change_flow: %s -> %s" \
         % [StateType.find_key(cur_state_type), StateType.find_key(new_state_type)], \
         "MainFlow")
+
+    _is_change_state = true
+
     if _cur_state != null:
-        _cur_state.end()
+        await _cur_state.end()
     _cur_state = _states[new_state_type]
-    _cur_state.begin()
+    await _cur_state.begin()
+
+    _is_change_state = false
 
 #endregion

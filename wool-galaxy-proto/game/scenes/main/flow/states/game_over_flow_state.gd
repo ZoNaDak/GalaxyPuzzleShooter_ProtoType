@@ -1,4 +1,4 @@
-# game_over_flow_stage.gd
+# game_over_flow_state.gd
 class_name GameOverFlowState
 
 extends MainFlowState
@@ -16,7 +16,7 @@ func begin() -> void:
     pass
 
 @warning_ignore("unused_parameter")
-func update(deltaTime: float) -> StateType:
+func update(delta_time: float) -> StateType:
     return StateType.NONE
 
 func end() -> void:

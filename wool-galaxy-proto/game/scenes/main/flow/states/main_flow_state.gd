@@ -59,7 +59,7 @@ func begin() -> void:
     assert(false, "Must override begin()")
 
 @warning_ignore("unused_parameter")
-func update(deltaTime: float) -> StateType:
+func update(delta_time: float) -> StateType:
     assert(false, "Must override update()")
     return StateType.NONE
 

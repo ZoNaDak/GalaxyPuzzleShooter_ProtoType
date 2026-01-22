@@ -1,4 +1,4 @@
-# ready_stage_flow_stage.gd
+# ready_stage_flow_state.gd
 class_name ReadyStageFlowState
 
 extends MainFlowState
@@ -16,7 +16,7 @@ func begin() -> void:
     pass
 
 @warning_ignore("unused_parameter")
-func update(deltaTime: float) -> StateType:
+func update(delta_time: float) -> StateType:
     return StateType.COMMON_STAGE
 
 func end() -> void:

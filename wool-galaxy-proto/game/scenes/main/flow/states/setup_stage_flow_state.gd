@@ -21,7 +21,7 @@ func begin() -> void:
     await SystemUIManager.fade_in(0.5)
 
 @warning_ignore("unused_parameter")
-func update(deltaTime: float) -> StateType:
+func update(delta_time: float) -> StateType:
     return StateType.READY_STAGE
 
 func end() -> void:
