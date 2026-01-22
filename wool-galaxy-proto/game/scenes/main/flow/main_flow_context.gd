@@ -12,6 +12,7 @@ var missile_puzzle_board: MissilePuzzleBoard
 
 #region Lifecycle
 
+@warning_ignore("shadowed_variable")
 func initialize(
     player: Player,
     player_ui: PlayerUI,
@@ -22,5 +23,5 @@ func initialize(
     self.player_ui = player_ui
     self.missile_slot_board = missile_slot_board
     self.missile_puzzle_board = missile_puzzle_board
-    
+
 #endregion

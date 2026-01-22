@@ -15,6 +15,7 @@ func get_state_type() -> StateType:
 func begin() -> void:
     pass
 
+@warning_ignore("unused_parameter")
 func update(deltaTime: float) -> StateType:
     return StateType.COMMON_STAGE
 

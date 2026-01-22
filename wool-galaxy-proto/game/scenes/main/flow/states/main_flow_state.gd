@@ -9,6 +9,10 @@ enum StateType
     SETUP_STAGE,
     READY_STAGE,
     COMMON_STAGE,
+    BOSS_STAGE,
+    STAGE_CLEAR,
+    GAME_OVER,
+    LEAVE_STAGE,
     COUNT,
 }
 
@@ -54,6 +58,7 @@ func get_state_type() -> StateType:
 func begin() -> void:
     assert(false, "Must override begin()")
 
+@warning_ignore("unused_parameter")
 func update(deltaTime: float) -> StateType:
     assert(false, "Must override update()")
     return StateType.NONE

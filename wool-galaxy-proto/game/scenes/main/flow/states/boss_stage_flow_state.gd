@@ -1,5 +1,5 @@
-# common_stage_flow_state.gd
-class_name CommonStageFlowState
+# boss_stage_flow_state.gd
+class_name BossStageFlowState
 
 extends MainFlowState
 
@@ -10,7 +10,7 @@ extends MainFlowState
 #region Override Methods
 
 func get_state_type() -> StateType:
-    return StateType.COMMON_STAGE
+    return StateType.BOSS_STAGE
 
 func begin() -> void:
     pass

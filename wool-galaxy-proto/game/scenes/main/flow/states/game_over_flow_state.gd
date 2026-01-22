@@ -1,5 +1,5 @@
-# common_stage_flow_state.gd
-class_name CommonStageFlowState
+# game_over_flow_stage.gd
+class_name GameOverFlowState
 
 extends MainFlowState
 
@@ -10,7 +10,7 @@ extends MainFlowState
 #region Override Methods
 
 func get_state_type() -> StateType:
-    return StateType.COMMON_STAGE
+    return StateType.GAME_OVER
 
 func begin() -> void:
     pass
