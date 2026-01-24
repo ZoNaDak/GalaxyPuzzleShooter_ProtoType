@@ -12,12 +12,11 @@ const GRID_HEIGHT := Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT
 const MAX_BACKTRACK_COUNT := 10000
 const MAX_RETRY_COUNT := 100
 
-const MissilePuzzlePieceScene = preload("res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn")
-
 #endregion
 
 #region Variables
 
+@export var _missilePuzzlePieceScene : PackedScene
 @export var _layout: Control
 @export var _missile_parent: Control
 
@@ -207,16 +206,41 @@ func _get_placeable_cells(
 	return cells
 
 func _spawn_missile_piece(missile_data: MissileData):
-	var missile = MissilePuzzlePieceScene.instantiate()
+	var missile = _missilePuzzlePieceScene.instantiate()
 	missile.name = "Missile_%s_%s" % [missile_data.grid_pos, missile.get_instance_id()]
 	_missile_parent.add_child(missile)
 
-	missile.initialize(missile_data)
+	missile.initialize(missile_data, get_is_missile_exited_board)
 
 	for cell in missile.get_my_grid_cells():
 		grid[cell.y][cell.x] = missile.get_instance_id()
 
 	missiles.append(missile)
+
+#endregion
+
+#region Check Board
+
+func get_is_missile_exited_board(missile_piece : MissilePuzzlePiece) -> bool:
+	var pos := missile_piece.position
+	var offset := missile_piece.pivot_offset
+	var missile_length := missile_piece.get_missile_real_length()
+	var direction := missile_piece.missile_data.direction
+	
+	var result := false
+	match direction:
+		Enums.Direction4Way.LEFT:
+			result =  pos.x + (offset.x + missile_length) < 0
+		Enums.Direction4Way.RIGHT:
+			result =  pos.x - offset.x > BASE_SIZE.x
+		Enums.Direction4Way.UP:
+			result =  pos.y + (offset.y + missile_length) < 0
+		Enums.Direction4Way.DOWN:
+			result =  pos.y + offset.y - missile_length > BASE_SIZE.y
+		_:
+			result =  false
+
+	return result
 
 #endregion
 
