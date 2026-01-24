@@ -10,7 +10,7 @@ const GRID_WIDTH := Consts.MISSILE_PUZZLE_BOARD_GRID_WIDTH
 const GRID_HEIGHT := Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT
 
 const MAX_BACKTRACK_COUNT := 10000
-const MAX_RETRY_COUNT := 10
+const MAX_RETRY_COUNT := 100
 
 const MissilePuzzlePieceScene = preload("res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn")
 

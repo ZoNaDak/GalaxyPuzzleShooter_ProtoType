@@ -3,7 +3,20 @@ extends Control
 
 class_name MissilePuzzlePiece
 
+enum MoveState {
+	IDLE,
+	MOVE_FOR_EQUIP,
+	RETURN_TO_ORIGIN,
+}
+
+#region Signals
+
+
+#endregion
+
 #region Consts
+
+const MISSILE_CONFIG: MissileConfig = preload("res://config/resources/missile_config.tres")
 
 const SMALL_SIZE := Vector2(32, 16)
 const MEDIUM_SIZE := Vector2(48, 16)
@@ -19,6 +32,8 @@ var missile_data: MissileData = MissileData.new(
 	Vector2i.ZERO, Enums.MissileColorType.RED, Enums.MissileSizeType.SMALL, Enums.Direction4Way.DOWN)
 
 var _is_initialized: bool = false
+
+var _state: MoveState
 
 #endregion
 
@@ -42,17 +57,37 @@ func initialize(data: MissileData, is_root: bool = false):
 			missile_data.grid_pos.x * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE, 
 			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) + _get_grid_pos_offset()
 
+	_state = MoveState.IDLE
+
 	# LogManager.info("initialize : %s %s %s" % 
 	# 	 [missile_data.grid_pos, _get_grid_pos_offset(), position], 
 	# 	 "MissilePuzzlePiece")
 
 	_is_initialized = true
 
+func _process(delta: float) -> void:
+	match _state:
+		MoveState.IDLE:
+			pass
+		MoveState.MOVE_FOR_EQUIP:
+			move_for_equip(delta)
+		MoveState.RETURN_TO_ORIGIN:
+			move_for_equip(delta)
+
+#endregion
+
+#region Event Methods
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed \
+		and event.button_index == MOUSE_BUTTON_LEFT:
+		setup_for_move()
+
 #endregion
 
 #region Methods
 
-#region OnReady
+#region On Initialize
 
 func _setup_size():
 	match missile_data.size:
@@ -159,6 +194,18 @@ static func get_grid_cells(grid_size: Vector2i, grid_pos: Vector2i,
 		result.append(pos)
 
 	return result
+
+#endregion
+
+#region Move
+
+func setup_for_move() -> void:
+	_state = MoveState.MOVE_FOR_EQUIP
+
+func move_for_equip(delta: float) -> void:
+	var move_vector := EnumUtils.direction_to_vector(missile_data.direction)
+	position += move_vector * MISSILE_CONFIG.move_speed * delta
+	
 
 #endregion
 
