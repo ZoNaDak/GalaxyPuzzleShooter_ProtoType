@@ -16,7 +16,10 @@ func begin() -> void:
     _context.player.initialize()
     _context.player_ui.initialize(_context.player.player_data)
     _context.missile_slot_board.initialize()
-    _context.missile_puzzle_board.initialize()
+    _context.missile_puzzle_board.initialize(
+        _context.player.player_data.get_is_full_missile_slot,
+        _context.player.player_data.reserve_missile_slot,
+        _context.player.player_data.equip_missile)
 
     await SystemUIManager.fade_in(0.5)
 

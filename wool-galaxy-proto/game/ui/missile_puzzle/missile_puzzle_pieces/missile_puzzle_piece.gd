@@ -34,7 +34,10 @@ var _state: MoveState
 
 #region Callable
 
-var _check_exited_board_callable: Callable
+var _get_is_missile_exited_board: Callable
+var _get_is_full_missile_slot_callable: Callable
+var _reserve_missile_slot_callable: Callable
+var _equip_missile_callable: Callable
 
 #endregion
 
@@ -44,15 +47,22 @@ var _check_exited_board_callable: Callable
 
 func _ready():
 	if DebugUtils.try_center_if_root(self):
-		initialize(missile_data, Callable(), true)
+		initialize(missile_data, true)
 
-func initialize(data: MissileData, check_exited_board_callable: Callable,
-	is_root: bool = false) -> void:
+func initialize(data: MissileData,
+	is_root: bool = false,
+	get_is_missile_exited_board: Callable = Callable(),
+	get_is_full_missile_slot_callable: Callable = Callable(),
+	reserve_missile_slot_callable: Callable = Callable(),
+	equip_missile_callable: Callable = Callable()) -> void:
 	if _is_initialized:
 		return
 
 	missile_data = data
-	_check_exited_board_callable = check_exited_board_callable
+	_get_is_missile_exited_board = get_is_missile_exited_board
+	_get_is_full_missile_slot_callable = get_is_full_missile_slot_callable
+	_reserve_missile_slot_callable = reserve_missile_slot_callable
+	_equip_missile_callable = equip_missile_callable
 
 	_setup_size()
 	_load_sprite()
@@ -64,10 +74,6 @@ func initialize(data: MissileData, check_exited_board_callable: Callable,
 			 + _get_grid_pos_offset()
 
 	_state = MoveState.IDLE
-
-	# LogManager.info("initialize : %s %s %s" % 
-	# 	 [missile_data.grid_pos, _get_grid_pos_offset(), position], 
-	# 	 "MissilePuzzlePiece")
 
 	_is_initialized = true
 
@@ -90,11 +96,12 @@ func _process(delta: float) -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if _state != MoveState.IDLE \
-		or _check_exited_board_callable.is_null():
+		or _get_is_missile_exited_board.is_null():
 		return
 
 	if event is InputEventMouseButton and event.pressed \
-		and event.button_index == MOUSE_BUTTON_LEFT:
+		and event.button_index == MOUSE_BUTTON_LEFT \
+		and not _get_is_full_missile_slot_callable.call():
 		setup_for_move()
 
 #endregion
@@ -207,11 +214,12 @@ func get_missile_real_length() -> float:
 
 func setup_for_move() -> void:
 	_state = MoveState.MOVE_FOR_EQUIP
+	_reserve_missile_slot_callable.call()
 
 func move_for_equip(delta: float) -> void:
 	var move_vector := EnumUtils.direction_to_vector(missile_data.direction)
 	position += move_vector * MISSILE_CONFIG.move_speed * delta
-	if(_check_exited_board_callable.call(self)):
+	if(_get_is_missile_exited_board.call(self)):
 		_state = MoveState.WAIT_EXIT
 		
 func move_to_origin(delta: float) -> void:
@@ -219,6 +227,7 @@ func move_to_origin(delta: float) -> void:
 
 func wait_leave(delta: float) -> void:
 	_state = MoveState.EXITED_BOARD
+	_equip_missile_callable.call(self)
 	LogManager.info("Missile Exited Board: %s" % missile_data.grid_pos, "MissilePuzzlePiece")
 
 #endregion
