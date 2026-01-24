@@ -29,7 +29,18 @@ func setup_empty():
 func setup_missile_data(data: MissileData):
     missile_data = data
     _missile_amount.visible = true
-    _missile_texture.texture = load(missile_data.get_my_sprite_path()) as Texture2D
+    var sprite_path := MissileData.get_sprite_path(
+        missile_data.color, Enums.MissileSizeType.MEDIUM)
+    _missile_texture.texture = load(sprite_path) as Texture2D
     _missile_amount.text = str(missile_data.amount)
+
+    data.on_amount_changed.connect(on_amount_changed)
+
+#endregion
+
+#region Signal Handlers
+
+func on_amount_changed(amount: int):
+    _missile_amount.text = str(amount)
 
 #endregion

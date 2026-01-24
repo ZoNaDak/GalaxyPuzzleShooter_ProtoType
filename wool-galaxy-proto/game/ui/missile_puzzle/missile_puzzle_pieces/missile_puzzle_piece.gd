@@ -125,7 +125,6 @@ func _load_sprite():
 	var texture := load(sprite_path) as Texture2D
 	if texture:
 		_missile_texture.texture = texture
-		# LogManager.info("Sprite Load Success: %s" % sprite_path, "MissilePuzzlePiece")
 	else:
 		LogManager.error("Sprite Load Fail: %s" % sprite_path, "MissilePuzzlePiece")
 

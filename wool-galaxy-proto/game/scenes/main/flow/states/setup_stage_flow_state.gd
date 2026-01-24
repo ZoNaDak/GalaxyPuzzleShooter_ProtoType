@@ -10,24 +10,27 @@ extends MainFlowState
 #region Override Methods
 
 func get_state_type() -> StateType:
-    return StateType.SETUP_STAGE
+	return StateType.SETUP_STAGE
 
 func begin() -> void:
-    _context.player.initialize()
-    _context.player_ui.initialize(_context.player.player_data)
-    _context.missile_slot_board.initialize()
-    _context.missile_puzzle_board.initialize(
-        _context.player.player_data.get_is_full_missile_slot,
-        _context.player.player_data.reserve_missile_slot,
-        _context.player.player_data.equip_missile)
+	_context.player.initialize()
+	_context.player_ui.initialize(_context.player.player_data)
+	_context.missile_slot_board.initialize()
+	_context.missile_puzzle_board.initialize(
+		_context.player.player_data.get_is_full_missile_slot,
+		_context.player.player_data.reserve_missile_slot,
+		_context.player.player_data.equip_missile)
 
-    await SystemUIManager.fade_in(0.5)
+	_context.player.player_data.on_equip_missile.connect(
+		_context.missile_slot_board.on_equip_missile)
+
+	await SystemUIManager.fade_in(0.5)
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
-    return StateType.READY_STAGE
+	return StateType.READY_STAGE
 
 func end() -> void:
-    pass
+	pass
 
 #endregion

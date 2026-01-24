@@ -11,6 +11,12 @@ var direction: Enums.Direction4Way
 var amount: int
 
 #endregion
+
+#region Signals
+
+signal on_amount_changed(amount: int)
+
+#endregion
 	
 #region Lifecycle
 
@@ -35,6 +41,10 @@ func get_my_grid_length() -> int:
 
 func get_my_real_length() -> float:
 	return get_missile_real_length(size)
+
+func decrease_amount() -> void:
+	amount -= 1
+	on_amount_changed.emit(amount)
 
 #endregion
 
