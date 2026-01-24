@@ -3,7 +3,17 @@ extends Control
 
 class_name MissilePuzzlePiece
 
+enum MoveState {
+	IDLE,
+	MOVE_FOR_EQUIP,
+	RETURN_TO_ORIGIN,
+	WAIT_EXIT,
+	EXITED_BOARD,
+}
+
 #region Consts
+
+const MISSILE_CONFIG: MissileConfig = preload("res://config/resources/missile_config.tres")
 
 const SMALL_SIZE := Vector2(32, 16)
 const MEDIUM_SIZE := Vector2(48, 16)
@@ -20,6 +30,17 @@ var missile_data: MissileData = MissileData.new(
 
 var _is_initialized: bool = false
 
+var _state: MoveState
+
+#region Callable
+
+var _get_is_missile_exited_board: Callable
+var _get_is_full_missile_slot_callable: Callable
+var _reserve_missile_slot_callable: Callable
+var _equip_missile_callable: Callable
+
+#endregion
+
 #endregion
 
 #region Lifecycle
@@ -28,11 +49,20 @@ func _ready():
 	if DebugUtils.try_center_if_root(self):
 		initialize(missile_data, true)
 
-func initialize(data: MissileData, is_root: bool = false):
+func initialize(data: MissileData,
+	is_root: bool = false,
+	get_is_missile_exited_board: Callable = Callable(),
+	get_is_full_missile_slot_callable: Callable = Callable(),
+	reserve_missile_slot_callable: Callable = Callable(),
+	equip_missile_callable: Callable = Callable()) -> void:
 	if _is_initialized:
 		return
 
 	missile_data = data
+	_get_is_missile_exited_board = get_is_missile_exited_board
+	_get_is_full_missile_slot_callable = get_is_full_missile_slot_callable
+	_reserve_missile_slot_callable = reserve_missile_slot_callable
+	_equip_missile_callable = equip_missile_callable
 
 	_setup_size()
 	_load_sprite()
@@ -40,19 +70,45 @@ func initialize(data: MissileData, is_root: bool = false):
 	if not is_root:
 		position = Vector2(
 			missile_data.grid_pos.x * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE, 
-			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) + _get_grid_pos_offset()
+			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) \
+			 + _get_grid_pos_offset()
 
-	# LogManager.info("initialize : %s %s %s" % 
-	# 	 [missile_data.grid_pos, _get_grid_pos_offset(), position], 
-	# 	 "MissilePuzzlePiece")
+	_state = MoveState.IDLE
 
 	_is_initialized = true
+
+func _process(delta: float) -> void:
+	match _state:
+		MoveState.IDLE:
+			pass
+		MoveState.MOVE_FOR_EQUIP:
+			move_for_equip(delta)
+		MoveState.RETURN_TO_ORIGIN:
+			move_to_origin(delta)
+		MoveState.WAIT_EXIT:
+			wait_leave(delta)
+		MoveState.EXITED_BOARD:
+			pass
+
+#endregion
+
+#region Event Methods
+
+func _gui_input(event: InputEvent) -> void:
+	if _state != MoveState.IDLE \
+		or _get_is_missile_exited_board.is_null():
+		return
+
+	if event is InputEventMouseButton and event.pressed \
+		and event.button_index == MOUSE_BUTTON_LEFT \
+		and not _get_is_full_missile_slot_callable.call():
+		setup_for_move()
 
 #endregion
 
 #region Methods
 
-#region OnReady
+#region On Initialize
 
 func _setup_size():
 	match missile_data.size:
@@ -69,7 +125,6 @@ func _load_sprite():
 	var texture := load(sprite_path) as Texture2D
 	if texture:
 		_missile_texture.texture = texture
-		# LogManager.info("Sprite Load Success: %s" % sprite_path, "MissilePuzzlePiece")
 	else:
 		LogManager.error("Sprite Load Fail: %s" % sprite_path, "MissilePuzzlePiece")
 
@@ -105,7 +160,7 @@ static func get_is_on_board(grid_size: Vector2i, grid_pos: Vector2i,
 	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> bool:
 	var min_pos := grid_pos
 	var max_pos := grid_pos
-	var length := _get_missile_length(missile_size)
+	var length := MissileData.get_missile_grid_length(missile_size)
 	
 	if (direction == Enums.Direction4Way.LEFT
 		or direction == Enums.Direction4Way.RIGHT):
@@ -116,17 +171,6 @@ static func get_is_on_board(grid_size: Vector2i, grid_pos: Vector2i,
 
 	return (min_pos.x >= 0 and max_pos.x < grid_size.x
 		and min_pos.y >= 0 and max_pos.y < grid_size.y)
-
-static func _get_missile_length(missile_size: Enums.MissileSizeType) -> int:
-	match missile_size:
-		Enums.MissileSizeType.SMALL:
-			return 2
-		Enums.MissileSizeType.MEDIUM:
-			return 3
-		Enums.MissileSizeType.LARGE:
-			return 4
-		_:
-			return 1
 
 func get_my_grid_cells() -> Array[Vector2i]:
 	return get_grid_cells(Vector2i(Consts.MISSILE_PUZZLE_BOARD_GRID_WIDTH, Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT),
@@ -149,7 +193,7 @@ static func get_grid_cells(grid_size: Vector2i, grid_pos: Vector2i,
 		_:
 			offset = Vector2i.ZERO
 
-	var length := _get_missile_length(missile_size)
+	var length := MissileData.get_missile_grid_length(missile_size)
 
 	for i in length:
 		var pos = grid_pos + offset * i
@@ -159,6 +203,31 @@ static func get_grid_cells(grid_size: Vector2i, grid_pos: Vector2i,
 		result.append(pos)
 
 	return result
+
+func get_missile_real_length() -> float:
+	return missile_data.get_my_real_length() / scale.x
+
+#endregion
+
+#region Move
+
+func setup_for_move() -> void:
+	_state = MoveState.MOVE_FOR_EQUIP
+	_reserve_missile_slot_callable.call()
+
+func move_for_equip(delta: float) -> void:
+	var move_vector := EnumUtils.direction_to_vector(missile_data.direction)
+	position += move_vector * MISSILE_CONFIG.move_speed * delta
+	if(_get_is_missile_exited_board.call(self)):
+		_state = MoveState.WAIT_EXIT
+		
+func move_to_origin(delta: float) -> void:
+	pass
+
+func wait_leave(delta: float) -> void:
+	_state = MoveState.EXITED_BOARD
+	_equip_missile_callable.call(self)
+	LogManager.info("Missile Exited Board: %s" % missile_data.grid_pos, "MissilePuzzlePiece")
 
 #endregion
 

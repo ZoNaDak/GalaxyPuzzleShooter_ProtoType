@@ -10,14 +10,13 @@ const GRID_WIDTH := Consts.MISSILE_PUZZLE_BOARD_GRID_WIDTH
 const GRID_HEIGHT := Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT
 
 const MAX_BACKTRACK_COUNT := 10000
-const MAX_RETRY_COUNT := 10
-
-const MissilePuzzlePieceScene = preload("res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn")
+const MAX_RETRY_COUNT := 100
 
 #endregion
 
 #region Variables
 
+@export var _missilePuzzlePieceScene : PackedScene
 @export var _layout: Control
 @export var _missile_parent: Control
 
@@ -25,6 +24,10 @@ var grid: Array[Array] = []
 var missiles: Array[MissilePuzzlePiece] = []
 
 var _backtrack_count := 0
+
+var _get_is_full_missile_slot_callable: Callable
+var _reserve_missile_slot_callable: Callable
+var _equip_missile_to_player_callable: Callable
 
 #endregion
 
@@ -35,9 +38,16 @@ func _ready():
 		or Engine.is_editor_hint():
 		initialize()
 
-func initialize():
+func initialize(
+	get_is_full_missile_slot_callable: Callable = Callable(),
+	reserve_missile_slot_callable: Callable = Callable(),
+	equip_missile_to_player_callable: Callable = Callable()):
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
+
+	_get_is_full_missile_slot_callable = get_is_full_missile_slot_callable
+	_reserve_missile_slot_callable = reserve_missile_slot_callable
+	_equip_missile_to_player_callable = equip_missile_to_player_callable
 
 	_initialize_grid()
 	_update_layout()
@@ -207,16 +217,59 @@ func _get_placeable_cells(
 	return cells
 
 func _spawn_missile_piece(missile_data: MissileData):
-	var missile = MissilePuzzlePieceScene.instantiate()
+	var missile = _missilePuzzlePieceScene.instantiate()
 	missile.name = "Missile_%s_%s" % [missile_data.grid_pos, missile.get_instance_id()]
 	_missile_parent.add_child(missile)
 
-	missile.initialize(missile_data)
+	missile.initialize(missile_data, false, 
+		get_is_missile_exited_board, 
+		_get_is_full_missile_slot_callable,
+		_reserve_missile_slot_callable,
+		equip_missile)
 
 	for cell in missile.get_my_grid_cells():
 		grid[cell.y][cell.x] = missile.get_instance_id()
 
 	missiles.append(missile)
+
+#endregion
+
+#region Check Board
+
+func get_is_missile_exited_board(missile_piece : MissilePuzzlePiece) -> bool:
+	var pos := missile_piece.position
+	var offset := missile_piece.pivot_offset
+	var missile_length := missile_piece.get_missile_real_length()
+	var direction := missile_piece.missile_data.direction
+	
+	var result := false
+	match direction:
+		Enums.Direction4Way.LEFT:
+			result =  pos.x + (offset.x + missile_length) < 0
+		Enums.Direction4Way.RIGHT:
+			result =  pos.x - offset.x > BASE_SIZE.x
+		Enums.Direction4Way.UP:
+			result =  pos.y + (offset.y + missile_length) < 0
+		Enums.Direction4Way.DOWN:
+			result =  pos.y + offset.y - missile_length > BASE_SIZE.y
+		_:
+			result =  false
+
+	return result
+
+#endregion
+
+#region Equip Missile
+
+func equip_missile(missile_piece : MissilePuzzlePiece):
+	var cells := missile_piece.get_my_grid_cells()
+	for cell in cells:
+		grid[cell.y][cell.x] = null
+
+	_equip_missile_to_player_callable.call(missile_piece.missile_data)
+
+	missiles.erase(missile_piece)
+	missile_piece.queue_free()
 
 #endregion
 

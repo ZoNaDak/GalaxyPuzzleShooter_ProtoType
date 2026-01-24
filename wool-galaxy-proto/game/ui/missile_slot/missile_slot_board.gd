@@ -24,3 +24,10 @@ func initialize():
 #region Methods
 
 #endregion
+
+#region Signal Handlers
+
+func on_equip_missile(index: int, missile_data: MissileData):
+	_missile_slots[index].setup_missile_data(missile_data)
+
+#endregion

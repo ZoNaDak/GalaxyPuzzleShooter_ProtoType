@@ -11,6 +11,7 @@ _layout = NodePath("Layout")
 _missile_parent = NodePath("Layout/Missiles")
 
 [node name="Layout" type="Control" parent="."]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 0
 offset_right = 576.0
