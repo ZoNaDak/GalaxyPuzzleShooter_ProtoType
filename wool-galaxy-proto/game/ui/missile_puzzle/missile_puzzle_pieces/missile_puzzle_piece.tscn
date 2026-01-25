@@ -36,6 +36,6 @@ monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HeadArea"]
 position = Vector2(0, 8)
-scale = Vector2(0.8, 0.7)
+scale = Vector2(0.8, 0.3)
 shape = SubResource("RectangleShape2D_sedve")
 debug_color = Color(1, 0, 0, 0.41960785)

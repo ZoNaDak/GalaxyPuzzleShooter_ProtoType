@@ -27,6 +27,7 @@ var _backtrack_count := 0
 
 var _get_is_full_missile_slot_callable: Callable
 var _reserve_missile_slot_callable: Callable
+var _unreserve_missile_slot_callable: Callable
 var _equip_missile_to_player_callable: Callable
 
 #endregion
@@ -41,12 +42,14 @@ func _ready():
 func initialize(
 	get_is_full_missile_slot_callable: Callable = Callable(),
 	reserve_missile_slot_callable: Callable = Callable(),
+	unreserve_missile_slot_callable: Callable = Callable(),
 	equip_missile_to_player_callable: Callable = Callable()):
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
 
 	_get_is_full_missile_slot_callable = get_is_full_missile_slot_callable
 	_reserve_missile_slot_callable = reserve_missile_slot_callable
+	_unreserve_missile_slot_callable = unreserve_missile_slot_callable
 	_equip_missile_to_player_callable = equip_missile_to_player_callable
 
 	_initialize_grid()
@@ -225,6 +228,7 @@ func _spawn_missile_piece(missile_data: MissileData):
 		get_is_missile_exited_board, 
 		_get_is_full_missile_slot_callable,
 		_reserve_missile_slot_callable,
+		_unreserve_missile_slot_callable,
 		equip_missile)
 
 	for cell in missile.get_my_grid_cells():

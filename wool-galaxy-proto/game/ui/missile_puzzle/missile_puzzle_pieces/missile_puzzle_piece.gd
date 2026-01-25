@@ -8,6 +8,7 @@ enum MoveState {
 	SETUP_FOR_MOVE,
 	WAIT_MOVE,
 	MOVE_FOR_EQUIP,
+	BUMPED,
 	RETURN_TO_ORIGIN,
 	WAIT_EXIT,
 	EXITED_BOARD,
@@ -20,6 +21,8 @@ const MISSILE_CONFIG: MissileConfig = preload("res://config/resources/missile_co
 const SMALL_SIZE := Vector2(32, 16)
 const MEDIUM_SIZE := Vector2(48, 16)
 const LARGE_SIZE := Vector2(64, 16)
+
+const BUMP_SHAKE_INTENSITY: float = 2.0
 
 #endregion
 
@@ -37,11 +40,14 @@ var _is_initialized: bool = false
 var _state: MoveState
 var _origin_position: Vector2
 
+var _bump_tween: Tween
+
 #region Callable
 
 var _get_is_missile_exited_board: Callable
 var _get_is_full_missile_slot_callable: Callable
 var _reserve_missile_slot_callable: Callable
+var _unreserve_missile_slot_callable: Callable
 var _equip_missile_callable: Callable
 
 #endregion
@@ -59,6 +65,7 @@ func initialize(data: MissileData,
 	get_is_missile_exited_board: Callable = Callable(),
 	get_is_full_missile_slot_callable: Callable = Callable(),
 	reserve_missile_slot_callable: Callable = Callable(),
+	unreserve_missile_slot_callable: Callable = Callable(),
 	equip_missile_callable: Callable = Callable()) -> void:
 	if _is_initialized:
 		return
@@ -67,6 +74,7 @@ func initialize(data: MissileData,
 	_get_is_missile_exited_board = get_is_missile_exited_board
 	_get_is_full_missile_slot_callable = get_is_full_missile_slot_callable
 	_reserve_missile_slot_callable = reserve_missile_slot_callable
+	_unreserve_missile_slot_callable = unreserve_missile_slot_callable
 	_equip_missile_callable = equip_missile_callable
 
 	_clear_collision_events();
@@ -95,6 +103,8 @@ func _process(delta: float) -> void:
 			wait_move(delta)
 		MoveState.MOVE_FOR_EQUIP:
 			move_for_equip(delta)
+		MoveState.BUMPED:
+			bumped(delta)
 		MoveState.RETURN_TO_ORIGIN:
 			move_to_origin(delta)
 		MoveState.WAIT_EXIT:
@@ -242,6 +252,26 @@ func move_for_equip(delta: float) -> void:
 	if(_get_is_missile_exited_board.call(self)):
 		_state = MoveState.WAIT_EXIT
 		
+func bumped(delta: float) -> void:
+	if(_bump_tween == null):
+		var shake_offset := _get_shake_offset()
+		var base_pos := position
+
+		_bump_tween = create_tween()
+		_bump_tween.set_ease(Tween.EASE_OUT)
+		_bump_tween.set_trans(Tween.TRANS_SINE)
+	
+		for i in range(3):
+			var intensity := BUMP_SHAKE_INTENSITY * (1.0 - i * 0.25)
+			_bump_tween.tween_property(self, "position", 
+				base_pos + shake_offset * intensity, 0.05)
+			_bump_tween.tween_property(self, "position", 
+				base_pos - shake_offset * intensity, 0.05)
+		_bump_tween.tween_property(self, "position", base_pos, 0.03)
+	elif not _bump_tween.is_running():
+		_bump_tween = null
+		_state = MoveState.RETURN_TO_ORIGIN
+
 func move_to_origin(delta: float) -> void:
 	pass
 
@@ -266,9 +296,23 @@ func _check_collision_when_moved(other_area: Area2D) -> void:
 	if other == null or other == self:
 		return
 
-	_state = MoveState.RETURN_TO_ORIGIN
-
+	_clear_collision_events()
+	_unreserve_missile_slot_callable.call()
+	_state = MoveState.BUMPED
 
 #endregion
+
+func _get_shake_offset() -> Vector2:
+	match missile_data.direction:
+		Enums.Direction4Way.LEFT:
+			return Vector2(1, 0)
+		Enums.Direction4Way.RIGHT:
+			return Vector2(-1, 0)
+		Enums.Direction4Way.UP:
+			return Vector2(0, 1)
+		Enums.Direction4Way.DOWN:
+			return Vector2(0, -1)
+		_:
+			return Vector2(0, 1)
 
 #endregion

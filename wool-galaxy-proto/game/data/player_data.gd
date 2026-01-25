@@ -47,6 +47,9 @@ func get_is_full_missile_slot() -> bool:
 func reserve_missile_slot() -> void:
     _reserved_missile_count += 1;
 
+func unreserve_missile_slot() -> void:
+    _reserved_missile_count -= 1;
+
 func equip_missile(missile_data: MissileData) -> bool:
     for i in equipped_missile_datas.size():
         if equipped_missile_datas[i] == null:

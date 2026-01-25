@@ -19,6 +19,7 @@ func begin() -> void:
 	_context.missile_puzzle_board.initialize(
 		_context.player.player_data.get_is_full_missile_slot,
 		_context.player.player_data.reserve_missile_slot,
+		_context.player.player_data.unreserve_missile_slot,
 		_context.player.player_data.equip_missile)
 
 	_context.player.player_data.on_equip_missile.connect(
