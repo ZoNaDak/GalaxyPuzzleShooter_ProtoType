@@ -14,6 +14,7 @@ config/name="WoolGalaxy"
 config/version="0.0.1"
 run/main_scene="res://game/scenes/title/title_scene.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+run/max_fps=60
 config/icon="uid://cpau44w7jmq8y"
 
 [autoload]
@@ -32,6 +33,11 @@ window/size/window_width_override=360
 window/size/window_height_override=640
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
+
+[layer_names]
+
+2d_physics/layer_1="MissilePuzzlePiece_Body"
+2d_physics/layer_2="MissilePuzzlePiece_Head"
 
 [rendering]
 

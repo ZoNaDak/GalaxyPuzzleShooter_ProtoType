@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://pkqx1hawwdqv"]
+[gd_scene load_steps=4 format=3 uid="uid://pkqx1hawwdqv"]
 
 [ext_resource type="Script" uid="uid://dilv0bnh6bb84" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.gd" id="1_g4a5c"]
 [ext_resource type="Texture2D" uid="uid://bdxsxlr15ti3b" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/red_missile_s.png" id="1_hj63n"]
 
-[node name="MissilePuzzlePiece" type="Control" node_paths=PackedStringArray("_missile_texture")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sedve"]
+
+[node name="MissilePuzzlePiece" type="Control" node_paths=PackedStringArray("_missile_texture", "_body_collision_shape", "_head_area")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 32.0
@@ -11,6 +13,8 @@ offset_bottom = 16.0
 scale = Vector2(2, 2)
 script = ExtResource("1_g4a5c")
 _missile_texture = NodePath("TextureRect")
+_body_collision_shape = NodePath("BodyArea/CollisionShape2D")
+_head_area = NodePath("HeadArea")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
@@ -18,3 +22,20 @@ offset_right = 32.0
 offset_bottom = 16.0
 texture = ExtResource("1_hj63n")
 stretch_mode = 2
+
+[node name="BodyArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyArea"]
+position = Vector2(16, 8)
+scale = Vector2(1.6, 0.8)
+shape = SubResource("RectangleShape2D_sedve")
+
+[node name="HeadArea" type="Area2D" parent="."]
+collision_layer = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HeadArea"]
+position = Vector2(0, 8)
+scale = Vector2(0.8, 0.3)
+shape = SubResource("RectangleShape2D_sedve")
+debug_color = Color(1, 0, 0, 0.41960785)

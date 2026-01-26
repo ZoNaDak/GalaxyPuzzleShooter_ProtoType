@@ -25,9 +25,11 @@ var missiles: Array[MissilePuzzlePiece] = []
 
 var _backtrack_count := 0
 
-var _get_is_full_missile_slot_callable: Callable
-var _reserve_missile_slot_callable: Callable
-var _equip_missile_to_player_callable: Callable
+#region Callable
+
+var _callable_context: MissilePuzzleCallableContext
+
+#endregion
 
 #endregion
 
@@ -36,18 +38,13 @@ var _equip_missile_to_player_callable: Callable
 func _ready():
 	if DebugUtils.try_center_if_root(self) \
 		or Engine.is_editor_hint():
-		initialize()
+		initialize(MissilePuzzleCallableContext.new())
 
-func initialize(
-	get_is_full_missile_slot_callable: Callable = Callable(),
-	reserve_missile_slot_callable: Callable = Callable(),
-	equip_missile_to_player_callable: Callable = Callable()):
+func initialize(callable_context: MissilePuzzleCallableContext):
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
 
-	_get_is_full_missile_slot_callable = get_is_full_missile_slot_callable
-	_reserve_missile_slot_callable = reserve_missile_slot_callable
-	_equip_missile_to_player_callable = equip_missile_to_player_callable
+	_callable_context = callable_context
 
 	_initialize_grid()
 	_update_layout()
@@ -221,11 +218,8 @@ func _spawn_missile_piece(missile_data: MissileData):
 	missile.name = "Missile_%s_%s" % [missile_data.grid_pos, missile.get_instance_id()]
 	_missile_parent.add_child(missile)
 
-	missile.initialize(missile_data, false, 
-		get_is_missile_exited_board, 
-		_get_is_full_missile_slot_callable,
-		_reserve_missile_slot_callable,
-		equip_missile)
+	missile.initialize(missile_data, false, _callable_context,
+		get_is_missile_exited_board, equip_missile)
 
 	for cell in missile.get_my_grid_cells():
 		grid[cell.y][cell.x] = missile.get_instance_id()
@@ -266,7 +260,7 @@ func equip_missile(missile_piece : MissilePuzzlePiece):
 	for cell in cells:
 		grid[cell.y][cell.x] = null
 
-	_equip_missile_to_player_callable.call(missile_piece.missile_data)
+	_callable_context.equip_missile_to_player_callable.call(missile_piece.missile_data)
 
 	missiles.erase(missile_piece)
 	missile_piece.queue_free()
