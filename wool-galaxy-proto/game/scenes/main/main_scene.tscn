@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=16 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/player/player.tscn" id="3_poqg5"]
 [ext_resource type="PackedScene" uid="uid://bq76q3cjshmr0" path="res://game/ui/player_ui.tscn" id="4_i3qem"]
 [ext_resource type="Texture2D" uid="uid://ck6hx5yqbhiai" path="res://assets/art/UI/Icon/reset.png" id="4_mgx4w"]
+[ext_resource type="Script" uid="uid://bqyot2gdwdw45" path="res://game/services/enemy_service.gd" id="5_3m0lk"]
 [ext_resource type="PackedScene" uid="uid://pkqx1hawwdqv" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn" id="9_by1y7"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgx4w"]
@@ -24,11 +25,12 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_reset_button", "_missile_slot_board", "_missile_puzzle_board")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board")]
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/Player")
 _player_ui = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
+_enemy_service = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService")
 _reset_button = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
@@ -72,6 +74,22 @@ region_rect = Rect2(0, 0, 639.89, 640)
 
 [node name="Player" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
 position = Vector2(90, 120)
+
+[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr")]
+script = ExtResource("5_3m0lk")
+_enemy_spawn_point_arr = [NodePath("EnemySpawnPoints/EnemySpawnPoint0"), NodePath("EnemySpawnPoints/EnemySpawnPoint1"), NodePath("EnemySpawnPoints/EnemySpawnPoint2")]
+metadata/_custom_type_script = "uid://bqyot2gdwdw45"
+
+[node name="EnemySpawnPoints" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService"]
+
+[node name="EnemySpawnPoint0" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(40, 60)
+
+[node name="EnemySpawnPoint1" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(90, 40)
+
+[node name="EnemySpawnPoint2" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(140, 60)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport"]
 

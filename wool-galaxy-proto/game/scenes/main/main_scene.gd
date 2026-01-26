@@ -10,6 +10,8 @@ extends BaseScene
 @export var _player: Player
 @export var _player_ui: PlayerUI
 
+@export var _enemy_service: EnemyService
+
 @export var _reset_button: Button
 
 @export var _missile_slot_board: MissileSlotBoard
@@ -26,7 +28,8 @@ func _ready() -> void:
 
 func _initialize():
 	var context: MainFlowContext = MainFlowContext.new()
-	context.initialize(_player, _player_ui, _missile_slot_board, _missile_puzzle_board)
+	context.initialize(_player, _player_ui, _enemy_service, 
+		_missile_slot_board, _missile_puzzle_board)
 
 	_main_flow.initialize(context)
 
