@@ -75,9 +75,10 @@ region_rect = Rect2(0, 0, 639.89, 640)
 [node name="Player" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
 position = Vector2(90, 120)
 
-[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr")]
+[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr", "_enemy_parent")]
 script = ExtResource("5_3m0lk")
 _enemy_spawn_point_arr = [NodePath("EnemySpawnPoints/EnemySpawnPoint0"), NodePath("EnemySpawnPoints/EnemySpawnPoint1"), NodePath("EnemySpawnPoints/EnemySpawnPoint2")]
+_enemy_parent = NodePath("EnemyParent")
 metadata/_custom_type_script = "uid://bqyot2gdwdw45"
 
 [node name="EnemySpawnPoints" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService"]
@@ -90,6 +91,8 @@ position = Vector2(90, 40)
 
 [node name="EnemySpawnPoint2" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
 position = Vector2(140, 60)
+
+[node name="EnemyParent" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport"]
 
