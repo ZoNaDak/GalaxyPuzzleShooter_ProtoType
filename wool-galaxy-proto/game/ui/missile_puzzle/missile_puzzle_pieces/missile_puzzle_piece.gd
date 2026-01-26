@@ -44,10 +44,8 @@ var _bump_tween: Tween
 
 #region Callable
 
+var _callable_context: MissilePuzzleCallableContext
 var _get_is_missile_exited_board: Callable
-var _get_is_full_missile_slot_callable: Callable
-var _reserve_missile_slot_callable: Callable
-var _unreserve_missile_slot_callable: Callable
 var _equip_missile_callable: Callable
 
 #endregion
@@ -62,21 +60,17 @@ func _ready():
 
 func initialize(data: MissileData,
 	is_root: bool = false,
+	callable_context: MissilePuzzleCallableContext = MissilePuzzleCallableContext.new(),
 	get_is_missile_exited_board: Callable = Callable(),
-	get_is_full_missile_slot_callable: Callable = Callable(),
-	reserve_missile_slot_callable: Callable = Callable(),
-	unreserve_missile_slot_callable: Callable = Callable(),
 	equip_missile_callable: Callable = Callable()) -> void:
 	if _is_initialized:
 		return
 
 	missile_data = data
+	_callable_context = callable_context
 	_get_is_missile_exited_board = get_is_missile_exited_board
-	_get_is_full_missile_slot_callable = get_is_full_missile_slot_callable
-	_reserve_missile_slot_callable = reserve_missile_slot_callable
-	_unreserve_missile_slot_callable = unreserve_missile_slot_callable
 	_equip_missile_callable = equip_missile_callable
-
+	
 	_clear_collision_events();
 	_head_area.monitoring = false
 
@@ -123,7 +117,7 @@ func _gui_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton and event.pressed \
 		and event.button_index == MOUSE_BUTTON_LEFT \
-		and not _get_is_full_missile_slot_callable.call():
+		and not _callable_context.get_is_full_missile_slot_callable.call():
 		_state = MoveState.SETUP_FOR_MOVE
 
 #endregion
@@ -241,7 +235,7 @@ func setup_for_move() -> void:
 	_origin_position = position
 	_add_collision_event_when_moved()
 	_head_area.monitoring = true
-	_reserve_missile_slot_callable.call()
+	_callable_context.reserve_missile_slot_callable.call()
 
 func wait_move(delta: float) -> void:
 	_state = MoveState.MOVE_FOR_EQUIP
@@ -297,7 +291,7 @@ func _check_collision_when_moved(other_area: Area2D) -> void:
 		return
 
 	_clear_collision_events()
-	_unreserve_missile_slot_callable.call()
+	_callable_context.unreserve_missile_slot_callable.call()
 	_state = MoveState.BUMPED
 
 #endregion

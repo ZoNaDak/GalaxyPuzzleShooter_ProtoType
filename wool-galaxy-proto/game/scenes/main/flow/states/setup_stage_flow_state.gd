@@ -16,11 +16,14 @@ func begin() -> void:
 	_context.player.initialize()
 	_context.player_ui.initialize(_context.player.player_data)
 	_context.missile_slot_board.initialize()
-	_context.missile_puzzle_board.initialize(
+	
+	var missile_puzzle_callable_context := MissilePuzzleCallableContext.new()
+	missile_puzzle_callable_context.initialize(
 		_context.player.player_data.get_is_full_missile_slot,
 		_context.player.player_data.reserve_missile_slot,
 		_context.player.player_data.unreserve_missile_slot,
 		_context.player.player_data.equip_missile)
+	_context.missile_puzzle_board.initialize(missile_puzzle_callable_context)
 
 	_context.player.player_data.on_equip_missile.connect(
 		_context.missile_slot_board.on_equip_missile)
