@@ -267,12 +267,36 @@ func bumped(delta: float) -> void:
 		_state = MoveState.RETURN_TO_ORIGIN
 
 func move_to_origin(delta: float) -> void:
-	pass
+	var move_vector := Vector2.ZERO
+	match missile_data.direction:
+		Enums.Direction4Way.LEFT:
+			move_vector = Vector2(1, 0)
+		Enums.Direction4Way.UP:
+			move_vector = Vector2(0, 1)
+		Enums.Direction4Way.RIGHT:
+			move_vector = Vector2(-1, 0)
+		Enums.Direction4Way.DOWN:
+			move_vector = Vector2(0, -1)
+
+	position += move_vector * MISSILE_CONFIG.return_move_speed * delta
+	var _is_arrived := false
+	match missile_data.direction:
+		Enums.Direction4Way.LEFT:
+			_is_arrived = position.x >= _origin_position.x
+		Enums.Direction4Way.RIGHT:
+			_is_arrived = position.x <= _origin_position.x
+		Enums.Direction4Way.UP:
+			_is_arrived = position.y >= _origin_position.y
+		Enums.Direction4Way.DOWN:
+			_is_arrived = position.y <= _origin_position.y
+
+	if _is_arrived:
+		position = _origin_position
+		_state = MoveState.IDLE
 
 func wait_leave(delta: float) -> void:
 	_state = MoveState.EXITED_BOARD
 	_equip_missile_callable.call(self)
-	LogManager.info("Missile Exited Board: %s" % missile_data.grid_pos, "MissilePuzzlePiece")
 
 #endregion
 
