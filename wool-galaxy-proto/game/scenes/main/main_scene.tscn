@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=17 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
+[ext_resource type="Resource" uid="uid://ynmvtclpp0eo" path="res://config/resources/stage_config.tres" id="2_ety1j"]
 [ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
 [ext_resource type="PackedScene" uid="uid://1yv2fwak0riq" path="res://game/scenes/main/flow/main_flow.tscn" id="2_qyem0"]
 [ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
@@ -34,6 +35,7 @@ _enemy_service = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewpo
 _reset_button = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
+_stage_config = ExtResource("2_ety1j")
 metadata/_custom_type_script = "uid://drvmeticmvie4"
 
 [node name="MainFlow" parent="." instance=ExtResource("2_qyem0")]

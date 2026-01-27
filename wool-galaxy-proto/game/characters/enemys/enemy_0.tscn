@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://dm0g33uo6xj0b" path="res://config/resources/enemy0_config.tres" id="2_t64it"]
 [ext_resource type="Texture2D" uid="uid://ti1qw7aiww1y" path="res://game/characters/enemys/resources/Enemy0.png" id="3_0l7b1"]
 
-[node name="EnemyBase" instance=ExtResource("1_6437g")]
+[node name="Enemy0" instance=ExtResource("1_6437g")]
 enemy_config = ExtResource("2_t64it")
 
 [node name="Sprite2D" parent="." index="0"]

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="StageConfig" load_steps=2 format=3 uid="uid://ynmvtclpp0eo"]
+
+[ext_resource type="Script" uid="uid://bke4jkosusxk3" path="res://config/scripts/stage_config.gd" id="1_85v25"]
+
+[resource]
+script = ExtResource("1_85v25")

@@ -17,6 +17,8 @@ extends BaseScene
 @export var _missile_slot_board: MissileSlotBoard
 @export var _missile_puzzle_board: MissilePuzzleBoard
 
+@export var _stage_config: StageConfig
+
 #endregion
 
 #region Lifecycle
@@ -29,7 +31,7 @@ func _ready() -> void:
 func _initialize():
 	var context: MainFlowContext = MainFlowContext.new()
 	context.initialize(_player, _player_ui, _enemy_service, 
-		_missile_slot_board, _missile_puzzle_board)
+		_missile_slot_board, _missile_puzzle_board, _stage_config)
 
 	_main_flow.initialize(context)
 
