@@ -85,12 +85,15 @@ metadata/_custom_type_script = "uid://bqyot2gdwdw45"
 
 [node name="EnemySpawnPoint0" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
 position = Vector2(40, 60)
+gizmo_extents = 5.0
 
 [node name="EnemySpawnPoint1" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
 position = Vector2(90, 40)
+gizmo_extents = 5.0
 
 [node name="EnemySpawnPoint2" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
 position = Vector2(140, 60)
+gizmo_extents = 5.0
 
 [node name="EnemyParent" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService"]
 

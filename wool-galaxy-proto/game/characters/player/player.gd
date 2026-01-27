@@ -3,14 +3,9 @@ class_name Player
 
 extends Character
 
-#region Consts
-
-const PLAYER_CONFIG: PlayerConfig = preload("res://config/resources/player_config.tres")
-
-#endregion
-
 #region Variables
 
+@export var player_config: PlayerConfig
 var player_data: PlayerData
 
 #endregion
@@ -18,7 +13,7 @@ var player_data: PlayerData
 #region Lifecycle
 
 func initialize():
-	player_data = PlayerData.new(PLAYER_CONFIG.max_hp, PLAYER_CONFIG.max_mp)
+	player_data = PlayerData.new(player_config.max_hp, player_config.max_mp)
 	data = player_data
 
 #endregion
