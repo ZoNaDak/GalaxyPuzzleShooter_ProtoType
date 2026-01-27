@@ -8,10 +8,3 @@ extends Node2D
 var data: CharacterData
 
 #endregion
-
-#region Lifecycle
-
-func initialize() -> void:
-    push_error("Must override initialize()")
-
-#endregion

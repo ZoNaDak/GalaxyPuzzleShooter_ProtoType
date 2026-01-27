@@ -3,7 +3,7 @@ extends Control
 
 class_name MissilePuzzlePiece
 
-enum MoveState {
+enum MissilePieceState {
 	IDLE,
 	SETUP_FOR_MOVE,
 	WAIT_MOVE,
@@ -37,7 +37,7 @@ var missile_data: MissileData = MissileData.new(
 
 var _is_initialized: bool = false
 
-var _state: MoveState
+var _state: MissilePieceState
 var _origin_position: Vector2
 
 var _bump_tween: Tween
@@ -83,27 +83,27 @@ func initialize(data: MissileData,
 			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) \
 			 + _get_grid_pos_offset()
 
-	_state = MoveState.IDLE
+	_state = MissilePieceState.IDLE
 
 	_is_initialized = true
 
 func _process(delta: float) -> void:
 	match _state:
-		MoveState.IDLE:
+		MissilePieceState.IDLE:
 			pass
-		MoveState.SETUP_FOR_MOVE:
+		MissilePieceState.SETUP_FOR_MOVE:
 			setup_for_move()
-		MoveState.WAIT_MOVE:
+		MissilePieceState.WAIT_MOVE:
 			wait_move(delta)
-		MoveState.MOVE_FOR_EQUIP:
+		MissilePieceState.MOVE_FOR_EQUIP:
 			move_for_equip(delta)
-		MoveState.BUMPED:
+		MissilePieceState.BUMPED:
 			bumped(delta)
-		MoveState.RETURN_TO_ORIGIN:
+		MissilePieceState.RETURN_TO_ORIGIN:
 			move_to_origin(delta)
-		MoveState.WAIT_EXIT:
+		MissilePieceState.WAIT_EXIT:
 			wait_leave(delta)
-		MoveState.EXITED_BOARD:
+		MissilePieceState.EXITED_BOARD:
 			pass
 
 #endregion
@@ -111,14 +111,14 @@ func _process(delta: float) -> void:
 #region Event Methods
 
 func _gui_input(event: InputEvent) -> void:
-	if _state != MoveState.IDLE \
+	if _state != MissilePieceState.IDLE \
 		or _get_is_missile_exited_board.is_null():
 		return
 
 	if event is InputEventMouseButton and event.pressed \
 		and event.button_index == MOUSE_BUTTON_LEFT \
 		and not _callable_context.get_is_full_missile_slot_callable.call():
-		_state = MoveState.SETUP_FOR_MOVE
+		_state = MissilePieceState.SETUP_FOR_MOVE
 
 #endregion
 
@@ -231,20 +231,20 @@ func get_missile_real_length() -> float:
 #region Move
 
 func setup_for_move() -> void:
-	_state = MoveState.WAIT_MOVE
+	_state = MissilePieceState.WAIT_MOVE
 	_origin_position = position
 	_add_collision_event_when_moved()
 	_head_area.monitoring = true
 	_callable_context.reserve_missile_slot_callable.call()
 
 func wait_move(delta: float) -> void:
-	_state = MoveState.MOVE_FOR_EQUIP
+	_state = MissilePieceState.MOVE_FOR_EQUIP
 
 func move_for_equip(delta: float) -> void:
 	var move_vector := EnumUtils.direction_to_vector(missile_data.direction)
 	position += move_vector * MISSILE_CONFIG.move_speed * delta
 	if(_get_is_missile_exited_board.call(self)):
-		_state = MoveState.WAIT_EXIT
+		_state = MissilePieceState.WAIT_EXIT
 		
 func bumped(delta: float) -> void:
 	if(_bump_tween == null):
@@ -264,7 +264,7 @@ func bumped(delta: float) -> void:
 		_bump_tween.tween_property(self, "position", base_pos, 0.03)
 	elif not _bump_tween.is_running():
 		_bump_tween = null
-		_state = MoveState.RETURN_TO_ORIGIN
+		_state = MissilePieceState.RETURN_TO_ORIGIN
 
 func move_to_origin(delta: float) -> void:
 	var move_vector := Vector2.ZERO
@@ -292,10 +292,10 @@ func move_to_origin(delta: float) -> void:
 
 	if _is_arrived:
 		position = _origin_position
-		_state = MoveState.IDLE
+		_state = MissilePieceState.IDLE
 
 func wait_leave(delta: float) -> void:
-	_state = MoveState.EXITED_BOARD
+	_state = MissilePieceState.EXITED_BOARD
 	_equip_missile_callable.call(self)
 
 #endregion
@@ -316,7 +316,7 @@ func _check_collision_when_moved(other_area: Area2D) -> void:
 
 	_clear_collision_events()
 	_callable_context.unreserve_missile_slot_callable.call()
-	_state = MoveState.BUMPED
+	_state = MissilePieceState.BUMPED
 
 #endregion
 

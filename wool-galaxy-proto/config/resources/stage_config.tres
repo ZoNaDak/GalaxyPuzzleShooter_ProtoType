@@ -4,3 +4,4 @@
 
 [resource]
 script = ExtResource("1_85v25")
+enemy_list = Array[String](["enemy_0", "enemy_1", "enemy_2"])
