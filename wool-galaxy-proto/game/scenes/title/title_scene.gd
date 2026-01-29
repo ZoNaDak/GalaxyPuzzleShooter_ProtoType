@@ -7,6 +7,7 @@ extends BaseScene
 
 #region Variables
 
+var _is_initialized = false
 var _is_changing_scene: bool = false
 
 #endregion
@@ -16,6 +17,12 @@ var _is_changing_scene: bool = false
 func _ready() -> void:
 	super._ready()
 	_is_changing_scene = false
+	_is_initialized = false
+
+	if SystemUIManager.is_faded:
+		await SystemUIManager.fade_in(0.5)
+
+	_is_initialized = true
 
 #endregion
 
@@ -29,7 +36,7 @@ func _get_scene_state() -> GameManager.GameState:
 #region Signal Callbacks
 
 func _on_start_button_pressed() -> void:
-	if _is_changing_scene:
+	if _is_changing_scene or not _is_initialized:
 		return
 	_is_changing_scene = true
 

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="EnemyConfig" load_steps=2 format=3 uid="uid://dm0g33uo6xj0b"]
+
+[ext_resource type="Script" uid="uid://dgt6wuwiws01g" path="res://config/scripts/enemy_config.gd" id="1_e13su"]
+
+[resource]
+script = ExtResource("1_e13su")
