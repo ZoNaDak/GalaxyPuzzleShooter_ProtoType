@@ -13,9 +13,9 @@ var cur_mp: int
 #region Lifecycle
 
 func _init(hp: int, mp: int):
-    max_hp = hp
-    cur_hp = max_hp
-    max_mp = mp
-    cur_mp = max_mp
+	max_hp = hp
+	cur_hp = max_hp
+	max_mp = mp
+	cur_mp = max_mp
 
 #endregion

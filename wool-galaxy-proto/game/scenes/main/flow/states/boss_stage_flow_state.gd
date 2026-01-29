@@ -17,6 +17,7 @@ func begin() -> void:
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
+	# TODO: 추후 플로우 구현할 것
 	if true:
 		return StateType.STAGE_CLEAR
 		
