@@ -21,6 +21,8 @@ func begin() -> void:
 		spawn_random_enemy(i)
 		_enemy_spawn_delay_arr.append(-1.0)
 
+	_context.missile_puzzle_board.set_input_enable(true)
+
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
 	if get_is_game_over():
@@ -35,7 +37,7 @@ func update(delta_time: float) -> StateType:
 	return StateType.NONE
 
 func end() -> void:
-	pass
+	_context.missile_puzzle_board.set_input_enable(false)
 
 #endregion
 

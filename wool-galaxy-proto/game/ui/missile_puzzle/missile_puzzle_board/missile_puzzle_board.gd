@@ -227,6 +227,14 @@ func _spawn_missile_piece(missile_data: MissileData):
 
 #endregion
 
+#region Set Input Enable
+
+func set_input_enable(is_enable: bool) -> void:
+	for missile in missiles:
+		missile.set_input_enable(is_enable)
+
+#endregion
+
 #region Check Board
 
 func get_is_missile_exited_board(missile_piece: MissilePuzzlePiece) -> bool:

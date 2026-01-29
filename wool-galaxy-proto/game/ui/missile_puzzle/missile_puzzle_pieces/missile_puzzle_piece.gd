@@ -40,6 +40,8 @@ var _is_initialized: bool = false
 var _state: MissilePieceState
 var _origin_position: Vector2
 
+var _is_input_enable: bool
+
 var _bump_tween: Tween
 
 #region Callable
@@ -83,6 +85,7 @@ func initialize(data: MissileData,
 			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) \
 			 + _get_grid_pos_offset()
 
+	_is_input_enable = false
 	_state = MissilePieceState.IDLE
 
 	_is_initialized = true
@@ -111,7 +114,8 @@ func _process(delta: float) -> void:
 #region Event Methods
 
 func _gui_input(event: InputEvent) -> void:
-	if _state != MissilePieceState.IDLE \
+	if not _is_input_enable \
+		or _state != MissilePieceState.IDLE \
 		or _get_is_missile_exited_board.is_null():
 		return
 
@@ -225,6 +229,13 @@ static func get_grid_cells(grid_size: Vector2i, grid_pos: Vector2i,
 
 func get_missile_real_length() -> float:
 	return missile_data.get_my_real_length() / scale.x
+
+#endregion
+
+#region Set Input Enable
+
+func set_input_enable(is_enable: bool) -> void:
+	_is_input_enable = is_enable
 
 #endregion
 

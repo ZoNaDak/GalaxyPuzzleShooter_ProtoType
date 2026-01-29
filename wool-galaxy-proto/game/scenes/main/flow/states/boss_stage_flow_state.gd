@@ -13,7 +13,7 @@ func get_state_type() -> StateType:
 	return StateType.BOSS_STAGE
 
 func begin() -> void:
-	pass
+	_context.missile_puzzle_board.set_input_enable(true)
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
@@ -23,6 +23,6 @@ func update(delta_time: float) -> StateType:
 	return StateType.NONE
 
 func end() -> void:
-	pass
+	_context.missile_puzzle_board.set_input_enable(false)
 
 #endregion
