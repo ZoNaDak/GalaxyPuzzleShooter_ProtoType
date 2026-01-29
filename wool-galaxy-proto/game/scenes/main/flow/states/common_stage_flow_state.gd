@@ -23,10 +23,13 @@ func begin() -> void:
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
+	if get_is_game_over():
+		return StateType.GAME_OVER
+
 	check_enemy_spawn(delta_time)
 	check_enemy_die()
 
-	if (get_is_go_boss_stage()):
+	if (get_is_clear_common_stage()):
 		return StateType.BOSS_STAGE
 
 	return StateType.NONE
@@ -39,6 +42,9 @@ func end() -> void:
 #region Methods
 
 #region Check Update Methods
+
+func get_is_game_over() -> bool:
+	return _context.player.state == Character.StateType.DEAD
 
 func check_enemy_spawn(delta_time: float) -> void:
 	if get_is_all_spawned():
@@ -66,7 +72,7 @@ func check_enemy_die() -> void:
 func get_is_all_spawned() -> bool:
 	return _enemy_spawn_count >= _context.stage_config.enemy_spawn_total_count
 
-func get_is_go_boss_stage() -> bool:
+func get_is_clear_common_stage() -> bool:
 	var is_enemy_all_dead = true
 	for enemy in _context.enemy_service.enemy_arr:
 		if (enemy != null):
