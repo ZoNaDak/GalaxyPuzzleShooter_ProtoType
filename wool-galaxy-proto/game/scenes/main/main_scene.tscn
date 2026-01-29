@@ -26,15 +26,18 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
-_player = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/Player")
-_player_ui = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
-_enemy_service = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService")
-_reset_button = NodePath("Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
+_player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
+_player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
+_enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
+_reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
+_game_start_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameStartText")
+_stage_clear_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/StageClearText")
+_game_over_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameOverText")
 _stage_config = ExtResource("2_ety1j")
 metadata/_custom_type_script = "uid://drvmeticmvie4"
 
@@ -50,58 +53,68 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="GameViewportContainer" type="SubViewportContainer" parent="Canvas/VBoxContainer"]
-clip_contents = true
+[node name="Control" type="Control" parent="Canvas/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="GameViewportContainer" type="SubViewportContainer" parent="Canvas/VBoxContainer/Control"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 10.0
 stretch = true
 
-[node name="GameViewport" type="SubViewport" parent="Canvas/VBoxContainer/GameViewportContainer"]
+[node name="GameViewport" type="SubViewport" parent="Canvas/VBoxContainer/Control/GameViewportContainer"]
 handle_input_locally = false
 size = Vector2i(180, 160)
 render_target_update_mode = 4
 
-[node name="GameView" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport"]
+[node name="GameView" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport"]
 
-[node name="Background" type="Parallax2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView"]
+[node name="Background" type="Parallax2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView"]
 repeat_size = Vector2(160, 160)
 autoscroll = Vector2(0, 50)
 repeat_times = 4
 
-[node name="Sprite" type="Sprite2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/Background"]
+[node name="Sprite" type="Sprite2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Background"]
 position = Vector2(90, 0)
 texture = ExtResource("2_n0hcn")
 region_rect = Rect2(0, 0, 639.89, 640)
 
-[node name="Player" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
+[node name="Player" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
 position = Vector2(90, 120)
 
-[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr", "_enemy_parent")]
+[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr", "_enemy_parent")]
 script = ExtResource("5_3m0lk")
 _enemy_spawn_point_arr = [NodePath("EnemySpawnPoints/EnemySpawnPoint0"), NodePath("EnemySpawnPoints/EnemySpawnPoint1"), NodePath("EnemySpawnPoints/EnemySpawnPoint2")]
 _enemy_parent = NodePath("EnemyParent")
 metadata/_custom_type_script = "uid://bqyot2gdwdw45"
 
-[node name="EnemySpawnPoints" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService"]
+[node name="EnemySpawnPoints" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService"]
 
-[node name="EnemySpawnPoint0" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+[node name="EnemySpawnPoint0" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
 position = Vector2(40, 60)
 gizmo_extents = 5.0
 
-[node name="EnemySpawnPoint1" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+[node name="EnemySpawnPoint1" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
 position = Vector2(90, 40)
 gizmo_extents = 5.0
 
-[node name="EnemySpawnPoint2" type="Marker2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+[node name="EnemySpawnPoint2" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
 position = Vector2(140, 60)
 gizmo_extents = 5.0
 
-[node name="EnemyParent" type="Node2D" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/GameView/EnemyService"]
+[node name="EnemyParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport"]
+[node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport"]
 
-[node name="Control" type="Control" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer"]
+[node name="Control" type="Control" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer"]
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 3
 anchors_preset = 12
@@ -113,10 +126,10 @@ grow_vertical = 0
 size_flags_horizontal = 6
 size_flags_vertical = 4
 
-[node name="PlayerUI" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control" instance=ExtResource("4_i3qem")]
+[node name="PlayerUI" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control" instance=ExtResource("4_i3qem")]
 layout_mode = 1
 
-[node name="Reset" type="Control" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control"]
+[node name="Reset" type="Control" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control"]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 1
 anchors_preset = 6
@@ -131,7 +144,7 @@ offset_bottom = 9.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="ResetButton" type="Button" parent="Canvas/VBoxContainer/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset"]
+[node name="ResetButton" type="Button" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 1
 anchors_preset = 8
@@ -154,6 +167,75 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_i3qem")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_by1y7")
 theme_override_styles/focus = SubResource("StyleBoxTexture_3m0lk")
 icon_alignment = 1
+
+[node name="GameStateTextUI" type="Control" parent="Canvas/VBoxContainer/Control"]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Canvas/VBoxContainer/Control/GameStateTextUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GameStartText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
+theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 20
+text = "Game Start"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StageClearText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
+theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 20
+text = "Stage Clear"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOverText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
+theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 20
+text = "Game Over"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BottomUI" type="Control" parent="Canvas/VBoxContainer"]
 layout_mode = 2

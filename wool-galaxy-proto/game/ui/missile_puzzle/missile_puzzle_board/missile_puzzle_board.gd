@@ -1,7 +1,7 @@
 @tool
-extends Control
-
 class_name MissilePuzzleBoard
+
+extends Control
 
 #region Consts
 
@@ -16,7 +16,7 @@ const MAX_RETRY_COUNT := 100
 
 #region Variables
 
-@export var _missilePuzzlePieceScene : PackedScene
+@export var _missilePuzzlePieceScene: PackedScene
 @export var _layout: Control
 @export var _missile_parent: Control
 
@@ -197,9 +197,8 @@ func _assign_random_colors(temp_missile_data_arr: Array[MissileData]) -> void:
 		data.color = colors[randi() % colors.size()]
 
 func _get_placeable_cells(
-	temp_grid: Array[Array], grid_pos: Vector2i, 
+	temp_grid: Array[Array], grid_pos: Vector2i,
 	missile_size: Enums.MissileSizeType, direction: Enums.Direction4Way) -> Array[Vector2i]:
-	
 	if !MissilePuzzlePiece.get_is_on_board(
 		Vector2i(GRID_WIDTH, GRID_HEIGHT), grid_pos, missile_size, direction):
 		return []
@@ -230,7 +229,7 @@ func _spawn_missile_piece(missile_data: MissileData):
 
 #region Check Board
 
-func get_is_missile_exited_board(missile_piece : MissilePuzzlePiece) -> bool:
+func get_is_missile_exited_board(missile_piece: MissilePuzzlePiece) -> bool:
 	var pos := missile_piece.position
 	var offset := missile_piece.pivot_offset
 	var missile_length := missile_piece.get_missile_real_length()
@@ -239,15 +238,15 @@ func get_is_missile_exited_board(missile_piece : MissilePuzzlePiece) -> bool:
 	var result := false
 	match direction:
 		Enums.Direction4Way.LEFT:
-			result =  pos.x + (offset.x + missile_length) < 0
+			result = pos.x + (offset.x + missile_length) < 0
 		Enums.Direction4Way.RIGHT:
-			result =  pos.x - offset.x > BASE_SIZE.x
+			result = pos.x - offset.x > BASE_SIZE.x
 		Enums.Direction4Way.UP:
-			result =  pos.y + (offset.y + missile_length) < 0
+			result = pos.y + (offset.y + missile_length) < 0
 		Enums.Direction4Way.DOWN:
-			result =  pos.y + offset.y - missile_length > BASE_SIZE.y
+			result = pos.y + offset.y - missile_length > BASE_SIZE.y
 		_:
-			result =  false
+			result = false
 
 	return result
 
@@ -255,7 +254,7 @@ func get_is_missile_exited_board(missile_piece : MissilePuzzlePiece) -> bool:
 
 #region Equip Missile
 
-func equip_missile(missile_piece : MissilePuzzlePiece):
+func equip_missile(missile_piece: MissilePuzzlePiece):
 	var cells := missile_piece.get_my_grid_cells()
 	for cell in cells:
 		grid[cell.y][cell.x] = null

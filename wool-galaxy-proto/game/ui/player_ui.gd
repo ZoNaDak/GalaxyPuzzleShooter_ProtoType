@@ -1,7 +1,7 @@
 # player_ui.gd
-extends Control
-
 class_name PlayerUI
+
+extends Control
 
 #region Variables
 

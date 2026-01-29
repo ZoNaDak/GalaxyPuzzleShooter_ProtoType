@@ -5,21 +5,27 @@ extends MainFlowState
 
 #region Variables
 
+var _wait_cur_time: float
+
 #endregion
 
 #region Override Methods
 
 func get_state_type() -> StateType:
-    return StateType.READY_STAGE
+	return StateType.READY_STAGE
 
 func begin() -> void:
-    pass
+	_wait_cur_time = 0.0
+	_context.game_start_text.visible = true
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
-    return StateType.COMMON_STAGE
+	if _wait_cur_time >= Consts.READY_STAGE_WAIT_DURATION:
+		return StateType.COMMON_STAGE
+	_wait_cur_time += delta_time
+	return StateType.NONE
 
 func end() -> void:
-    pass
+	_context.game_start_text.visible = false
 
 #endregion

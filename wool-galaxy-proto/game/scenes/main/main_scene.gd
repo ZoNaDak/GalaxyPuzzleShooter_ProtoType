@@ -17,6 +17,10 @@ extends BaseScene
 @export var _missile_slot_board: MissileSlotBoard
 @export var _missile_puzzle_board: MissilePuzzleBoard
 
+@export var _game_start_text: Control
+@export var _stage_clear_text: Control
+@export var _game_over_text: Control
+
 @export var _stage_config: StageConfig
 
 #endregion
@@ -30,10 +34,15 @@ func _ready() -> void:
 
 func _initialize():
 	_enemy_service.initialize()
+	_game_start_text.visible = false
+	_stage_clear_text.visible = false
+	_game_over_text.visible = false
 
 	var context: MainFlowContext = MainFlowContext.new()
 	context.initialize(_player, _player_ui, _enemy_service,
-		_missile_slot_board, _missile_puzzle_board, _stage_config)
+		_missile_slot_board, _missile_puzzle_board,
+		_game_start_text, _stage_clear_text, _game_over_text,
+		_stage_config)
 
 	_main_flow.initialize(context)
 

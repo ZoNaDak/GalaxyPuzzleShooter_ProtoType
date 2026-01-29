@@ -10,16 +10,19 @@ extends MainFlowState
 #region Override Methods
 
 func get_state_type() -> StateType:
-    return StateType.BOSS_STAGE
+	return StateType.BOSS_STAGE
 
 func begin() -> void:
-    pass
+	pass
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
-    return StateType.NONE
+	if true:
+		return StateType.STAGE_CLEAR
+		
+	return StateType.NONE
 
 func end() -> void:
-    pass
+	pass
 
 #endregion

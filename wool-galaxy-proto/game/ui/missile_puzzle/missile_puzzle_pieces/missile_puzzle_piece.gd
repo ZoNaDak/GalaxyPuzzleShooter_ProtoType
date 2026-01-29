@@ -1,7 +1,7 @@
 # missile_puzzle_piece.gd
-extends Control
-
 class_name MissilePuzzlePiece
+
+extends Control
 
 enum MissilePieceState {
 	IDLE,
@@ -79,7 +79,7 @@ func initialize(data: MissileData,
 	_setup_rotation()
 	if not is_root:
 		position = Vector2(
-			missile_data.grid_pos.x * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE, 
+			missile_data.grid_pos.x * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE,
 			missile_data.grid_pos.y * Consts.MISSILE_PUZZLE_BOARD_CELL_SIZE) \
 			 + _get_grid_pos_offset()
 
@@ -243,11 +243,11 @@ func wait_move(delta: float) -> void:
 func move_for_equip(delta: float) -> void:
 	var move_vector := EnumUtils.direction_to_vector(missile_data.direction)
 	position += move_vector * MISSILE_CONFIG.move_speed * delta
-	if(_get_is_missile_exited_board.call(self)):
+	if (_get_is_missile_exited_board.call(self)):
 		_state = MissilePieceState.WAIT_EXIT
 		
 func bumped(delta: float) -> void:
-	if(_bump_tween == null):
+	if (_bump_tween == null):
 		var shake_offset := _get_shake_offset()
 		var base_pos := position
 
@@ -257,9 +257,9 @@ func bumped(delta: float) -> void:
 	
 		for i in range(3):
 			var intensity := BUMP_SHAKE_INTENSITY * (1.0 - i * 0.25)
-			_bump_tween.tween_property(self, "position", 
+			_bump_tween.tween_property(self, "position",
 				base_pos + shake_offset * intensity, 0.05)
-			_bump_tween.tween_property(self, "position", 
+			_bump_tween.tween_property(self, "position",
 				base_pos - shake_offset * intensity, 0.05)
 		_bump_tween.tween_property(self, "position", base_pos, 0.03)
 	elif not _bump_tween.is_running():
