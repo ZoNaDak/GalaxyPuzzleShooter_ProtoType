@@ -29,8 +29,10 @@ func _ready() -> void:
 	_main_flow.start_flow()
 
 func _initialize():
+	_enemy_service.initialize()
+
 	var context: MainFlowContext = MainFlowContext.new()
-	context.initialize(_player, _player_ui, _enemy_service, 
+	context.initialize(_player, _player_ui, _enemy_service,
 		_missile_slot_board, _missile_puzzle_board, _stage_config)
 
 	_main_flow.initialize(context)

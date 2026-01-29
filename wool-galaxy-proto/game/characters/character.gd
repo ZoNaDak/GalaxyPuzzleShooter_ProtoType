@@ -5,7 +5,7 @@ extends Node2D
 
 #region Enums
 
-enum CharacterState {
+enum StateType {
     START_MOVE,
 	IDLE,
 	DYING,
@@ -17,14 +17,14 @@ enum CharacterState {
 #region Variables
 
 var data: CharacterData
-var state: CharacterState
+var state: StateType
 
 #endregion
 
 #region Methods
 
 func die() -> void:
-	state = CharacterState.DEAD
+	state = StateType.DEAD
 	visible = false
 
 #endregion

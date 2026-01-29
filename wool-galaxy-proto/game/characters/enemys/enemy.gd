@@ -15,24 +15,27 @@ const ENEMY_SPAWN_Y_DIST: float = 100.0
 
 var enemy_data: EnemyData
 
+var spawn_index: int
 var _spawn_pos: Vector2
 
 #endregion
 
 #region Lifecycle
 
-func initialize(spawn_pos: Vector2) -> void:
+@warning_ignore("shadowed_variable")
+func initialize(spawn_index: int, spawn_pos: Vector2) -> void:
+	self.spawn_index = spawn_index
 	_spawn_pos = spawn_pos
 	position = spawn_pos + Vector2(0, -ENEMY_SPAWN_Y_DIST)
 	enemy_data = EnemyData.new(enemy_config.max_hp, enemy_config.max_mp)
 	data = enemy_data
-	state = CharacterState.START_MOVE
+	state = StateType.START_MOVE
 
 func _process(delta: float) -> void:
 	match state:
-		CharacterState.START_MOVE:
+		StateType.START_MOVE:
 			start_move(delta)
-		CharacterState.IDLE:
+		StateType.IDLE:
 			pass
 
 #endregion
@@ -44,7 +47,7 @@ func start_move(delta: float) -> void:
 	position += move_vector
 	if position.y >= _spawn_pos.y:
 		position = _spawn_pos
-		state = CharacterState.IDLE
+		state = StateType.IDLE
 
 #endregion
 
@@ -52,6 +55,9 @@ func start_move(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if not OS.is_debug_build():
+		return
+
+	if state != StateType.IDLE:
 		return
 
 	if event is InputEventKey and event.keycode == KEY_2 \

@@ -15,7 +15,7 @@ var player_data: PlayerData
 func initialize():
 	player_data = PlayerData.new(player_config.max_hp, player_config.max_mp)
 	data = player_data
-	state = CharacterState.IDLE
+	state = StateType.IDLE
 
 #endregion
 
