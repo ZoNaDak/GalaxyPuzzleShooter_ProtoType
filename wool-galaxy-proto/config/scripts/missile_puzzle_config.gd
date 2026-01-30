@@ -1,5 +1,5 @@
-# missile_config.gd
-class_name MissileConfig
+# missile_puzzle_config.gd
+class_name MissilePuzzleConfig
 
 extends Resource
 

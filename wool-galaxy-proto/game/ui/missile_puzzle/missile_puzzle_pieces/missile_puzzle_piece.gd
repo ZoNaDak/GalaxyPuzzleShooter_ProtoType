@@ -16,7 +16,7 @@ enum MissilePieceState {
 
 #region Consts
 
-const MISSILE_CONFIG: MissileConfig = preload("res://config/resources/missile_config.tres")
+const MISSILE_PUZZLE_CONFIG: MissilePuzzleConfig = preload("res://config/resources/missile_puzzle_config.tres")
 
 const SMALL_SIZE := Vector2(32, 16)
 const MEDIUM_SIZE := Vector2(48, 16)
@@ -253,12 +253,13 @@ func wait_move(delta: float) -> void:
 
 func move_for_equip(delta: float) -> void:
 	var move_vector := EnumUtils.direction_to_vector(missile_data.direction)
-	position += move_vector * MISSILE_CONFIG.move_speed * delta
+	position += move_vector * MISSILE_PUZZLE_CONFIG.move_speed * delta
 	if (_get_is_missile_exited_board.call(self)):
 		_state = MissilePieceState.WAIT_EXIT
 		
 func bumped(delta: float) -> void:
 	if (_bump_tween == null):
+		_head_area.monitoring = false
 		var shake_offset := _get_shake_offset()
 		var base_pos := position
 
@@ -289,7 +290,7 @@ func move_to_origin(delta: float) -> void:
 		Enums.Direction4Way.DOWN:
 			move_vector = Vector2(0, -1)
 
-	position += move_vector * MISSILE_CONFIG.return_move_speed * delta
+	position += move_vector * MISSILE_PUZZLE_CONFIG.return_move_speed * delta
 	var _is_arrived := false
 	match missile_data.direction:
 		Enums.Direction4Way.LEFT:
