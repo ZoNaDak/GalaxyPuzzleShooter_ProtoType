@@ -1,4 +1,4 @@
-#player_data.gd
+# player_data.gd
 class_name PlayerData
 
 extends CharacterData
@@ -7,6 +7,7 @@ extends CharacterData
 
 var equipped_missile_datas: Array[MissileData] = []
 var _reserved_missile_count := 0;
+var _missile_fire_delay_arr: Array[float] = []
 
 #endregion
 
@@ -24,6 +25,8 @@ func _init(hp: int, mp: int):
     equipped_missile_datas.resize(Consts.MISSILE_SLOT_COUNT)
     for i in equipped_missile_datas.size():
         equipped_missile_datas[i] = null
+    
+    _missile_fire_delay_arr.resize(Consts.MISSILE_SLOT_COUNT)
 
 #endregion
 
@@ -49,6 +52,7 @@ func equip_missile(missile_data: MissileData) -> bool:
         if equipped_missile_datas[i] == null:
             equipped_missile_datas[i] = missile_data;
             _reserved_missile_count -= 1
+            _missile_fire_delay_arr[i] = 0.0
             on_equip_missile.emit(i, missile_data)
             return true;
             
