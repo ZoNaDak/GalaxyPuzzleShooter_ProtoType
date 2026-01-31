@@ -28,6 +28,8 @@ func begin() -> void:
 
 	_context.player.player_data.on_equip_missile.connect(
 		_context.missile_slot_board.on_equip_missile)
+	_context.player.player_data.on_unequip_missile.connect(
+		_context.missile_slot_board.on_unequip_missile)
 
 	await SystemUIManager.fade_in(0.5)
 

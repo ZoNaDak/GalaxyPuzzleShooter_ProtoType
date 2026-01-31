@@ -14,6 +14,7 @@ var _missile_fire_delay_arr: Array[float] = []
 #region Signals
 
 signal on_equip_missile(index: int, missile_data: MissileData)
+signal on_unequip_missile(index: int)
 
 #endregion
 
@@ -58,5 +59,11 @@ func equip_missile(missile_data: MissileData) -> bool:
             
     LogManager.Error("Can't Equip Missile, Slot is Full", "PlayerData")
     return false
+
+func unequip_missile(index: int) -> void:
+    LogManager.info("Unequip Missile %d" % [index], "Player")
+    equipped_missile_datas[index] = null
+    _missile_fire_delay_arr[index] = 0.0
+    on_unequip_missile.emit(index)
 
 #endregion

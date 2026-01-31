@@ -30,4 +30,7 @@ func initialize():
 func on_equip_missile(index: int, missile_data: MissileData):
 	_missile_slots[index].setup_missile_data(missile_data)
 
+func on_unequip_missile(index: int):
+	_missile_slots[index].setup_empty()
+
 #endregion

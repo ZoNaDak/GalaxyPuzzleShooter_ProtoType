@@ -41,12 +41,16 @@ func _check_fire_delay(delta: float) -> void:
 		if player_data.equipped_missile_datas[i] == null:
 			continue
 		elif player_data._missile_fire_delay_arr[i] <= 0:
-			_fire_missile()
+			_fire_missile(i, player_data.equipped_missile_datas[i])
 			player_data._missile_fire_delay_arr[i] = player_config.missile_fire_delay
 		else:
 			player_data._missile_fire_delay_arr[i] -= delta
 
-func _fire_missile() -> void:
+func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile", "Player")
+	# TODO: 미사일 발사 구현하기
+	missile_data.decrease_amount()
+	if (missile_data.amount == 0):
+		player_data.unequip_missile(missile_index)
 
 #endregion
