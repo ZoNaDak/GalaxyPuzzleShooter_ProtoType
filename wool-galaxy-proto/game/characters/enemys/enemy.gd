@@ -12,6 +12,7 @@ const ENEMY_SPAWN_Y_DIST: float = 100.0
 #region Variables
 
 @export var enemy_config: EnemyConfig
+@export var hp_ui: ProgressBar
 @export var lock_on_ui: Node2D
 
 var enemy_data: EnemyData
@@ -39,6 +40,7 @@ func initialize(spawn_index: int, spawn_pos: Vector2,
 	position = spawn_pos + Vector2(0, -ENEMY_SPAWN_Y_DIST)
 	enemy_data = EnemyData.new(enemy_config.max_hp, enemy_config.max_mp)
 	data = enemy_data
+	refresh_hp_ui()
 	lock_on_ui.visible = false
 	state = StateType.START_MOVE
 
@@ -81,6 +83,9 @@ func lock_on() -> void:
 
 func lock_off() -> void:
 	lock_on_ui.visible = false
+
+func refresh_hp_ui() -> void:
+	hp_ui.value = float(data.cur_hp) / float(data.max_hp) * 100.0
 
 #endregion
 
