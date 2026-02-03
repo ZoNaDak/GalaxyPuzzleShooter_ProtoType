@@ -1,8 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnv517rdn34vs"]
+[gd_scene load_steps=3 format=3 uid="uid://cnv517rdn34vs"]
 
 [ext_resource type="Script" uid="uid://cqatxm7ef82be" path="res://game/characters/enemys/enemy.gd" id="1_21oyr"]
+[ext_resource type="Texture2D" uid="uid://cpkisupfcof5e" path="res://assets/art/UI/Icon/lock_on.png" id="2_21oyr"]
 
-[node name="EnemyBase" type="Node2D"]
+[node name="EnemyBase" type="Node2D" node_paths=PackedStringArray("lock_on_ui")]
 script = ExtResource("1_21oyr")
+lock_on_ui = NodePath("LockOnUI")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="LockOnUI" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_21oyr")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[connection signal="input_event" from="Area2D" to="." method="_on_lock_on"]

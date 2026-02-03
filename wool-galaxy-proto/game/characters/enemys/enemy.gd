@@ -12,23 +12,34 @@ const ENEMY_SPAWN_Y_DIST: float = 100.0
 #region Variables
 
 @export var enemy_config: EnemyConfig
+@export var lock_on_ui: Node2D
 
 var enemy_data: EnemyData
 
 var spawn_index: int
 var _spawn_pos: Vector2
 
+#region Callable
+
+var _lock_on_callable: Callable
+
+#endregion
+
 #endregion
 
 #region Lifecycle
 
 @warning_ignore("shadowed_variable")
-func initialize(spawn_index: int, spawn_pos: Vector2) -> void:
+func initialize(spawn_index: int, spawn_pos: Vector2,
+	lock_on_callable: Callable) -> void:
 	self.spawn_index = spawn_index
 	_spawn_pos = spawn_pos
+	self._lock_on_callable = lock_on_callable
+
 	position = spawn_pos + Vector2(0, -ENEMY_SPAWN_Y_DIST)
 	enemy_data = EnemyData.new(enemy_config.max_hp, enemy_config.max_mp)
 	data = enemy_data
+	lock_on_ui.visible = false
 	state = StateType.START_MOVE
 
 func _process(delta: float) -> void:
@@ -37,6 +48,21 @@ func _process(delta: float) -> void:
 			start_move(delta)
 		StateType.IDLE:
 			pass
+
+#endregion
+
+#region Input
+
+func _input(event: InputEvent) -> void:
+	_check_lock_on_input(event)
+	_check_debug_input(event)
+
+func _check_lock_on_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var mouse_pos = get_global_mouse_position()
+		var distance = global_position.distance_to(mouse_pos)
+		if distance < 10.0:
+			lock_on()
 
 #endregion
 
@@ -49,11 +75,18 @@ func start_move(delta: float) -> void:
 		position = _spawn_pos
 		state = StateType.IDLE
 
+func lock_on() -> void:
+	lock_on_ui.visible = true
+	_lock_on_callable.call(self)
+
+func lock_off() -> void:
+	lock_on_ui.visible = false
+
 #endregion
 
 #region Debug
-
-func _input(event: InputEvent) -> void:
+	
+func _check_debug_input(event: InputEvent) -> void:
 	if not OS.is_debug_build():
 		return
 
