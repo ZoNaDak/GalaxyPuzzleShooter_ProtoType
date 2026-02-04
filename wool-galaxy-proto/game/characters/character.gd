@@ -21,6 +21,14 @@ var state: StateType
 
 #endregion
 
+#region Abstract Methods
+
+func get_type() -> Enums.CharacterType:
+	assert(false, "Must override get_type()")
+	return Enums.CharacterType.NONE
+
+#endregion
+
 #region Methods
 
 func die() -> void:

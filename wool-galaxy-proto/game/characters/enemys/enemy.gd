@@ -68,6 +68,13 @@ func _check_lock_on_input(event: InputEvent) -> void:
 
 #endregion
 
+#region Override Methods
+
+func get_type() -> Enums.CharacterType:
+	return Enums.CharacterType.ENEMY
+
+#endregion
+
 #region Methods
 
 func start_move(delta: float) -> void:

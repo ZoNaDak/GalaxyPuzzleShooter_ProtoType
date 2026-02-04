@@ -11,6 +11,7 @@ extends BaseScene
 @export var _player_ui: PlayerUI
 
 @export var _enemy_service: EnemyService
+@export var _projectile_service: ProjectileService
 
 @export var _reset_button: Button
 
@@ -34,12 +35,14 @@ func _ready() -> void:
 
 func _initialize():
 	_enemy_service.initialize()
+	_projectile_service.initialize()
 	_game_start_text.visible = false
 	_stage_clear_text.visible = false
 	_game_over_text.visible = false
 
 	var context: MainFlowContext = MainFlowContext.new()
-	context.initialize(_player, _player_ui, _enemy_service,
+	context.initialize(_player, _player_ui,
+		_enemy_service, _projectile_service,
 		_missile_slot_board, _missile_puzzle_board,
 		_game_start_text, _stage_clear_text, _game_over_text,
 		_stage_config)

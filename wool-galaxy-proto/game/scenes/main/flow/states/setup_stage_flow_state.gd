@@ -13,7 +13,9 @@ func get_state_type() -> StateType:
 	return StateType.SETUP_STAGE
 
 func begin() -> void:
-	_context.player.initialize()
+	_context.player.initialize(
+		_context.projectile_service.spawn_bullet
+	)
 	_context.player_ui.initialize(_context.player.player_data)
 	_context.missile_slot_board.initialize()
 	

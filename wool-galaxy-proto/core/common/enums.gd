@@ -22,6 +22,12 @@ enum MissileSizeType {
 	LARGE,
 }
 
+enum CharacterType {
+	NONE,
+	PLAYER,
+	ENEMY,
+}
+
 enum ProjectileType {
 	NONE,
 	BULLET,

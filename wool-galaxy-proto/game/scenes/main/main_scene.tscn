@@ -27,12 +27,13 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
 _player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
 _enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
+_projectile_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService")
 _reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
