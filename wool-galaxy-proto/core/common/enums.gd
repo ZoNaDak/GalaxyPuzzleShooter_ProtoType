@@ -21,3 +21,9 @@ enum MissileSizeType {
 	MEDIUM,
 	LARGE,
 }
+
+enum ProjectileType {
+	NONE,
+	BULLET,
+	LASER,
+}
