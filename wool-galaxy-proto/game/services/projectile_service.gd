@@ -36,6 +36,11 @@ func spawn_bullet(key: String) -> Bullet:
 	var bullet: Bullet = bullet_scene.instantiate()
 	_projectile_parent.add_child(bullet)
 	_projectile_arr.append(bullet)
+	bullet.initialize(despawn_bullet)
 	return bullet
+
+func despawn_bullet(bullet: Bullet) -> void:
+	_projectile_arr.erase(bullet)
+	bullet.queue_free()
 
 #endregion

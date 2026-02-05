@@ -71,7 +71,7 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	match missile_data.color:
 		Enums.MissileColorType.RED:
 			var bullet: Bullet = _fire_projectile_callable.call("player_bullet")
-			bullet.initialize(get_type(), projectile_start_point.global_position, Vector2.UP)
+			bullet.set_data(get_type(), projectile_start_point.global_position, Vector2.UP)
 		Enums.MissileColorType.BLUE:
 			pass
 		Enums.MissileColorType.GREEN:
