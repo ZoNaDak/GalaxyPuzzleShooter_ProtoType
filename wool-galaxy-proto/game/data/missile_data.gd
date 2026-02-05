@@ -64,8 +64,6 @@ static func _get_color_name(color_type: Enums.MissileColorType) -> String:
 			return "green"
 		Enums.MissileColorType.YELLOW:
 			return "yellow"
-		Enums.MissileColorType.PURPLE:
-			return "purple"
 		_:
 			return "red"
 

@@ -78,8 +78,6 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 			pass
 		Enums.MissileColorType.YELLOW:
 			pass
-		Enums.MissileColorType.PURPLE:
-			pass
 
 	missile_data.decrease_amount()
 	if (missile_data.amount == 0):

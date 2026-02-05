@@ -13,7 +13,6 @@ enum MissileColorType {
 	BLUE,
 	GREEN,
 	YELLOW,
-	PURPLE,
 }
 
 enum MissileSizeType {
