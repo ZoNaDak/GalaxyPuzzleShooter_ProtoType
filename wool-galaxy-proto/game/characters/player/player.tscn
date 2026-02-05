@@ -4,9 +4,13 @@
 [ext_resource type="Resource" uid="uid://b8qxoay8vwam1" path="res://config/resources/player_config.tres" id="2_mnys6"]
 [ext_resource type="Texture2D" uid="uid://2fnjlratqeuv" path="res://game/characters/player/resources/player.png" id="2_t6gq4"]
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("projectile_start_point")]
 script = ExtResource("1_5hw72")
 player_config = ExtResource("2_mnys6")
+projectile_start_point = NodePath("ProjectileStartPoint")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_t6gq4")
+
+[node name="ProjectileStartPoint" type="Marker2D" parent="."]
+position = Vector2(0, -9)

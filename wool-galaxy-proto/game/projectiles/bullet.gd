@@ -23,7 +23,7 @@ func get_type() -> Enums.ProjectileType:
 func initialize(character_type: Enums.CharacterType,
 	start_pos: Vector2, move_dir: Vector2) -> void:
 	self.character_type = character_type
-	self.position = start_pos
+	self.global_position = start_pos
 	self.move_dir = move_dir
 
 #endregion
