@@ -4,3 +4,5 @@
 
 [resource]
 script = ExtResource("1_dc4hq")
+fire_type = 2
+fire_delay = 3.0

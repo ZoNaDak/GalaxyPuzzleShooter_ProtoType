@@ -17,6 +17,12 @@ const ENEMY_SCENE_PATH: String = "res://game/characters/enemys/%s.tscn"
 var _enemy_arr: Array[Enemy]
 var _locked_enemy: Enemy
 
+#region Callable
+
+var _callable_context: EnemyCallableContext
+
+#endregion
+
 #endregion
 
 #region Property
@@ -31,7 +37,9 @@ var enemy_arr: Array[Enemy]:
 
 #region Lifecycle
 
-func initialize() -> void:
+func initialize(callable_context: EnemyCallableContext) -> void:
+	_callable_context = callable_context
+
 	for i in range(_enemy_spawn_point_arr.size()):
 		_enemy_arr.append(null)
 	_locked_enemy = null
@@ -45,7 +53,8 @@ func spawn_enemy(key: String, spawn_index: int) -> void:
 	var enemy_scene: PackedScene = load(ENEMY_SCENE_PATH % [key])
 	var enemy: Enemy = enemy_scene.instantiate()
 	var spawn_pos := _enemy_spawn_point_arr[spawn_index].position
-	enemy.initialize(spawn_index, spawn_pos, _lock_on_enemy)
+	enemy.initialize(spawn_index, spawn_pos,
+		_callable_context, _lock_on_enemy)
 	_enemy_parent.add_child(enemy)
 	_enemy_arr[spawn_index] = enemy
 

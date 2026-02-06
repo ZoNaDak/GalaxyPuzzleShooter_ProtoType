@@ -13,9 +13,13 @@ func get_state_type() -> StateType:
 	return StateType.SETUP_STAGE
 
 func begin() -> void:
-	_context.player.initialize(
+	var player_callable_context := PlayerCallableContext.new()
+	player_callable_context.initialize(
 		_context.projectile_service.spawn_bullet,
-		_context.enemy_service.get_locked_enemy)
+		_context.enemy_service.get_locked_enemy,
+		_context.player_ui.set_cur_hp,
+		_context.player_ui.set_cur_mp)
+	_context.player.initialize(player_callable_context)
 	_context.player_ui.initialize(_context.player.player_data)
 	_context.missile_slot_board.initialize()
 	

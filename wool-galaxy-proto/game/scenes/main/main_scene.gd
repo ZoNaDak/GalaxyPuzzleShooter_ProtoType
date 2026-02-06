@@ -34,8 +34,15 @@ func _ready() -> void:
 	_main_flow.start_flow()
 
 func _initialize():
-	_enemy_service.initialize()
 	_projectile_service.initialize()
+
+	var enemy_callable_context := EnemyCallableContext.new()
+	enemy_callable_context.initialize(
+		func(): return _player,
+		_projectile_service.spawn_bullet
+	)
+	_enemy_service.initialize(enemy_callable_context)
+	
 	_game_start_text.visible = false
 	_stage_clear_text.visible = false
 	_game_over_text.visible = false

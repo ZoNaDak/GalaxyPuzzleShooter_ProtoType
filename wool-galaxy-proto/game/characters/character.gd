@@ -38,8 +38,7 @@ func do_damage(damage: int) -> void:
 	data.cur_hp -= damage
 	if data.cur_hp <= 0:
 		die()
-	else:
-		notify_damage()
+	notify_damage()
 
 func die() -> void:
 	state = StateType.DEAD

@@ -12,8 +12,7 @@ var player_data: PlayerData
 
 #region Callable
 
-var _fire_projectile_callable: Callable
-var _get_locked_enemy_callable: Callable
+var _callable_conetxt: PlayerCallableContext
 
 #endregion
 
@@ -21,13 +20,11 @@ var _get_locked_enemy_callable: Callable
 
 #region Lifecycle
 
-func initialize(fire_projectile_callable: Callable,
-	get_locked_enemy_callable: Callable) -> void:
+func initialize(callable_context: PlayerCallableContext) -> void:
 	player_data = PlayerData.new(player_config.max_hp, player_config.max_mp)
 	data = player_data
 
-	_fire_projectile_callable = fire_projectile_callable
-	_get_locked_enemy_callable = get_locked_enemy_callable
+	_callable_conetxt = callable_context
 
 	state = StateType.IDLE
 
@@ -53,6 +50,9 @@ func _input(event: InputEvent) -> void:
 func get_type() -> Enums.CharacterType:
 	return Enums.CharacterType.PLAYER
 
+func notify_damage() -> void:
+	_callable_conetxt.notify_changed_hp.call(data.cur_hp)
+
 #endregion
 
 #region Methods
@@ -62,6 +62,10 @@ func _check_fire_delay(delta: float) -> void:
 		if player_data.equipped_missile_datas[i] == null:
 			continue
 		elif player_data._missile_fire_delay_arr[i] <= 0:
+			var target = _callable_conetxt.get_locked_enemy_callable.call()
+			if target == null:
+				return
+				
 			_fire_missile(i, player_data.equipped_missile_datas[i])
 			player_data._missile_fire_delay_arr[i] = player_config.missile_fire_delay
 		else:
@@ -71,11 +75,10 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile : %s"
 		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
 
-	var target = _get_locked_enemy_callable.call()
-
+	var target = _callable_conetxt.get_locked_enemy_callable.call()
 	match missile_data.color:
 		Enums.MissileColorType.RED:
-			var bullet: Bullet = _fire_projectile_callable.call("player_bullet_m")
+			var bullet: Bullet = _callable_conetxt.spawn_bullet_callable.call("player_bullet_m")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, player_config.red_missile_value)

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://drshrk6hvm8yk"
-path="res://.godot/imported/bullet_m.png-1ab3cf04b4e4bfb17c064e9610c7d666.ctex"
+path="res://.godot/imported/bullet_1.png-c5f94ebc9e42f0535d582c09cd208237.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/projectiles/resources/bullet_m.png"
-dest_files=["res://.godot/imported/bullet_m.png-1ab3cf04b4e4bfb17c064e9610c7d666.ctex"]
+source_file="res://game/projectiles/resources/bullet_1.png"
+dest_files=["res://.godot/imported/bullet_1.png-c5f94ebc9e42f0535d582c09cd208237.ctex"]
 
 [params]
 
