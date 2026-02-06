@@ -12,7 +12,7 @@ var player_data: PlayerData
 
 #region Callable
 
-var _callable_conetxt: PlayerCallableContext
+var _callable_context: PlayerCallableContext
 
 #endregion
 
@@ -24,7 +24,7 @@ func initialize(callable_context: PlayerCallableContext) -> void:
 	player_data = PlayerData.new(player_config.max_hp, player_config.max_mp)
 	data = player_data
 
-	_callable_conetxt = callable_context
+	_callable_context = callable_context
 
 	state = StateType.IDLE
 
@@ -51,7 +51,7 @@ func get_type() -> Enums.CharacterType:
 	return Enums.CharacterType.PLAYER
 
 func notify_damage() -> void:
-	_callable_conetxt.notify_changed_hp.call(data.cur_hp)
+	_callable_context.notify_changed_hp.call(data.cur_hp)
 
 #endregion
 
@@ -62,9 +62,9 @@ func _check_fire_delay(delta: float) -> void:
 		if player_data.equipped_missile_datas[i] == null:
 			continue
 		elif player_data._missile_fire_delay_arr[i] <= 0:
-			var target = _callable_conetxt.get_locked_enemy_callable.call()
+			var target = _callable_context.get_locked_enemy_callable.call()
 			if target == null:
-				return
+				continue
 				
 			_fire_missile(i, player_data.equipped_missile_datas[i])
 			player_data._missile_fire_delay_arr[i] = player_config.missile_fire_delay
@@ -75,10 +75,10 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile : %s"
 		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
 
-	var target = _callable_conetxt.get_locked_enemy_callable.call()
+	var target = _callable_context.get_locked_enemy_callable.call()
 	match missile_data.color:
 		Enums.MissileColorType.RED:
-			var bullet: Bullet = _callable_conetxt.spawn_bullet_callable.call("player_bullet_m")
+			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("player_bullet_m")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, player_config.red_missile_value)

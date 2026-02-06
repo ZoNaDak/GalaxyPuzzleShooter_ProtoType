@@ -27,7 +27,7 @@ func get_type() -> Enums.ProjectileType:
 
 #endregion
 
-#region Methods
+#region Lifecycle
 
 func initialize(despawn_callable: Callable) -> void:
 	area.monitoring = true
@@ -60,6 +60,9 @@ func _check_out_of_screen() -> void:
 
 func _on_area_entered(other_area: Area2D) -> void:
 	var character = other_area.owner as Character
+	if character == null:
+		return
+
 	if character.get_type() != character_type:
 		character.do_damage(damage)
 		_despawn_callable.call(self)

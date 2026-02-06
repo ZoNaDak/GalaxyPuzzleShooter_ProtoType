@@ -36,7 +36,7 @@ var _cur_fire_delay: float
 
 #region Callable
 
-var _callable_conetxt: EnemyCallableContext
+var _callable_context: EnemyCallableContext
 var _lock_on_callable: Callable
 
 #endregion
@@ -51,7 +51,7 @@ func initialize(spawn_index: int, spawn_pos: Vector2,
 	lock_on_callable: Callable) -> void:
 	self.spawn_index = spawn_index
 	_spawn_pos = spawn_pos
-	self._callable_conetxt = callable_context
+	self._callable_context = callable_context
 	self._lock_on_callable = lock_on_callable
 
 	position = spawn_pos + Vector2(0, -ENEMY_SPAWN_Y_DIST)
@@ -116,10 +116,10 @@ func _fire() -> void:
 	LogManager.info("Fire : %s"
 		% [FireType.find_key(enemy_config.fire_type)], "Enemy")
 	
-	var target = _callable_conetxt.get_player_callable.call()
+	var target = _callable_context.get_player_callable.call()
 	match enemy_config.fire_type:
 		FireType.BULLET:
-			var bullet: Bullet = _callable_conetxt.spawn_bullet_callable.call("enemy_bullet_0")
+			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("enemy_bullet_0")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, enemy_config.fire_value)

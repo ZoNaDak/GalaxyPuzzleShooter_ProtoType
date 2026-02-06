@@ -63,6 +63,7 @@ func spawn_enemy(key: String, spawn_index: int) -> void:
 
 func despawn_enemy(spawn_index: int) -> void:
 	if _locked_enemy == _enemy_arr[spawn_index]:
+		_locked_enemy = null
 		for i in _enemy_arr.size():
 			if i != spawn_index and _enemy_arr[i] != null:
 				_enemy_arr[i].lock_on()
