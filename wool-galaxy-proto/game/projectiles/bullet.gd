@@ -61,7 +61,6 @@ func _check_out_of_screen() -> void:
 func _on_area_entered(other_area: Area2D) -> void:
 	var character = other_area.owner as Character
 	character.do_damage(damage)
-	area.monitoring = false
 	_despawn_callable.call(self)
 
 #endregion

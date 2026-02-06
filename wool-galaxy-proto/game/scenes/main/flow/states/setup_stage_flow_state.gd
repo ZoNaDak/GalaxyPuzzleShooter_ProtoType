@@ -14,8 +14,8 @@ func get_state_type() -> StateType:
 
 func begin() -> void:
 	_context.player.initialize(
-		_context.projectile_service.spawn_bullet
-	)
+		_context.projectile_service.spawn_bullet,
+		_context.enemy_service.get_locked_enemy)
 	_context.player_ui.initialize(_context.player.player_data)
 	_context.missile_slot_board.initialize()
 	

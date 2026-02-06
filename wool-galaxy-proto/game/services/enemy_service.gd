@@ -49,6 +49,9 @@ func spawn_enemy(key: String, spawn_index: int) -> void:
 	_enemy_parent.add_child(enemy)
 	_enemy_arr[spawn_index] = enemy
 
+	if _locked_enemy == null:
+		enemy.lock_on()
+
 func despawn_enemy(spawn_index: int) -> void:
 	_enemy_arr[spawn_index].queue_free()
 	_enemy_arr[spawn_index] = null
@@ -61,5 +64,8 @@ func _lock_on_enemy(enemy: Enemy) -> void:
 		_locked_enemy.lock_off()
 
 	_locked_enemy = enemy
+
+func get_locked_enemy() -> Enemy:
+	return _locked_enemy
 
 #endregion

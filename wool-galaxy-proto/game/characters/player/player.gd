@@ -13,6 +13,7 @@ var player_data: PlayerData
 #region Callable
 
 var _fire_projectile_callable: Callable
+var _get_locked_enemy_callable: Callable
 
 #endregion
 
@@ -20,11 +21,13 @@ var _fire_projectile_callable: Callable
 
 #region Lifecycle
 
-func initialize(fire_projectile_callable: Callable) -> void:
+func initialize(fire_projectile_callable: Callable,
+	get_locked_enemy_callable: Callable) -> void:
 	player_data = PlayerData.new(player_config.max_hp, player_config.max_mp)
 	data = player_data
 
 	_fire_projectile_callable = fire_projectile_callable
+	_get_locked_enemy_callable = get_locked_enemy_callable
 
 	state = StateType.IDLE
 
@@ -68,11 +71,14 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile : %s"
 		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
 
+	var target = _get_locked_enemy_callable.call()
+
 	match missile_data.color:
 		Enums.MissileColorType.RED:
 			var bullet: Bullet = _fire_projectile_callable.call("player_bullet")
+			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
-				Vector2.UP, player_config.red_missile_value)
+				move_dir, player_config.red_missile_value)
 		Enums.MissileColorType.BLUE:
 			pass
 		Enums.MissileColorType.GREEN:
