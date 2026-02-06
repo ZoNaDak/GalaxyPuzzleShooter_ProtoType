@@ -73,6 +73,9 @@ func _check_lock_on_input(event: InputEvent) -> void:
 func get_type() -> Enums.CharacterType:
 	return Enums.CharacterType.ENEMY
 
+func notify_damage() -> void:
+	refresh_hp_ui()
+
 #endregion
 
 #region Methods

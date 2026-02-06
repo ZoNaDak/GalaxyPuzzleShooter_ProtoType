@@ -31,8 +31,8 @@ visible = false
 texture = ExtResource("2_21oyr")
 
 [node name="Area2D" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 0
+collision_layer = 12
+collision_mask = 16
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

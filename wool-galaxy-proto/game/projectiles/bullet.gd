@@ -5,10 +5,12 @@ extends ProjectileBase
 
 #region Variables
 
+@export var area: Area2D
 @export var move_speed: float = 10.0
 
 var character_type: Enums.CharacterType
 var move_dir: Vector2
+var damage: int
 
 #region Callable
 
@@ -28,6 +30,7 @@ func get_type() -> Enums.ProjectileType:
 #region Methods
 
 func initialize(despawn_callable: Callable) -> void:
+	area.monitoring = true
 	_despawn_callable = despawn_callable
 
 func _process(delta: float) -> void:
@@ -40,14 +43,25 @@ func _process(delta: float) -> void:
 
 @warning_ignore("shadowed_variable")
 func set_data(character_type: Enums.CharacterType,
-	start_pos: Vector2, move_dir: Vector2) -> void:
+	start_pos: Vector2, move_dir: Vector2, damage: int) -> void:
 	self.character_type = character_type
 	self.global_position = start_pos
 	self.move_dir = move_dir
+	self.damage = damage
 
 func _check_out_of_screen() -> void:
 	if global_position.x < 0 or global_position.x > get_viewport().size.x \
 		or global_position.y < 0 or global_position.y > get_viewport().size.y:
 		_despawn_callable.call(self)
+
+#endregion
+
+#region Collision
+
+func _on_area_entered(other_area: Area2D) -> void:
+	var character = other_area.owner as Character
+	character.do_damage(damage)
+	area.monitoring = false
+	_despawn_callable.call(self)
 
 #endregion
