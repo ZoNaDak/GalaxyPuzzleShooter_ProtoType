@@ -6,6 +6,7 @@ class_name MainFlowContext
 var player: Player
 var player_ui: PlayerUI
 var enemy_service: EnemyService
+var projectile_service: ProjectileService
 var missile_slot_board: MissileSlotBoard
 var missile_puzzle_board: MissilePuzzleBoard
 var game_start_text: Control
@@ -22,6 +23,7 @@ func initialize(
 	player: Player,
 	player_ui: PlayerUI,
 	enemy_service: EnemyService,
+	projectile_service: ProjectileService,
 	missile_slot_board: MissileSlotBoard,
 	missile_puzzle_board: MissilePuzzleBoard,
 	game_start_text: Control,
@@ -31,6 +33,7 @@ func initialize(
 	self.player = player
 	self.player_ui = player_ui
 	self.enemy_service = enemy_service
+	self.projectile_service = projectile_service
 	self.missile_slot_board = missile_slot_board
 	self.missile_puzzle_board = missile_puzzle_board
 	self.game_start_text = game_start_text

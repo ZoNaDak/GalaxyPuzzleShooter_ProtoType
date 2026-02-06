@@ -13,11 +13,22 @@ enum MissileColorType {
 	BLUE,
 	GREEN,
 	YELLOW,
-	PURPLE,
 }
 
 enum MissileSizeType {
 	SMALL,
 	MEDIUM,
 	LARGE,
+}
+
+enum CharacterType {
+	NONE,
+	PLAYER,
+	ENEMY,
+}
+
+enum ProjectileType {
+	NONE,
+	BULLET,
+	LASER,
 }

@@ -4,3 +4,5 @@
 
 [resource]
 script = ExtResource("1_lcdj5")
+fire_type = 1
+fire_delay = 0.5

@@ -1,11 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://cckfgmfvbvvbg"]
+[gd_scene load_steps=5 format=3 uid="uid://cckfgmfvbvvbg"]
 
 [ext_resource type="PackedScene" uid="uid://cnv517rdn34vs" path="res://game/characters/enemys/enemy_base.tscn" id="1_d060b"]
 [ext_resource type="Resource" uid="uid://bsk28qajro572" path="res://config/resources/enemy1_config.tres" id="2_8dsrb"]
 [ext_resource type="Texture2D" uid="uid://dhd28rx2e1ee7" path="res://game/characters/enemys/resources/Enemy1.png" id="3_x3qf4"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8dsrb"]
+radius = 4.0
+height = 16.0
 
 [node name="Enemy1" instance=ExtResource("1_d060b")]
 enemy_config = ExtResource("2_8dsrb")
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("3_x3qf4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource("CapsuleShape2D_8dsrb")
+
+[node name="ProjectileStartPoint" parent="." index="3"]
+position = Vector2(0, 10)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=18 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Resource" uid="uid://ynmvtclpp0eo" path="res://config/resources/stage_config.tres" id="2_ety1j"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bq76q3cjshmr0" path="res://game/ui/player_ui.tscn" id="4_i3qem"]
 [ext_resource type="Texture2D" uid="uid://ck6hx5yqbhiai" path="res://assets/art/UI/Icon/reset.png" id="4_mgx4w"]
 [ext_resource type="Script" uid="uid://bqyot2gdwdw45" path="res://game/services/enemy_service.gd" id="5_3m0lk"]
+[ext_resource type="Script" uid="uid://cnvo86l7fr8p7" path="res://game/services/projectile_service.gd" id="7_ol8lf"]
 [ext_resource type="PackedScene" uid="uid://pkqx1hawwdqv" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn" id="9_by1y7"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgx4w"]
@@ -26,12 +27,13 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
 _player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
 _enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
+_projectile_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService")
 _reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
@@ -112,6 +114,12 @@ gizmo_extents = 5.0
 
 [node name="EnemyParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService"]
 
+[node name="ProjectileService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_projectile_parent")]
+script = ExtResource("7_ol8lf")
+_projectile_parent = NodePath("ProjectileParent")
+
+[node name="ProjectileParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService"]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport"]
 
 [node name="Control" type="Control" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer"]
@@ -174,6 +182,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Canvas/VBoxContainer/Control/GameStateTextUI"]
 layout_mode = 1
@@ -182,6 +191,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
@@ -190,6 +200,7 @@ theme_override_constants/margin_bottom = 16
 [node name="GameStartText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
 theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
@@ -207,6 +218,7 @@ vertical_alignment = 1
 visible = false
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
 theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
@@ -224,6 +236,7 @@ vertical_alignment = 1
 visible = false
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
 theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)

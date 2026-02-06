@@ -1,4 +1,4 @@
-#missile_data.gd
+# missile_data.gd
 class_name MissileData
 
 #region Variables
@@ -20,7 +20,7 @@ signal on_amount_changed(amount: int)
 	
 #region Lifecycle
 
-func _init(p: Vector2i, c: Enums.MissileColorType, 
+func _init(p: Vector2i, c: Enums.MissileColorType,
 	s: Enums.MissileSizeType, d: Enums.Direction4Way):
 	grid_pos = p
 	color = c
@@ -64,8 +64,6 @@ static func _get_color_name(color_type: Enums.MissileColorType) -> String:
 			return "green"
 		Enums.MissileColorType.YELLOW:
 			return "yellow"
-		Enums.MissileColorType.PURPLE:
-			return "purple"
 		_:
 			return "red"
 

@@ -3,6 +3,17 @@ class_name Enemy
 
 extends Character
 
+#region Enums
+
+enum FireType
+{
+	BULLET,
+	LASER,
+	HEAL,
+}
+
+#endregion
+
 #region Consts
 
 const ENEMY_SPAWN_Y_DIST: float = 100.0
@@ -12,23 +23,43 @@ const ENEMY_SPAWN_Y_DIST: float = 100.0
 #region Variables
 
 @export var enemy_config: EnemyConfig
+@export var projectile_start_point: Marker2D
+@export var hp_ui: ProgressBar
+@export var lock_on_ui: Node2D
 
 var enemy_data: EnemyData
 
 var spawn_index: int
 var _spawn_pos: Vector2
 
+var _cur_fire_delay: float
+
+#region Callable
+
+var _callable_context: EnemyCallableContext
+var _lock_on_callable: Callable
+
+#endregion
+
 #endregion
 
 #region Lifecycle
 
 @warning_ignore("shadowed_variable")
-func initialize(spawn_index: int, spawn_pos: Vector2) -> void:
+func initialize(spawn_index: int, spawn_pos: Vector2,
+	callable_context: EnemyCallableContext,
+	lock_on_callable: Callable) -> void:
 	self.spawn_index = spawn_index
 	_spawn_pos = spawn_pos
+	self._callable_context = callable_context
+	self._lock_on_callable = lock_on_callable
+
 	position = spawn_pos + Vector2(0, -ENEMY_SPAWN_Y_DIST)
 	enemy_data = EnemyData.new(enemy_config.max_hp, enemy_config.max_mp)
 	data = enemy_data
+	refresh_hp_ui()
+	lock_on_ui.visible = false
+	_cur_fire_delay = 0.0
 	state = StateType.START_MOVE
 
 func _process(delta: float) -> void:
@@ -36,7 +67,32 @@ func _process(delta: float) -> void:
 		StateType.START_MOVE:
 			start_move(delta)
 		StateType.IDLE:
-			pass
+			check_fire(delta)
+
+#endregion
+
+#region Input
+
+func _input(event: InputEvent) -> void:
+	_check_lock_on_input(event)
+	_check_debug_input(event)
+
+func _check_lock_on_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var mouse_pos = get_global_mouse_position()
+		var distance = global_position.distance_to(mouse_pos)
+		if distance < 10.0:
+			lock_on()
+
+#endregion
+
+#region Override Methods
+
+func get_type() -> Enums.CharacterType:
+	return Enums.CharacterType.ENEMY
+
+func notify_damage() -> void:
+	refresh_hp_ui()
 
 #endregion
 
@@ -49,11 +105,44 @@ func start_move(delta: float) -> void:
 		position = _spawn_pos
 		state = StateType.IDLE
 
+func check_fire(delta: float) -> void:
+	if _cur_fire_delay >= enemy_config.fire_delay:
+		_cur_fire_delay = 0.0
+		_fire()
+	else:
+		_cur_fire_delay += delta
+
+func _fire() -> void:
+	LogManager.info("Fire : %s"
+		% [FireType.find_key(enemy_config.fire_type)], "Enemy")
+	
+	var target = _callable_context.get_player_callable.call()
+	match enemy_config.fire_type:
+		FireType.BULLET:
+			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("enemy_bullet_0")
+			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
+			bullet.set_data(get_type(), projectile_start_point.global_position,
+				move_dir, enemy_config.fire_value)
+		FireType.LASER:
+			pass
+		FireType.HEAL:
+			pass
+
+func lock_on() -> void:
+	lock_on_ui.visible = true
+	_lock_on_callable.call(self)
+
+func lock_off() -> void:
+	lock_on_ui.visible = false
+
+func refresh_hp_ui() -> void:
+	hp_ui.value = float(data.cur_hp) / float(data.max_hp) * 100.0
+
 #endregion
 
 #region Debug
-
-func _input(event: InputEvent) -> void:
+	
+func _check_debug_input(event: InputEvent) -> void:
 	if not OS.is_debug_build():
 		return
 
