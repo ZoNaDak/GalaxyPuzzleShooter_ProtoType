@@ -9,6 +9,7 @@ var enemy_service: EnemyService
 var projectile_service: ProjectileService
 var missile_slot_board: MissileSlotBoard
 var missile_puzzle_board: MissilePuzzleBoard
+var reset_button: ResetButton
 var game_start_text: Control
 var stage_clear_text: Control
 var game_over_text: Control
@@ -26,6 +27,7 @@ func initialize(
 	projectile_service: ProjectileService,
 	missile_slot_board: MissileSlotBoard,
 	missile_puzzle_board: MissilePuzzleBoard,
+	reset_button: ResetButton,
 	game_start_text: Control,
 	stage_clear_text: Control,
 	game_over_text: Control,
@@ -36,6 +38,7 @@ func initialize(
 	self.projectile_service = projectile_service
 	self.missile_slot_board = missile_slot_board
 	self.missile_puzzle_board = missile_puzzle_board
+	self.reset_button = reset_button
 	self.game_start_text = game_start_text
 	self.stage_clear_text = stage_clear_text
 	self.game_over_text = game_over_text

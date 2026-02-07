@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=13 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Resource" uid="uid://ynmvtclpp0eo" path="res://config/resources/stage_config.tres" id="2_ety1j"]
@@ -8,24 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://dburoiggif5h" path="res://game/ui/missile_slot/missile_slot_board.tscn" id="3_owm1g"]
 [ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/player/player.tscn" id="3_poqg5"]
 [ext_resource type="PackedScene" uid="uid://bq76q3cjshmr0" path="res://game/ui/player_ui.tscn" id="4_i3qem"]
-[ext_resource type="Texture2D" uid="uid://ck6hx5yqbhiai" path="res://assets/art/UI/Icon/reset.png" id="4_mgx4w"]
 [ext_resource type="Script" uid="uid://bqyot2gdwdw45" path="res://game/services/enemy_service.gd" id="5_3m0lk"]
 [ext_resource type="Script" uid="uid://cnvo86l7fr8p7" path="res://game/services/projectile_service.gd" id="7_ol8lf"]
 [ext_resource type="PackedScene" uid="uid://pkqx1hawwdqv" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn" id="9_by1y7"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgx4w"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3qem"]
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3qem"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_by1y7"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
+[ext_resource type="PackedScene" uid="uid://csjmag1couymw" path="res://game/ui/reset_button.tscn" id="9_ol8lf"]
 
 [node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
 script = ExtResource("1_lxwxr")
@@ -34,7 +20,7 @@ _player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewp
 _player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
 _enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
 _projectile_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService")
-_reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset/ResetButton")
+_reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
 _game_start_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameStartText")
@@ -137,44 +123,8 @@ size_flags_vertical = 4
 [node name="PlayerUI" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control" instance=ExtResource("4_i3qem")]
 layout_mode = 1
 
-[node name="Reset" type="Control" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control"]
-custom_minimum_size = Vector2(18, 18)
+[node name="Reset" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control" instance=ExtResource("9_ol8lf")]
 layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -22.0
-offset_top = -9.0
-offset_right = -4.0
-offset_bottom = 9.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="ResetButton" type="Button" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset"]
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/outline_size = 0
-theme_override_constants/h_separation = 0
-theme_override_icons/icon = ExtResource("4_mgx4w")
-theme_override_styles/normal = SubResource("StyleBoxTexture_mgx4w")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_i3qem")
-theme_override_styles/hover = SubResource("StyleBoxTexture_i3qem")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_by1y7")
-theme_override_styles/focus = SubResource("StyleBoxTexture_3m0lk")
-icon_alignment = 1
 
 [node name="GameStateTextUI" type="Control" parent="Canvas/VBoxContainer/Control"]
 anchors_preset = 0

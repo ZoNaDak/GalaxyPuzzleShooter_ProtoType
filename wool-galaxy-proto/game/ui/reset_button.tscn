@@ -1,0 +1,84 @@
+[gd_scene load_steps=10 format=3 uid="uid://csjmag1couymw"]
+
+[ext_resource type="Script" uid="uid://bvcsvi0t4kiir" path="res://game/ui/reset_button.gd" id="1_0skhn"]
+[ext_resource type="Texture2D" uid="uid://ck6hx5yqbhiai" path="res://assets/art/UI/Icon/reset.png" id="2_ttdfb"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgx4w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3qem"]
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3qem"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_by1y7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3m0lk"]
+
+[sub_resource type="Gradient" id="Gradient_5rpap"]
+colors = PackedColorArray(0, 0, 0, 0.5882353, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_e4hk6"]
+gradient = SubResource("Gradient_5rpap")
+width = 16
+height = 16
+fill_to = Vector2(0, 0)
+
+[node name="Reset" type="Control" node_paths=PackedStringArray("_button", "_cooltime_ui")]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -9.0
+offset_right = -4.0
+offset_bottom = 9.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("1_0skhn")
+_button = NodePath("ResetButton")
+_cooltime_ui = NodePath("ResetButton/TextureProgressBar")
+
+[node name="ResetButton" type="Button" parent="."]
+clip_children = 2
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 0
+theme_override_constants/h_separation = 0
+theme_override_icons/icon = ExtResource("2_ttdfb")
+theme_override_styles/normal = SubResource("StyleBoxTexture_mgx4w")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_i3qem")
+theme_override_styles/hover = SubResource("StyleBoxTexture_i3qem")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_by1y7")
+theme_override_styles/focus = SubResource("StyleBoxTexture_3m0lk")
+icon_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="ResetButton"]
+visibility_layer = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+fill_mode = 5
+texture_progress = SubResource("GradientTexture2D_e4hk6")
+
+[connection signal="pressed" from="ResetButton" to="." method="_on_pressed"]

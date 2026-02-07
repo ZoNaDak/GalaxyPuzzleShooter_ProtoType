@@ -13,7 +13,7 @@ extends BaseScene
 @export var _enemy_service: EnemyService
 @export var _projectile_service: ProjectileService
 
-@export var _reset_button: Button
+@export var _reset_button: ResetButton
 
 @export var _missile_slot_board: MissileSlotBoard
 @export var _missile_puzzle_board: MissilePuzzleBoard
@@ -51,6 +51,7 @@ func _initialize():
 	context.initialize(_player, _player_ui,
 		_enemy_service, _projectile_service,
 		_missile_slot_board, _missile_puzzle_board,
+		_reset_button,
 		_game_start_text, _stage_clear_text, _game_over_text,
 		_stage_config)
 

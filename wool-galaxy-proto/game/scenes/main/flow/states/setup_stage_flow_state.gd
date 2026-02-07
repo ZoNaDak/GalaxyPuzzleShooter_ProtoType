@@ -22,6 +22,7 @@ func begin() -> void:
 		_context.player_ui.set_cur_mp)
 	_context.player.initialize(player_callable_context)
 	_context.player_ui.initialize(_context.player.player_data)
+	_context.reset_button.initialize()
 	_context.missile_slot_board.initialize()
 	
 	var missile_puzzle_callable_context := MissilePuzzleCallableContext.new()
@@ -30,7 +31,9 @@ func begin() -> void:
 		_context.player.player_data.reserve_missile_slot,
 		_context.player.player_data.unreserve_missile_slot,
 		_context.player.player_data.equip_missile)
-	_context.missile_puzzle_board.initialize(missile_puzzle_callable_context)
+	_context.missile_puzzle_board.initialize(
+		_context.reset_button,
+		missile_puzzle_callable_context)
 	_context.missile_puzzle_board.set_input_enable(false)
 
 	_context.player.player_data.on_equip_missile.connect(
