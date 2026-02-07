@@ -12,7 +12,7 @@ const GRID_HEIGHT := Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT
 const MAX_BACKTRACK_COUNT := 5000
 const MAX_RETRY_COUNT := 1000
 
-const RESET_COOLTIME = 10.0;
+const RESET_COOLTIME = 10.0
 
 #endregion
 
@@ -28,7 +28,7 @@ var missiles: Array[MissilePuzzlePiece] = []
 var _backtrack_count := 0
 
 var _reset_button: ResetButton
-var _cur_reset_cooltime = 0.0;
+var _cur_reset_cooltime = 0.0
 
 #region Callable
 
@@ -293,6 +293,8 @@ func equip_missile(missile_piece: MissilePuzzlePiece):
 
 #endregion
 
+#region Clear
+
 func clear_board() -> void:
 	for missile in missiles:
 		missile.queue_free()
@@ -301,6 +303,8 @@ func clear_board() -> void:
 	for y in range(GRID_HEIGHT):
 		for x in range(GRID_WIDTH):
 			grid[y][x] = null
+
+#endregion
 
 #region Reset
 

@@ -20,7 +20,6 @@ var _on_pressed_callable: Callable
 
 func initialize() -> void:
 	_cooltime_ui.value = 0
-	pass
 
 #endregion
 
@@ -41,7 +40,6 @@ func set_on_pressed_callable(callable: Callable) -> void:
 
 func set_cooltime_value(value: float) -> void:
 	value *= 100.0
-	LogManager.info("set_cooltime_value : %f" % value, "ResetButton")
 	_cooltime_ui.value = value
 
 #endregion
