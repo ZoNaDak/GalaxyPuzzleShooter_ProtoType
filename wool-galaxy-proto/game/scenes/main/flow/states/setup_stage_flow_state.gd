@@ -16,6 +16,7 @@ func begin() -> void:
 	var player_callable_context := PlayerCallableContext.new()
 	player_callable_context.initialize(
 		_context.projectile_service.spawn_bullet,
+		_context.enemy_service.get_enemy_spawn_point_arr,
 		_context.enemy_service.get_locked_enemy,
 		_context.player_ui.set_cur_hp,
 		_context.player_ui.set_cur_mp)

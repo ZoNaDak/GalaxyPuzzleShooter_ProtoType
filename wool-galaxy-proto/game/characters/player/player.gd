@@ -87,7 +87,12 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 		Enums.MissileColorType.GREEN:
 			pass
 		Enums.MissileColorType.YELLOW:
-			pass
+			var enemy_spawn_point_arr = _callable_context.get_enemy_spawn_point_arr_callable.call()
+			for i in enemy_spawn_point_arr.size():
+				var bullet: Bullet = _callable_context.spawn_bullet_callable.call("player_bullet_s")
+				var move_dir = (enemy_spawn_point_arr[i].global_position - projectile_start_point.global_position).normalized()
+				bullet.set_data(get_type(), projectile_start_point.global_position,
+					move_dir, player_config.yellow_missile_value)
 
 	missile_data.decrease_amount()
 	if (missile_data.amount == 0):

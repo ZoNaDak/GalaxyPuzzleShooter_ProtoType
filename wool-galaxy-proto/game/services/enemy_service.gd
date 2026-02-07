@@ -84,4 +84,7 @@ func _lock_on_enemy(enemy: Enemy) -> void:
 func get_locked_enemy() -> Enemy:
 	return _locked_enemy
 
+func get_enemy_spawn_point_arr() -> Array[Node2D]:
+	return _enemy_spawn_point_arr
+
 #endregion
