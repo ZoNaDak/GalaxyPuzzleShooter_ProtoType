@@ -43,5 +43,6 @@ func do_damage(damage: int) -> void:
 func die() -> void:
 	state = StateType.DEAD
 	visible = false
+	process_mode = Node.PROCESS_MODE_DISABLED
 
 #endregion

@@ -9,8 +9,10 @@ const BASE_SIZE := Vector2(576, 384)
 const GRID_WIDTH := Consts.MISSILE_PUZZLE_BOARD_GRID_WIDTH
 const GRID_HEIGHT := Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT
 
-const MAX_BACKTRACK_COUNT := 10000
-const MAX_RETRY_COUNT := 100
+const MAX_BACKTRACK_COUNT := 5000
+const MAX_RETRY_COUNT := 1000
+
+const RESET_COOLTIME = 10.0
 
 #endregion
 
@@ -25,6 +27,9 @@ var missiles: Array[MissilePuzzlePiece] = []
 
 var _backtrack_count := 0
 
+var _reset_button: ResetButton
+var _cur_reset_cooltime = 0.0
+
 #region Callable
 
 var _callable_context: MissilePuzzleCallableContext
@@ -38,19 +43,33 @@ var _callable_context: MissilePuzzleCallableContext
 func _ready():
 	if DebugUtils.try_center_if_root(self) \
 		or Engine.is_editor_hint():
-		initialize(MissilePuzzleCallableContext.new())
+		initialize(null, MissilePuzzleCallableContext.new())
 
-func initialize(callable_context: MissilePuzzleCallableContext):
+func initialize(reset_button: ResetButton,
+	callable_context: MissilePuzzleCallableContext):
 	if not Engine.is_editor_hint():
 		resized.connect(_on_resized)
 
 	_callable_context = callable_context
+
+	_cur_reset_cooltime = RESET_COOLTIME
+	_reset_button = reset_button
+	_reset_button.set_on_pressed_callable(reset_board)
+	refresh_reset_cooltime_ui()
 
 	_initialize_grid()
 	_update_layout()
 
 	if not Engine.is_editor_hint():
 		_setup_missile_puzzle_board()
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+
+	if _cur_reset_cooltime > 0:
+		_cur_reset_cooltime -= delta
+		refresh_reset_cooltime_ui()
 
 #endregion
 
@@ -271,6 +290,36 @@ func equip_missile(missile_piece: MissilePuzzlePiece):
 
 	missiles.erase(missile_piece)
 	missile_piece.queue_free()
+
+#endregion
+
+#region Clear
+
+func clear_board() -> void:
+	for missile in missiles:
+		missile.queue_free()
+	missiles.clear()
+
+	for y in range(GRID_HEIGHT):
+		for x in range(GRID_WIDTH):
+			grid[y][x] = null
+
+#endregion
+
+#region Reset
+
+func reset_board() -> void:
+	LogManager.info("Reset Board", "MissilePuzzleBoard")
+	if _cur_reset_cooltime > 0:
+		return
+
+	clear_board()
+	_setup_missile_puzzle_board()
+	_cur_reset_cooltime = RESET_COOLTIME
+	refresh_reset_cooltime_ui()
+
+func refresh_reset_cooltime_ui() -> void:
+	_reset_button.set_cooltime_value(_cur_reset_cooltime / RESET_COOLTIME)
 
 #endregion
 
