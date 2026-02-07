@@ -17,6 +17,7 @@ enum FireType
 #region Consts
 
 const ENEMY_SPAWN_Y_DIST: float = 100.0
+const FIRST_FIRE_DELAY: float = 0.5
 
 #endregion
 
@@ -103,14 +104,15 @@ func start_move(delta: float) -> void:
 	position += move_vector
 	if position.y >= _spawn_pos.y:
 		position = _spawn_pos
+		_cur_fire_delay = FIRST_FIRE_DELAY
 		state = StateType.IDLE
 
 func check_fire(delta: float) -> void:
-	if _cur_fire_delay >= enemy_config.fire_delay:
-		_cur_fire_delay = 0.0
+	if _cur_fire_delay <= 0.0:
+		_cur_fire_delay = enemy_config.fire_delay
 		_fire()
 	else:
-		_cur_fire_delay += delta
+		_cur_fire_delay -= delta
 
 func _fire() -> void:
 	LogManager.info("Fire : %s"
