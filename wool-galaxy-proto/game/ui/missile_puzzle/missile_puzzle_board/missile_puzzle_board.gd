@@ -12,7 +12,7 @@ const GRID_HEIGHT := Consts.MISSILE_PUZZLE_BOARD_GRID_HEIGHT
 const MAX_BACKTRACK_COUNT := 5000
 const MAX_RETRY_COUNT := 1000
 
-const RESET_COOLTIME = 10.0
+const RESET_COOLTIME := 60.0
 
 #endregion
 
@@ -28,7 +28,7 @@ var missiles: Array[MissilePuzzlePiece] = []
 var _backtrack_count := 0
 
 var _reset_button: ResetButton
-var _cur_reset_cooltime = 0.0
+var _cur_reset_cooltime := 0.0
 
 #region Callable
 
@@ -169,6 +169,12 @@ func _fill_board_randomly(temp_grid: Array[Array], temp_missile_data_arr: Array[
 				direction = Enums.Direction4Way.UP if randi() % 2 == 0 else Enums.Direction4Way.DOWN
 			
 			var data := MissileData.new(empty_cell, Enums.MissileColorType.RED, missile_size, direction)
+			
+			if _check_has_facing_missile(temp_grid, data):
+				data.direction = EnumUtils.get_opposite_direction(direction)
+				if _check_has_facing_missile(temp_grid, data):
+					continue
+			
 			temp_missile_data_arr.append(data)
 
 			for cell in cells:
@@ -230,6 +236,53 @@ func _get_placeable_cells(
 			return []
 	
 	return cells
+
+func _check_has_facing_missile(temp_grid: Array[Array], data: MissileData) -> bool:
+	var direction := data.direction
+	var opposite_direction := EnumUtils.get_opposite_direction(direction)
+	var grid_pos := data.grid_pos
+	var missile_length := data.get_my_grid_length()
+	
+	var scan_start := 0
+	var scan_end := 0
+	match direction:
+		Enums.Direction4Way.LEFT:
+			scan_start = grid_pos.x - 1
+			scan_end = -1
+		Enums.Direction4Way.RIGHT:
+			scan_start = grid_pos.x + missile_length
+			scan_end = GRID_WIDTH
+		Enums.Direction4Way.UP:
+			scan_start = grid_pos.y - 1
+			scan_end = -1
+		Enums.Direction4Way.DOWN:
+			scan_start = grid_pos.y + missile_length
+			scan_end = GRID_HEIGHT
+	
+	var is_horizontal := direction == Enums.Direction4Way.LEFT \
+		or direction == Enums.Direction4Way.RIGHT
+	if is_horizontal:
+		var y := grid_pos.y
+		var step := 1 if scan_start < scan_end else -1
+		var x := scan_start
+		while (step > 0 and x < scan_end) or (step < 0 and x > scan_end):
+			var cell_data = temp_grid[y][x]
+			if cell_data != null and cell_data is MissileData:
+				if cell_data.direction == opposite_direction:
+					return true
+			x += step
+	else:
+		var x := grid_pos.x
+		var step := 1 if scan_start < scan_end else -1
+		var y := scan_start
+		while (step > 0 and y < scan_end) or (step < 0 and y > scan_end):
+			var cell_data = temp_grid[y][x]
+			if cell_data != null and cell_data is MissileData:
+				if cell_data.direction == opposite_direction:
+					return true
+			y += step
+	
+	return false
 
 func _spawn_missile_piece(missile_data: MissileData):
 	var missile = _missilePuzzlePieceScene.instantiate()
