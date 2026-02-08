@@ -2,9 +2,17 @@
 class_name EnumUtils
 
 static func direction_to_vector(direction: Enums.Direction4Way) -> Vector2:
-    match direction:
-        Enums.Direction4Way.LEFT: return Vector2(-1, 0)
-        Enums.Direction4Way.RIGHT: return Vector2(1, 0)
-        Enums.Direction4Way.UP: return Vector2(0, -1)
-        Enums.Direction4Way.DOWN: return Vector2(0, 1)
-        _: return Vector2.ZERO
+	match direction:
+		Enums.Direction4Way.LEFT: return Vector2(-1, 0)
+		Enums.Direction4Way.RIGHT: return Vector2(1, 0)
+		Enums.Direction4Way.UP: return Vector2(0, -1)
+		Enums.Direction4Way.DOWN: return Vector2(0, 1)
+		_: return Vector2.ZERO
+
+static func get_opposite_direction(direction: Enums.Direction4Way) -> Enums.Direction4Way:
+	match direction:
+		Enums.Direction4Way.LEFT: return Enums.Direction4Way.RIGHT
+		Enums.Direction4Way.RIGHT: return Enums.Direction4Way.LEFT
+		Enums.Direction4Way.UP: return Enums.Direction4Way.DOWN
+		Enums.Direction4Way.DOWN: return Enums.Direction4Way.UP
+		_: return direction
