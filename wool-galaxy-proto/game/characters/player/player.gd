@@ -99,8 +99,8 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	if (missile_data.amount == 0):
 		player_data.unequip_missile(missile_index)
 
-func _do_heal_hp(heal_value: int) -> void:
-	super._do_heal_hp(heal_value)
+func do_heal_hp(heal_value: int) -> void:
+	super.do_heal_hp(heal_value)
 	_callable_context.play_effect_callable.call(
 		"heal_effect", heal_effect_pivot.global_position)
 

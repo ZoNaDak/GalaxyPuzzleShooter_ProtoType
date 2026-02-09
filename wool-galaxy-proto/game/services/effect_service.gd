@@ -13,7 +13,7 @@ const EFFECT_SCENE_PATH: String = "res://game/effects/%s.tscn"
 
 @export var _effect_parent: Node2D
 
-var _effect_arr: Array[GPUParticles2D]
+var _effect_arr: Array[GPUParticles2D] = []
 
 #endregion
 
@@ -22,6 +22,9 @@ var _effect_arr: Array[GPUParticles2D]
 func play_effect(key: String, pos: Vector2) -> GPUParticles2D:
 	LogManager.info("play_effect : %s, %s" % [key, pos], "EffectService")
 	var effect_scene: PackedScene = load(EFFECT_SCENE_PATH % [key])
+	if effect_scene == null:
+		LogManager.warning("Effect Scene is null : %s" % [key], "EffectService")
+		return
 	var effect: GPUParticles2D = effect_scene.instantiate()
 	effect.global_position = pos
 	effect.emitting = true

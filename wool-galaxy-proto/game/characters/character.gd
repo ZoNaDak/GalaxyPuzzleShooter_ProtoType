@@ -40,12 +40,12 @@ func do_damage(damage: int) -> void:
 		die()
 	notify_changed_hp()
 
-func _do_heal_hp(heal_value: int) -> void:
+func do_heal_hp(heal_value: int) -> void:
 	data.cur_hp += heal_value
 	if data.cur_hp > data.max_hp:
 		data.cur_hp = data.max_hp
 	notify_changed_hp()
-	
+
 func die() -> void:
 	state = StateType.DEAD
 	visible = false
