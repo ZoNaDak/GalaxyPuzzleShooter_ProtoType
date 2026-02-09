@@ -53,9 +53,10 @@ func initialize(reset_button: ResetButton,
 	_callable_context = callable_context
 
 	_cur_reset_cooltime = RESET_COOLTIME
-	_reset_button = reset_button
-	_reset_button.set_on_pressed_callable(reset_board)
-	refresh_reset_cooltime_ui()
+	if reset_button != null:
+		_reset_button = reset_button
+		_reset_button.set_on_pressed_callable(reset_board)
+		refresh_reset_cooltime_ui()
 
 	_initialize_grid()
 	_update_layout()

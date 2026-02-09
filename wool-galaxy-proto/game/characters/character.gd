@@ -27,8 +27,8 @@ func get_type() -> Enums.CharacterType:
 	assert(false, "Must override get_type()")
 	return Enums.CharacterType.NONE
 
-func notify_damage() -> void:
-	assert(false, "Must override notify_damage()")
+func notify_changed_hp() -> void:
+	assert(false, "Must override notify_changed_hp()")
 
 #endregion
 
@@ -38,7 +38,13 @@ func do_damage(damage: int) -> void:
 	data.cur_hp -= damage
 	if data.cur_hp <= 0:
 		die()
-	notify_damage()
+	notify_changed_hp()
+
+func do_heal_hp(heal_value: int) -> void:
+	data.cur_hp += heal_value
+	if data.cur_hp > data.max_hp:
+		data.cur_hp = data.max_hp
+	notify_changed_hp()
 
 func die() -> void:
 	state = StateType.DEAD

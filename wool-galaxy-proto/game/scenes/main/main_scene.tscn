@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=14 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Resource" uid="uid://ynmvtclpp0eo" path="res://config/resources/stage_config.tres" id="2_ety1j"]
@@ -10,16 +10,18 @@
 [ext_resource type="PackedScene" uid="uid://bq76q3cjshmr0" path="res://game/ui/player_ui.tscn" id="4_i3qem"]
 [ext_resource type="Script" uid="uid://bqyot2gdwdw45" path="res://game/services/enemy_service.gd" id="5_3m0lk"]
 [ext_resource type="Script" uid="uid://cnvo86l7fr8p7" path="res://game/services/projectile_service.gd" id="7_ol8lf"]
+[ext_resource type="Script" uid="uid://catbe1e34g5ek" path="res://game/services/effect_service.gd" id="8_jxxs8"]
 [ext_resource type="PackedScene" uid="uid://pkqx1hawwdqv" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn" id="9_by1y7"]
 [ext_resource type="PackedScene" uid="uid://csjmag1couymw" path="res://game/ui/reset_button.tscn" id="9_ol8lf"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_effect_service", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
 _player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
 _enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
 _projectile_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService")
+_effect_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EffectService")
 _reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
@@ -105,6 +107,12 @@ script = ExtResource("7_ol8lf")
 _projectile_parent = NodePath("ProjectileParent")
 
 [node name="ProjectileParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService"]
+
+[node name="EffectService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_effect_parent")]
+script = ExtResource("8_jxxs8")
+_effect_parent = NodePath("EffectParent")
+
+[node name="EffectParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EffectService"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport"]
 
