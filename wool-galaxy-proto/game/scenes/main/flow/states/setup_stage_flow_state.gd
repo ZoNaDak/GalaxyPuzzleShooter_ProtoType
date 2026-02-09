@@ -19,7 +19,8 @@ func begin() -> void:
 		_context.enemy_service.get_enemy_spawn_point_arr,
 		_context.enemy_service.get_locked_enemy,
 		_context.player_ui.set_cur_hp,
-		_context.player_ui.set_cur_mp)
+		_context.player_ui.set_cur_mp,
+		_context.effect_service.play_effect)
 	_context.player.initialize(player_callable_context)
 	_context.player_ui.initialize(_context.player.player_data)
 	_context.reset_button.initialize()

@@ -7,6 +7,7 @@ var player: Player
 var player_ui: PlayerUI
 var enemy_service: EnemyService
 var projectile_service: ProjectileService
+var effect_service: EffectService
 var missile_slot_board: MissileSlotBoard
 var missile_puzzle_board: MissilePuzzleBoard
 var reset_button: ResetButton
@@ -25,6 +26,7 @@ func initialize(
 	player_ui: PlayerUI,
 	enemy_service: EnemyService,
 	projectile_service: ProjectileService,
+	effect_service: EffectService,
 	missile_slot_board: MissileSlotBoard,
 	missile_puzzle_board: MissilePuzzleBoard,
 	reset_button: ResetButton,
@@ -36,6 +38,7 @@ func initialize(
 	self.player_ui = player_ui
 	self.enemy_service = enemy_service
 	self.projectile_service = projectile_service
+	self.effect_service = effect_service
 	self.missile_slot_board = missile_slot_board
 	self.missile_puzzle_board = missile_puzzle_board
 	self.reset_button = reset_button

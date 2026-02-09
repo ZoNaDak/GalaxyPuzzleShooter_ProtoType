@@ -7,6 +7,7 @@ extends Character
 
 @export var player_config: PlayerConfig
 @export var projectile_start_point: Marker2D
+@export var heal_effect_pivot: Marker2D
 
 var player_data: PlayerData
 
@@ -42,6 +43,10 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.keycode == KEY_1 \
 		and event.is_pressed() and not event.is_echo():
 		die()
+	
+	if event is InputEventKey and event.keycode == KEY_3 \
+		and event.is_pressed() and not event.is_echo():
+		_heal_hp()
 
 #endregion
 
@@ -97,5 +102,9 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	missile_data.decrease_amount()
 	if (missile_data.amount == 0):
 		player_data.unequip_missile(missile_index)
+
+func _heal_hp() -> void:
+	_callable_context.play_effect_callable.call(
+		"heal_effect", heal_effect_pivot.global_position)
 
 #endregion
