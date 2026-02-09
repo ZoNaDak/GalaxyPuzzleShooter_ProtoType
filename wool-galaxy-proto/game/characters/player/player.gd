@@ -43,10 +43,6 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.keycode == KEY_1 \
 		and event.is_pressed() and not event.is_echo():
 		die()
-	
-	if event is InputEventKey and event.keycode == KEY_3 \
-		and event.is_pressed() and not event.is_echo():
-		_heal_hp()
 
 #endregion
 
@@ -55,7 +51,7 @@ func _input(event: InputEvent) -> void:
 func get_type() -> Enums.CharacterType:
 	return Enums.CharacterType.PLAYER
 
-func notify_damage() -> void:
+func notify_changed_hp() -> void:
 	_callable_context.notify_changed_hp.call(data.cur_hp)
 
 #endregion
@@ -90,7 +86,7 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 		Enums.MissileColorType.BLUE:
 			pass
 		Enums.MissileColorType.GREEN:
-			pass
+			_do_heal_hp(player_config.green_missile_value)
 		Enums.MissileColorType.YELLOW:
 			var enemy_spawn_point_arr = _callable_context.get_enemy_spawn_point_arr_callable.call()
 			for i in enemy_spawn_point_arr.size():
@@ -103,7 +99,8 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	if (missile_data.amount == 0):
 		player_data.unequip_missile(missile_index)
 
-func _heal_hp() -> void:
+func _do_heal_hp(heal_value: int) -> void:
+	super._do_heal_hp(heal_value)
 	_callable_context.play_effect_callable.call(
 		"heal_effect", heal_effect_pivot.global_position)
 
