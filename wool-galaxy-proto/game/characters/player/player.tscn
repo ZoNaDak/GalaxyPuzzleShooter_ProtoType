@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://lnqpbeq7glha"]
+[gd_scene load_steps=6 format=3 uid="uid://lnqpbeq7glha"]
 
 [ext_resource type="Script" uid="uid://c8nfapqbghp30" path="res://game/characters/player/player.gd" id="1_5hw72"]
 [ext_resource type="Resource" uid="uid://b8qxoay8vwam1" path="res://config/resources/player_config.tres" id="2_mnys6"]
 [ext_resource type="Texture2D" uid="uid://2fnjlratqeuv" path="res://game/characters/player/resources/player.png" id="2_t6gq4"]
+[ext_resource type="PackedScene" uid="uid://dnh5x6tsvipfb" path="res://game/characters/player/force_shield_effect.tscn" id="4_mnys6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t6gq4"]
 radius = 9.0
@@ -30,3 +31,8 @@ gizmo_extents = 5.0
 [node name="HealEffectPivot" type="Marker2D" parent="."]
 position = Vector2(2, -2)
 gizmo_extents = 2.0
+
+[node name="ForceShieldPivot" type="Marker2D" parent="."]
+
+[node name="ForceShieldEffect" parent="ForceShieldPivot" instance=ExtResource("4_mnys6")]
+visible = false
