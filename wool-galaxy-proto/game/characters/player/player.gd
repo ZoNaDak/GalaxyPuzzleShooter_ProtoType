@@ -8,6 +8,8 @@ extends Character
 @export var player_config: PlayerConfig
 @export var projectile_start_point: Marker2D
 @export var heal_effect_pivot: Marker2D
+@export var force_shield_effect: Node2D
+@export var force_shield_ui: ProgressBar
 
 var player_data: PlayerData
 
@@ -22,10 +24,14 @@ var _callable_context: PlayerCallableContext
 #region Lifecycle
 
 func initialize(callable_context: PlayerCallableContext) -> void:
-	player_data = PlayerData.new(player_config.max_hp, player_config.max_mp)
+	player_data = PlayerData.new(
+		player_config.max_hp, player_config.max_mp, player_config.max_force_shield_value)
 	data = player_data
 
 	_callable_context = callable_context
+
+	force_shield_effect.visible = false
+	force_shield_ui.visible = false
 
 	state = StateType.IDLE
 
@@ -86,7 +92,7 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 		Enums.MissileColorType.BLUE:
 			pass
 		Enums.MissileColorType.GREEN:
-			_do_heal_hp(player_config.green_missile_value)
+			do_heal_hp(player_config.green_missile_value)
 		Enums.MissileColorType.YELLOW:
 			var enemy_spawn_point_arr = _callable_context.get_enemy_spawn_point_arr_callable.call()
 			for i in enemy_spawn_point_arr.size():
