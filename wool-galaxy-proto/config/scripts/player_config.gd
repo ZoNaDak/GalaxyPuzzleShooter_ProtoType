@@ -9,6 +9,9 @@ extends Resource
 
 @export var missile_fire_delay: float = 0.5
 
+@export var player_skill_cooltime: float = 1.0
+@export var player_skill_mp_cost: float = 10.0
+
 @export var red_missile_value: int = 6
 @export var blue_missile_value: int = 10
 @export var green_missile_value: int = 5

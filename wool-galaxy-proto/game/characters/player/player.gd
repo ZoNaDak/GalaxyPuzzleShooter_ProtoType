@@ -13,6 +13,9 @@ extends Character
 
 var player_data: PlayerData
 
+var _player_skill_button: PlayerSkillButton
+var _cur_player_skill_cooltime: float
+
 #region Callable
 
 var _callable_context: PlayerCallableContext
@@ -23,10 +26,16 @@ var _callable_context: PlayerCallableContext
 
 #region Lifecycle
 
-func initialize(callable_context: PlayerCallableContext) -> void:
+func initialize(player_skill_button: PlayerSkillButton,
+	callable_context: PlayerCallableContext) -> void:
 	player_data = PlayerData.new(
 		player_config.max_hp, player_config.max_mp, player_config.max_force_shield_value)
 	data = player_data
+
+	if player_skill_button != null:
+		_player_skill_button = player_skill_button
+		_player_skill_button.set_on_pressed_callable(do_player_skill)
+		refresh_player_skill_cooltime_ui()
 
 	_callable_context = callable_context
 
@@ -37,6 +46,7 @@ func initialize(callable_context: PlayerCallableContext) -> void:
 
 func _process(delta: float) -> void:
 	_check_fire_delay(delta)
+	_check_player_skill_cooltime(delta)
 
 #endregion
 
@@ -59,6 +69,9 @@ func get_type() -> Enums.CharacterType:
 
 func notify_changed_hp() -> void:
 	_callable_context.notify_changed_hp.call(data.cur_hp)
+
+func notify_changed_mp() -> void:
+	_callable_context.notify_changed_mp.call(data.cur_mp)
 
 #endregion
 
@@ -109,5 +122,28 @@ func do_heal_hp(heal_value: int) -> void:
 	super.do_heal_hp(heal_value)
 	_callable_context.play_effect_callable.call(
 		"heal_effect", heal_effect_pivot.global_position)
+
+func do_player_skill() -> void:
+	LogManager.info("Do Player Skill", "Player")
+	if _cur_player_skill_cooltime > 0 \
+		or player_data.cur_mp < player_config.player_skill_mp_cost:
+		return
+
+	# TODO: 실제 플레이어 스킬 구현하기
+	
+	player_data.cur_mp -= player_config.player_skill_mp_cost
+	notify_changed_mp()
+
+	_cur_player_skill_cooltime = player_config.player_skill_cooltime
+	refresh_player_skill_cooltime_ui()
+
+func refresh_player_skill_cooltime_ui() -> void:
+	_player_skill_button.set_cooltime_value(
+		_cur_player_skill_cooltime / player_config.player_skill_cooltime)
+
+func _check_player_skill_cooltime(delta: float) -> void:
+	if _cur_player_skill_cooltime > 0:
+		_cur_player_skill_cooltime -= delta
+		refresh_player_skill_cooltime_ui()
 
 #endregion
