@@ -7,7 +7,8 @@ extends Character
 
 @export var player_config: PlayerConfig
 @export var projectile_start_point: Marker2D
-@export var heal_effect_pivot: Marker2D
+@export var heal_hp_effect_pivot: Marker2D
+@export var heal_mp_effect_pivot: Marker2D
 @export var force_shield_effect: Node2D
 @export var force_shield_ui: ProgressBar
 
@@ -123,7 +124,7 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 			bullet.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, player_config.red_missile_value)
 		Enums.MissileColorType.BLUE:
-			pass
+			do_heal_mp(player_config.blue_missile_value)
 		Enums.MissileColorType.GREEN:
 			do_heal_hp(player_config.green_missile_value)
 		Enums.MissileColorType.YELLOW:
@@ -141,7 +142,12 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 func do_heal_hp(heal_value: int) -> void:
 	super.do_heal_hp(heal_value)
 	_callable_context.play_effect_callable.call(
-		"heal_effect", heal_effect_pivot.global_position)
+		"heal_hp_effect", heal_hp_effect_pivot.global_position)
+
+func do_heal_mp(heal_value: int) -> void:
+	super.do_heal_mp(heal_value)
+	_callable_context.play_effect_callable.call(
+		"heal_mp_effect", heal_mp_effect_pivot.global_position)
 
 func do_player_skill() -> void:
 	LogManager.info("Do Player Skill", "Player")

@@ -49,6 +49,12 @@ func do_heal_hp(heal_value: int) -> void:
 		data.cur_hp = data.max_hp
 	notify_changed_hp()
 
+func do_heal_mp(heal_value: int) -> void:
+	data.cur_mp += heal_value
+	if data.cur_mp > data.max_mp:
+		data.cur_mp = data.max_mp
+	notify_changed_mp()
+
 func die() -> void:
 	state = StateType.DEAD
 	visible = false

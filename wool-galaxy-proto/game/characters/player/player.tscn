@@ -24,11 +24,12 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 0)
 
-[node name="Player" type="Node2D" node_paths=PackedStringArray("projectile_start_point", "heal_effect_pivot", "force_shield_effect", "force_shield_ui")]
+[node name="Player" type="Node2D" node_paths=PackedStringArray("projectile_start_point", "heal_hp_effect_pivot", "heal_mp_effect_pivot", "force_shield_effect", "force_shield_ui")]
 script = ExtResource("1_5hw72")
 player_config = ExtResource("2_mnys6")
 projectile_start_point = NodePath("ProjectileStartPoint")
-heal_effect_pivot = NodePath("HealEffectPivot")
+heal_hp_effect_pivot = NodePath("HealHpEffectPivot")
+heal_mp_effect_pivot = NodePath("HealMpEffectPivot")
 force_shield_effect = NodePath("ForceShieldPivot/ForceShieldEffect")
 force_shield_ui = NodePath("Control/ForceShieldUI")
 
@@ -46,8 +47,12 @@ shape = SubResource("CircleShape2D_t6gq4")
 position = Vector2(0, -9)
 gizmo_extents = 5.0
 
-[node name="HealEffectPivot" type="Marker2D" parent="."]
+[node name="HealHpEffectPivot" type="Marker2D" parent="."]
 position = Vector2(2, -2)
+gizmo_extents = 2.0
+
+[node name="HealMpEffectPivot" type="Marker2D" parent="."]
+position = Vector2(-4, -4)
 gizmo_extents = 2.0
 
 [node name="ForceShieldPivot" type="Marker2D" parent="."]
