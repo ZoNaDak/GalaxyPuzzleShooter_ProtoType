@@ -30,6 +30,9 @@ func get_type() -> Enums.CharacterType:
 func notify_changed_hp() -> void:
 	assert(false, "Must override notify_changed_hp()")
 
+func notify_changed_mp() -> void:
+	assert(false, "Must override notify_changed_mp()")
+
 #endregion
 
 #region Methods

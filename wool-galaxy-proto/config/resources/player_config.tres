@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_safy7")
+max_force_shield_value = 12
 missile_fire_delay = 1.0
 green_missile_value = 3
 metadata/_custom_type_script = "uid://8px53fk5u6m6"
