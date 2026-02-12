@@ -72,4 +72,7 @@ func unequip_missile(index: int) -> void:
 	_missile_fire_delay_arr[index] = 0.0
 	on_unequip_missile.emit(index)
 
+func charge_full_force_shield() -> void:
+	cur_force_shield_value = max_force_shield_value
+
 #endregion

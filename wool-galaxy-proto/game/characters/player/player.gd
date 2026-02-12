@@ -16,6 +16,8 @@ var player_data: PlayerData
 var _player_skill_button: PlayerSkillButton
 var _cur_player_skill_cooltime: float
 
+var _is_on_skill: bool
+
 #region Callable
 
 var _callable_context: PlayerCallableContext
@@ -31,6 +33,8 @@ func initialize(player_skill_button: PlayerSkillButton,
 	player_data = PlayerData.new(
 		player_config.max_hp, player_config.max_mp, player_config.max_force_shield_value)
 	data = player_data
+
+	_is_on_skill = false
 
 	if player_skill_button != null:
 		_player_skill_button = player_skill_button
@@ -73,9 +77,23 @@ func notify_changed_hp() -> void:
 func notify_changed_mp() -> void:
 	_callable_context.notify_changed_mp.call(data.cur_mp)
 
+func do_damage(damage: int) -> void:
+	if (player_data.cur_force_shield_value > 0):
+		player_data.cur_force_shield_value -= damage
+		refresh_force_shield_ui()
+		if player_data.cur_force_shield_value <= 0:
+			player_data.cur_force_shield_value = 0
+			force_shield_effect.visible = false
+			force_shield_ui.visible = false
+			_is_on_skill = false
+	else:
+		super.do_damage(damage)
+
 #endregion
 
 #region Methods
+
+#region Process Methods
 
 func _check_fire_delay(delta: float) -> void:
 	for i in player_data._missile_fire_delay_arr.size():
@@ -91,6 +109,12 @@ func _check_fire_delay(delta: float) -> void:
 		else:
 			player_data._missile_fire_delay_arr[i] -= delta
 
+func _check_player_skill_cooltime(delta: float) -> void:
+	if _cur_player_skill_cooltime > 0:
+		_cur_player_skill_cooltime -= delta
+		refresh_player_skill_cooltime_ui()
+	
+#endregion
 func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile : %s"
 		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
@@ -129,7 +153,11 @@ func do_player_skill() -> void:
 		or player_data.cur_mp < player_config.player_skill_mp_cost:
 		return
 
-	# TODO: 실제 플레이어 스킬 구현하기
+	_is_on_skill = true
+	player_data.charge_full_force_shield()
+	force_shield_effect.visible = true
+	force_shield_ui.visible = true
+	refresh_force_shield_ui()
 	
 	player_data.cur_mp -= player_config.player_skill_mp_cost
 	notify_changed_mp()
@@ -141,9 +169,8 @@ func refresh_player_skill_cooltime_ui() -> void:
 	_player_skill_button.set_cooltime_value(
 		_cur_player_skill_cooltime / player_config.player_skill_cooltime)
 
-func _check_player_skill_cooltime(delta: float) -> void:
-	if _cur_player_skill_cooltime > 0:
-		_cur_player_skill_cooltime -= delta
-		refresh_player_skill_cooltime_ui()
+func refresh_force_shield_ui() -> void:
+	var ratio = float(player_data.cur_force_shield_value) / float(player_data.max_force_shield_value) * 100.0
+	force_shield_ui.value = ratio
 
 #endregion
