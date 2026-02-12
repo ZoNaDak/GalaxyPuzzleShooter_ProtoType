@@ -24,6 +24,7 @@ func begin() -> void:
 	_context.player.initialize(
 		_context.player_skill_button, player_callable_context)
 	_context.player_ui.initialize(_context.player.player_data)
+	_context.player_skill_button.initialize()
 	_context.reset_button.initialize()
 	_context.missile_slot_board.initialize()
 	

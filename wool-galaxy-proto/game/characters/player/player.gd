@@ -16,8 +16,6 @@ var player_data: PlayerData
 var _player_skill_button: PlayerSkillButton
 var _cur_player_skill_cooltime: float
 
-var _is_on_skill: bool
-
 #region Callable
 
 var _callable_context: PlayerCallableContext
@@ -33,8 +31,6 @@ func initialize(player_skill_button: PlayerSkillButton,
 	player_data = PlayerData.new(
 		player_config.max_hp, player_config.max_mp, player_config.max_force_shield_value)
 	data = player_data
-
-	_is_on_skill = false
 
 	if player_skill_button != null:
 		_player_skill_button = player_skill_button
@@ -85,7 +81,6 @@ func do_damage(damage: int) -> void:
 			player_data.cur_force_shield_value = 0
 			force_shield_effect.visible = false
 			force_shield_ui.visible = false
-			_is_on_skill = false
 	else:
 		super.do_damage(damage)
 
@@ -115,6 +110,7 @@ func _check_player_skill_cooltime(delta: float) -> void:
 		refresh_player_skill_cooltime_ui()
 	
 #endregion
+
 func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile : %s"
 		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
@@ -153,7 +149,6 @@ func do_player_skill() -> void:
 		or player_data.cur_mp < player_config.player_skill_mp_cost:
 		return
 
-	_is_on_skill = true
 	player_data.charge_full_force_shield()
 	force_shield_effect.visible = true
 	force_shield_ui.visible = true

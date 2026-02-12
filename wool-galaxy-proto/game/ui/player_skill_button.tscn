@@ -26,7 +26,7 @@ width = 16
 height = 16
 fill_to = Vector2(0, 0)
 
-[node name="PlayerSkillButton" type="Control" node_paths=PackedStringArray("_button", "_cooltime_ui")]
+[node name="PlayerSkill" type="Control" node_paths=PackedStringArray("_button", "_cooltime_ui")]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 3
 anchors_preset = 4
@@ -38,10 +38,10 @@ offset_right = 22.0
 offset_bottom = 9.0
 grow_vertical = 2
 script = ExtResource("1_e3m4r")
-_button = NodePath("ResetButton")
-_cooltime_ui = NodePath("ResetButton/TextureProgressBar")
+_button = NodePath("Button")
+_cooltime_ui = NodePath("Button/TextureProgressBar")
 
-[node name="ResetButton" type="Button" parent="."]
+[node name="Button" type="Button" parent="."]
 clip_children = 2
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 1
@@ -66,7 +66,7 @@ theme_override_styles/disabled = SubResource("StyleBoxTexture_by1y7")
 theme_override_styles/focus = SubResource("StyleBoxTexture_3m0lk")
 icon_alignment = 1
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="ResetButton"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Button"]
 visibility_layer = 3
 layout_mode = 1
 anchors_preset = 15
@@ -78,4 +78,4 @@ value = 100.0
 fill_mode = 5
 texture_progress = SubResource("GradientTexture2D_e4hk6")
 
-[connection signal="pressed" from="ResetButton" to="." method="_on_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_pressed"]
