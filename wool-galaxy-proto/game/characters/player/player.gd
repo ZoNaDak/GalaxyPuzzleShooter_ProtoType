@@ -7,7 +7,8 @@ extends Character
 
 @export var player_config: PlayerConfig
 @export var projectile_start_point: Marker2D
-@export var heal_effect_pivot: Marker2D
+@export var heal_hp_effect_pivot: Marker2D
+@export var heal_mp_effect_pivot: Marker2D
 @export var force_shield_effect: Node2D
 @export var force_shield_ui: ProgressBar
 
@@ -95,10 +96,6 @@ func _check_fire_delay(delta: float) -> void:
 		if player_data.equipped_missile_datas[i] == null:
 			continue
 		elif player_data._missile_fire_delay_arr[i] <= 0:
-			var target = _callable_context.get_locked_enemy_callable.call()
-			if target == null:
-				continue
-				
 			_fire_missile(i, player_data.equipped_missile_datas[i])
 			player_data._missile_fire_delay_arr[i] = player_config.missile_fire_delay
 		else:
@@ -115,15 +112,17 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile : %s"
 		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
 
-	var target = _callable_context.get_locked_enemy_callable.call()
 	match missile_data.color:
 		Enums.MissileColorType.RED:
+			var target = _callable_context.get_locked_enemy_callable.call()
+			if target == null:
+				return
 			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("player_bullet_m")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, player_config.red_missile_value)
 		Enums.MissileColorType.BLUE:
-			pass
+			do_heal_mp(player_config.blue_missile_value)
 		Enums.MissileColorType.GREEN:
 			do_heal_hp(player_config.green_missile_value)
 		Enums.MissileColorType.YELLOW:
@@ -141,7 +140,12 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 func do_heal_hp(heal_value: int) -> void:
 	super.do_heal_hp(heal_value)
 	_callable_context.play_effect_callable.call(
-		"heal_effect", heal_effect_pivot.global_position)
+		"heal_hp_effect", heal_hp_effect_pivot.global_position)
+
+func do_heal_mp(heal_value: int) -> void:
+	super.do_heal_mp(heal_value)
+	_callable_context.play_effect_callable.call(
+		"heal_mp_effect", heal_mp_effect_pivot.global_position)
 
 func do_player_skill() -> void:
 	LogManager.info("Do Player Skill", "Player")

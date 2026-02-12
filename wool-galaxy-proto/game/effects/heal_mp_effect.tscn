@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://wcts7j7oahbd"]
+[gd_scene load_steps=5 format=3 uid="uid://d1linqnjlajxc"]
 
-[ext_resource type="Texture2D" uid="uid://dpflo53pfuwma" path="res://assets/art/Vfx/cross.png" id="1_ehs5i"]
+[ext_resource type="Texture2D" uid="uid://dpflo53pfuwma" path="res://assets/art/Vfx/cross.png" id="1_t0ppb"]
 
 [sub_resource type="Gradient" id="Gradient_ehs5i"]
 offsets = PackedFloat32Array(0, 0.61433446, 1)
-colors = PackedColorArray(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0)
+colors = PackedColorArray(0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_isdin"]
 gradient = SubResource("Gradient_ehs5i")
@@ -14,20 +14,20 @@ width = 64
 particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(3, 0, 0)
-direction = Vector3(1, -1, 0)
+direction = Vector3(-1, -1, 0)
 spread = 30.0
 initial_velocity_min = 5.0
 initial_velocity_max = 5.0
 gravity = Vector3(0, -20, 0)
 scale_min = 0.5
 scale_max = 0.5
-color = Color(0, 1, 0, 1)
+color = Color(0, 0, 1, 1)
 color_ramp = SubResource("GradientTexture1D_isdin")
 
-[node name="HealEffect" type="GPUParticles2D"]
+[node name="HealMpEffect" type="GPUParticles2D"]
 emitting = false
 amount = 4
-texture = ExtResource("1_ehs5i")
+texture = ExtResource("1_t0ppb")
 one_shot = true
 visibility_rect = Rect2(-10, -10, 20, 20)
 process_material = SubResource("ParticleProcessMaterial_isdin")
