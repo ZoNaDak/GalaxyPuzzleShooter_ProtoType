@@ -96,10 +96,6 @@ func _check_fire_delay(delta: float) -> void:
 		if player_data.equipped_missile_datas[i] == null:
 			continue
 		elif player_data._missile_fire_delay_arr[i] <= 0:
-			var target = _callable_context.get_locked_enemy_callable.call()
-			if target == null:
-				continue
-				
 			_fire_missile(i, player_data.equipped_missile_datas[i])
 			player_data._missile_fire_delay_arr[i] = player_config.missile_fire_delay
 		else:
@@ -116,9 +112,11 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 	LogManager.info("Fire Missile : %s"
 		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
 
-	var target = _callable_context.get_locked_enemy_callable.call()
 	match missile_data.color:
 		Enums.MissileColorType.RED:
+			var target = _callable_context.get_locked_enemy_callable.call()
+			if target == null:
+				return
 			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("player_bullet_m")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,

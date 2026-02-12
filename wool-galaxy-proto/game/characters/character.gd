@@ -6,7 +6,7 @@ extends Node2D
 #region Enums
 
 enum StateType {
-    START_MOVE,
+	START_MOVE,
 	IDLE,
 	DYING,
 	DEAD
