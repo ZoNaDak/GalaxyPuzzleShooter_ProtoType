@@ -13,7 +13,7 @@ var play_effect_callable: Callable
 #region Lifecycle
 
 @warning_ignore("shadowed_variable")
-func initialize_in_main_scene(get_player_callable: Callable,
+func initialize_in_scene(get_player_callable: Callable,
 	spawn_bullet_callable: Callable,
 	play_effect_callable: Callable) -> void:
 	self.get_player_callable = get_player_callable

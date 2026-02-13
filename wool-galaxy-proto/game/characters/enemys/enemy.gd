@@ -119,9 +119,9 @@ func _fire() -> void:
 	LogManager.info("Fire : %s"
 		% [FireType.find_key(enemy_config.fire_type)], "Enemy")
 	
-	var target = _callable_context.get_player_callable.call()
 	match enemy_config.fire_type:
 		FireType.BULLET:
+			var target = _callable_context.get_player_callable.call()
 			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("enemy_bullet_0")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,

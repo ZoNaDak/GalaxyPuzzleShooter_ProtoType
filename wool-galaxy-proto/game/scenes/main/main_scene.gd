@@ -39,7 +39,7 @@ func _initialize():
 	_projectile_service.initialize()
 
 	var enemy_callable_context := EnemyCallableContext.new()
-	enemy_callable_context.initialize_in_main_scene(
+	enemy_callable_context.initialize_in_scene(
 		func(): return _player,
 		_projectile_service.spawn_bullet,
 		_effect_service.play_effect
