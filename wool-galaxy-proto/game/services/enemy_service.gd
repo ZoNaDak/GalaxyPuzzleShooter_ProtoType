@@ -39,6 +39,8 @@ var enemy_arr: Array[Enemy]:
 
 func initialize(callable_context: EnemyCallableContext) -> void:
 	_callable_context = callable_context
+	_callable_context.initialize_in_enemy_service(
+		get_all_enemy_arr)
 
 	for i in range(_enemy_spawn_point_arr.size()):
 		_enemy_arr.append(null)
@@ -47,6 +49,9 @@ func initialize(callable_context: EnemyCallableContext) -> void:
 #endregion
 
 #region Methods
+
+func get_all_enemy_arr() -> Array[Enemy]:
+	return _enemy_arr
 
 func spawn_enemy(key: String, spawn_index: int) -> void:
 	LogManager.info("spawn_enemy : %s, %d" % [key, spawn_index], "EnemyService")
