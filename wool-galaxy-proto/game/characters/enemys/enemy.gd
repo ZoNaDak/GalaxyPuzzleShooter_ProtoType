@@ -27,6 +27,7 @@ const FIRST_FIRE_DELAY: float = 0.5
 @export var projectile_start_point: Marker2D
 @export var hp_ui: ProgressBar
 @export var lock_on_ui: Node2D
+@export var heal_hp_effect_pivot: Marker2D
 
 var enemy_data: EnemyData
 
@@ -128,7 +129,15 @@ func _fire() -> void:
 		FireType.LASER:
 			pass
 		FireType.HEAL:
-			pass
+			for enemy in _callable_context.get_all_enemy_callable.call():
+				if enemy == self:
+					continue
+				enemy.do_heal_hp(enemy_config.fire_value)
+
+func do_heal_hp(heal_value: int) -> void:
+	super.do_heal_hp(heal_value)
+	_callable_context.play_effect_callable.call(
+		"heal_hp_effect", heal_hp_effect_pivot.global_position)
 
 func lock_on() -> void:
 	lock_on_ui.visible = true

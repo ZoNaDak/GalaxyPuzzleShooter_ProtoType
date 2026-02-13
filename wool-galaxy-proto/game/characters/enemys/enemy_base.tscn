@@ -19,11 +19,12 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 0)
 
-[node name="EnemyBase" type="Node2D" node_paths=PackedStringArray("projectile_start_point", "hp_ui", "lock_on_ui")]
+[node name="EnemyBase" type="Node2D" node_paths=PackedStringArray("projectile_start_point", "hp_ui", "lock_on_ui", "heal_hp_effect_pivot")]
 script = ExtResource("1_21oyr")
 projectile_start_point = NodePath("ProjectileStartPoint")
 hp_ui = NodePath("Control/EnemyHpUI")
 lock_on_ui = NodePath("LockOnUI")
+heal_hp_effect_pivot = NodePath("HealHpEffectPivot")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
@@ -36,6 +37,10 @@ collision_layer = 12
 collision_mask = 16
 
 [node name="ProjectileStartPoint" type="Marker2D" parent="."]
+
+[node name="HealHpEffectPivot" type="Marker2D" parent="."]
+position = Vector2(2, -2)
+gizmo_extents = 2.0
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
