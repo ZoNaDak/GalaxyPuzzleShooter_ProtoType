@@ -5,7 +5,7 @@ extends Node
 
 #region Consts
 
-const BULLET_SCENE_PATH: String = "res://game/projectiles/%s.tscn"
+const PROJECTILE_SCENE_PATH: String = "res://game/projectiles/%s.tscn"
 
 #endregion
 
@@ -32,15 +32,24 @@ func initialize() -> void:
 
 func spawn_bullet(key: String) -> Bullet:
 	LogManager.info("spawn_bullet : %s" % [key], "ProjectileService")
-	var bullet_scene: PackedScene = load(BULLET_SCENE_PATH % [key])
+	var bullet_scene: PackedScene = load(PROJECTILE_SCENE_PATH % [key])
 	var bullet: Bullet = bullet_scene.instantiate()
 	_projectile_parent.add_child(bullet)
 	_projectile_arr.append(bullet)
-	bullet.initialize(despawn_bullet)
+	bullet.initialize(despawn_projectile)
 	return bullet
 
-func despawn_bullet(bullet: Bullet) -> void:
-	_projectile_arr.erase(bullet)
-	bullet.queue_free()
+func spawn_laser(key: String) -> Laser:
+	LogManager.info("spawn laser: %s" % [key], "ProjectileService")
+	var laser_scene: PackedScene = load(PROJECTILE_SCENE_PATH % [key])
+	var laser: Laser = laser_scene.instantiate()
+	_projectile_parent.add_child(laser)
+	_projectile_arr.append(laser)
+	laser.initialize(despawn_projectile)
+	return laser
+
+func despawn_projectile(projectile: ProjectileBase) -> void:
+	_projectile_arr.erase(projectile)
+	projectile.queue_free()
 
 #endregion

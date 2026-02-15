@@ -127,7 +127,11 @@ func _fire() -> void:
 			bullet.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, enemy_config.fire_value)
 		FireType.LASER:
-			pass
+			var target = _callable_context.get_player_callable.call()
+			var laser: Laser = _callable_context.spawn_laser_callable.call("enemy_laser_0")
+			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
+			laser.set_data(get_type(), projectile_start_point.global_position,
+				move_dir, enemy_config.fire_value)
 		FireType.HEAL:
 			for enemy in _callable_context.get_all_enemy_callable.call():
 				if enemy == self:

@@ -1,11 +1,13 @@
-# bullet.gd
-class_name Bullet
+# laser.gd
+class_name Laser
 
 extends ProjectileBase
 
 #region Variables
 
-@export var area: Area2D
+@export var raycast: RayCast2D
+@export var line_renderer: Line2D
+
 @export var move_speed: float = 10.0
 
 var move_dir: Vector2
@@ -21,19 +23,26 @@ var _despawn_callable: Callable
 #region Override Methods
 
 func get_type() -> Enums.ProjectileType:
-	return Enums.ProjectileType.BULLET
+	return Enums.ProjectileType.LASER
 
 #endregion
 
 #region Lifecycle
 
 func initialize(despawn_callable: Callable) -> void:
-	area.monitoring = true
 	_despawn_callable = despawn_callable
 
+	line_renderer.points = [global_position, global_position]
+
 func _process(delta: float) -> void:
-	_check_out_of_screen()
-	position += move_speed * delta * move_dir
+	if line_renderer.points.size() < 2:
+		return
+		
+	line_renderer.points[1] = raycast.target_position
+
+func _physics_process(delta: float) -> void:
+	raycast.target_position += move_speed * delta * move_dir
+	pass
 
 #endregion
 
@@ -46,23 +55,5 @@ func set_data(character_type: Enums.CharacterType,
 	self.global_position = start_pos
 	self.move_dir = move_dir
 	self.damage = damage
-
-func _check_out_of_screen() -> void:
-	if global_position.x < 0 or global_position.x > get_viewport().size.x \
-		or global_position.y < 0 or global_position.y > get_viewport().size.y:
-		_despawn_callable.call(self)
-
-#endregion
-
-#region Collision
-
-func _on_area_entered(other_area: Area2D) -> void:
-	var character = other_area.owner as Character
-	if character == null:
-		return
-
-	if character.get_type() != character_type:
-		character.do_damage(damage)
-		_despawn_callable.call(self)
 
 #endregion
