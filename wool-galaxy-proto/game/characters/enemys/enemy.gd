@@ -75,6 +75,11 @@ func _process(delta: float) -> void:
 		StateType.IDLE:
 			check_fire(delta)
 
+func _exit_tree() -> void:
+	if _cur_laser != null:
+		_callable_context.despawn_projectile_callable.call(_cur_laser)
+		_cur_laser = null
+
 #endregion
 
 #region Input
@@ -140,7 +145,7 @@ func _fire() -> void:
 				move_dir, enemy_config.fire_value)
 		FireType.HEAL:
 			for enemy in _callable_context.get_all_enemy_callable.call():
-				if enemy == self:
+				if enemy == self || enemy == null:
 					continue
 				enemy.do_heal_hp(enemy_config.fire_value[0])
 

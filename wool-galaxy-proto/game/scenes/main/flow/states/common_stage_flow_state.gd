@@ -89,7 +89,6 @@ func get_is_clear_common_stage() -> bool:
 
 func spawn_random_enemy(spawn_index: int) -> void:
 	var config_index: int = randi() % _context.stage_config.enemy_list.size()
-	config_index = 1
 	var key: String = _context.stage_config.enemy_list[config_index]
 	_context.enemy_service.spawn_enemy(key, spawn_index)
 	_enemy_spawn_count += 1
