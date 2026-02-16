@@ -47,7 +47,14 @@ func _initialize():
 		_projectile_service.despawn_projectile,
 		_effect_service.play_effect
 	)
-	_enemy_service.initialize(enemy_callable_context)
+	var boss_callable_context := BossEnemyCallableContext.new()
+	boss_callable_context.initialize_in_scene(
+		func(): return _player,
+		_projectile_service.spawn_bullet,
+		_effect_service.play_effect
+	)
+	_enemy_service.initialize(
+		enemy_callable_context, boss_callable_context)
 	
 	_game_start_text.visible = false
 	_boss_warning_text.visible = false

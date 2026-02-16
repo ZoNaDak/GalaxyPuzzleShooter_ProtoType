@@ -14,17 +14,13 @@ func get_state_type() -> StateType:
 
 func begin() -> void:
 	var tree := Engine.get_main_loop() as SceneTree
-	var tween = tree.create_tween()
-
-	tween.tween_interval(0.2)
-	await tween.finished
+	await tree.create_timer(0.2).timeout
 
 	_context.missile_puzzle_board.set_input_enable(false)
 	await _perform_boss_warning()
-	tween.tween_interval(0.5)
-	await tween.finished
+	await tree.create_timer(0.5).timeout
 
-	LogManager.info("Halo", "BossStageFlowState")
+	_context.enemy_service.spawn_boss_enemy(_context.stage_config.boss_enemy)
 
 	_context.missile_puzzle_board.set_input_enable(true)
 

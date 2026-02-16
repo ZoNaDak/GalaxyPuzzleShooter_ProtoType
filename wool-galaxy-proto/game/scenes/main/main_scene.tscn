@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://1yv2fwak0riq" path="res://game/scenes/main/flow/main_flow.tscn" id="2_qyem0"]
 [ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
 [ext_resource type="PackedScene" uid="uid://dburoiggif5h" path="res://game/ui/missile_slot/missile_slot_board.tscn" id="3_owm1g"]
-[ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/player/player.tscn" id="3_poqg5"]
+[ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/players/player.tscn" id="3_poqg5"]
 [ext_resource type="PackedScene" uid="uid://bq76q3cjshmr0" path="res://game/ui/player_ui.tscn" id="4_i3qem"]
 [ext_resource type="Script" uid="uid://bqyot2gdwdw45" path="res://game/services/enemy_service.gd" id="5_3m0lk"]
 [ext_resource type="Script" uid="uid://cnvo86l7fr8p7" path="res://game/services/projectile_service.gd" id="7_ol8lf"]
@@ -19,12 +19,12 @@
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
-_player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerUI")
+_player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI/PlayerUIBar")
 _enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
 _projectile_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService")
 _effect_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EffectService")
-_player_skill_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/PlayerSkillButton")
-_reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control/Reset")
+_player_skill_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI/PlayerSkillButton")
+_reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI/Reset")
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
 _game_start_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameStartText")
@@ -83,9 +83,10 @@ region_rect = Rect2(0, 0, 639.89, 640)
 [node name="Player" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
 position = Vector2(90, 120)
 
-[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr", "_enemy_parent")]
+[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr", "_boss_enemy_spawn_point", "_enemy_parent")]
 script = ExtResource("5_3m0lk")
 _enemy_spawn_point_arr = [NodePath("EnemySpawnPoints/EnemySpawnPoint0"), NodePath("EnemySpawnPoints/EnemySpawnPoint1"), NodePath("EnemySpawnPoints/EnemySpawnPoint2")]
+_boss_enemy_spawn_point = NodePath("EnemySpawnPoints/BossEnemySpawnPoint")
 _enemy_parent = NodePath("EnemyParent")
 metadata/_custom_type_script = "uid://bqyot2gdwdw45"
 
@@ -103,6 +104,9 @@ gizmo_extents = 5.0
 position = Vector2(140, 60)
 gizmo_extents = 5.0
 
+[node name="BossEnemySpawnPoint" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(90, 48)
+
 [node name="EnemyParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService"]
 
 [node name="ProjectileService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_projectile_parent")]
@@ -119,7 +123,7 @@ _effect_parent = NodePath("EffectParent")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport"]
 
-[node name="Control" type="Control" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer"]
+[node name="PlayerUI" type="Control" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer"]
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 3
 anchors_preset = 12
@@ -131,13 +135,13 @@ grow_vertical = 0
 size_flags_horizontal = 6
 size_flags_vertical = 4
 
-[node name="PlayerSkillButton" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control" instance=ExtResource("9_fll6v")]
+[node name="PlayerSkillButton" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI" instance=ExtResource("9_fll6v")]
 layout_mode = 1
 
-[node name="PlayerUI" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control" instance=ExtResource("4_i3qem")]
+[node name="PlayerUIBar" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI" instance=ExtResource("4_i3qem")]
 layout_mode = 1
 
-[node name="Reset" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/Control" instance=ExtResource("9_ol8lf")]
+[node name="Reset" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI" instance=ExtResource("9_ol8lf")]
 layout_mode = 1
 
 [node name="GameStateTextUI" type="Control" parent="Canvas/VBoxContainer/Control"]

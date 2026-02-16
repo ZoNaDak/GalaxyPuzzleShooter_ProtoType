@@ -6,20 +6,24 @@ extends Node
 #region Consts
 
 const ENEMY_SCENE_PATH: String = "res://game/characters/enemys/%s.tscn"
+const BOSS_ENEMY_SCENE_PATH: String = "res://game/characters/boss_enemys/%s.tscn"
 
 #endregion
 
 #region Variables
 
 @export var _enemy_spawn_point_arr: Array[Node2D]
+@export var _boss_enemy_spawn_point: Node2D
 @export var _enemy_parent: Node2D
 
 var _enemy_arr: Array[Enemy]
-var _locked_enemy: Enemy
+var _boss_enemy: BossEnemy
+var _locked_enemy: Character
 
 #region Callable
 
-var _callable_context: EnemyCallableContext
+var _enemy_callable_context: EnemyCallableContext
+var _boss_enemy_callable_context: BossEnemyCallableContext
 
 #endregion
 
@@ -37,13 +41,18 @@ var enemy_arr: Array[Enemy]:
 
 #region Lifecycle
 
-func initialize(callable_context: EnemyCallableContext) -> void:
-	_callable_context = callable_context
-	_callable_context.initialize_in_enemy_service(
+func initialize(enemy_callable_context: EnemyCallableContext,
+	_boss_enemy_callable_context: BossEnemyCallableContext) -> void:
+	_enemy_callable_context = enemy_callable_context
+	_enemy_callable_context.initialize_in_enemy_service(
+		get_all_enemy_arr)
+	_boss_enemy_callable_context = _boss_enemy_callable_context
+	_boss_enemy_callable_context.initialize_in_enemy_service(
 		get_all_enemy_arr)
 
 	for i in range(_enemy_spawn_point_arr.size()):
 		_enemy_arr.append(null)
+	_boss_enemy = null
 	_locked_enemy = null
 
 #endregion
@@ -59,7 +68,7 @@ func spawn_enemy(key: String, spawn_index: int) -> void:
 	var enemy: Enemy = enemy_scene.instantiate()
 	var spawn_pos := _enemy_spawn_point_arr[spawn_index].position
 	enemy.initialize(spawn_index, spawn_pos,
-		_callable_context, _lock_on_enemy)
+		_enemy_callable_context, _lock_on_enemy)
 	_enemy_parent.add_child(enemy)
 	_enemy_arr[spawn_index] = enemy
 
@@ -77,7 +86,7 @@ func despawn_enemy(spawn_index: int) -> void:
 	_enemy_arr[spawn_index].queue_free()
 	_enemy_arr[spawn_index] = null
 
-func _lock_on_enemy(enemy: Enemy) -> void:
+func _lock_on_enemy(enemy: Character) -> void:
 	if _locked_enemy == enemy:
 		return
 
@@ -86,10 +95,22 @@ func _lock_on_enemy(enemy: Enemy) -> void:
 
 	_locked_enemy = enemy
 
-func get_locked_enemy() -> Enemy:
+func get_locked_enemy() -> Character:
 	return _locked_enemy
 
 func get_enemy_spawn_point_arr() -> Array[Node2D]:
 	return _enemy_spawn_point_arr
+
+func spawn_boss_enemy(key: String) -> void:
+	LogManager.info("spawn_boss_enemy : %s" % [key], "EnemyService")
+	var boss_enemy_scene: PackedScene = load(BOSS_ENEMY_SCENE_PATH % [key])
+	_boss_enemy = boss_enemy_scene.instantiate()
+	var spawn_pos := _boss_enemy_spawn_point.position
+	_boss_enemy.initialize(spawn_pos,
+		_boss_enemy_callable_context, _lock_on_enemy)
+	_enemy_parent.add_child(_boss_enemy)
+
+	if _locked_enemy == null:
+		_boss_enemy.lock_on()
 
 #endregion

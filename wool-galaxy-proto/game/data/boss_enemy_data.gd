@@ -1,5 +1,5 @@
-# enemy_data.gd
-class_name EnemyData
+# boss_enemy_data.gd
+class_name BossEnemyData
 
 extends CharacterData
 
