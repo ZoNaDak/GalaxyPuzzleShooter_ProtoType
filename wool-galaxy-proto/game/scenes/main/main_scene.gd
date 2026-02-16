@@ -42,6 +42,8 @@ func _initialize():
 	enemy_callable_context.initialize_in_scene(
 		func(): return _player,
 		_projectile_service.spawn_bullet,
+		_projectile_service.spawn_laser,
+		_projectile_service.despawn_projectile,
 		_effect_service.play_effect
 	)
 	_enemy_service.initialize(enemy_callable_context)

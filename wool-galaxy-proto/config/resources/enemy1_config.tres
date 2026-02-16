@@ -6,3 +6,4 @@
 script = ExtResource("1_lcdj5")
 fire_type = 1
 fire_delay = 0.5
+fire_value_arr = Array[int]([1, 2, 5])

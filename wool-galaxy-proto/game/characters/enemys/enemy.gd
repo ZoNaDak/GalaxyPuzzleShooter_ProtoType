@@ -36,6 +36,8 @@ var _spawn_pos: Vector2
 
 var _cur_fire_delay: float
 
+var _cur_laser: Laser
+
 #region Callable
 
 var _callable_context: EnemyCallableContext
@@ -62,6 +64,8 @@ func initialize(spawn_index: int, spawn_pos: Vector2,
 	refresh_hp_ui()
 	lock_on_ui.visible = false
 	_cur_fire_delay = 0.0
+	_cur_laser = null
+
 	state = StateType.START_MOVE
 
 func _process(delta: float) -> void:
@@ -69,7 +73,14 @@ func _process(delta: float) -> void:
 		StateType.START_MOVE:
 			start_move(delta)
 		StateType.IDLE:
+			if enemy_config.fire_type == FireType.LASER && _cur_laser != null:
+				return
 			check_fire(delta)
+
+func _exit_tree() -> void:
+	if _cur_laser != null:
+		_callable_context.despawn_projectile_callable.call(_cur_laser)
+		_cur_laser = null
 
 #endregion
 
@@ -125,14 +136,20 @@ func _fire() -> void:
 			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("enemy_bullet_0")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
-				move_dir, enemy_config.fire_value)
+				move_dir, enemy_config.fire_value_arr)
 		FireType.LASER:
-			pass
+			if _cur_laser != null:
+				return
+			var target = _callable_context.get_player_callable.call()
+			_cur_laser = _callable_context.spawn_laser_callable.call("enemy_laser_0")
+			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
+			_cur_laser.set_data(get_type(), projectile_start_point.global_position,
+				move_dir, enemy_config.fire_value_arr)
 		FireType.HEAL:
 			for enemy in _callable_context.get_all_enemy_callable.call():
-				if enemy == self:
+				if enemy == self || enemy == null:
 					continue
-				enemy.do_heal_hp(enemy_config.fire_value)
+				enemy.do_heal_hp(enemy_config.fire_value_arr[0])
 
 func do_heal_hp(heal_value: int) -> void:
 	super.do_heal_hp(heal_value)
