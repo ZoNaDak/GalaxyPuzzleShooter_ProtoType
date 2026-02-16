@@ -21,6 +21,7 @@ extends BaseScene
 @export var _missile_puzzle_board: MissilePuzzleBoard
 
 @export var _game_start_text: Control
+@export var _boss_warning_text: Control
 @export var _stage_clear_text: Control
 @export var _game_over_text: Control
 
@@ -49,6 +50,7 @@ func _initialize():
 	_enemy_service.initialize(enemy_callable_context)
 	
 	_game_start_text.visible = false
+	_boss_warning_text.visible = false
 	_stage_clear_text.visible = false
 	_game_over_text.visible = false
 
@@ -57,7 +59,8 @@ func _initialize():
 		_enemy_service, _projectile_service, _effect_service,
 		_missile_slot_board, _missile_puzzle_board,
 		_player_skill_button, _reset_button,
-		_game_start_text, _stage_clear_text, _game_over_text,
+		_game_start_text, _boss_warning_text,
+		_stage_clear_text, _game_over_text,
 		_stage_config)
 
 	_main_flow.initialize(context)

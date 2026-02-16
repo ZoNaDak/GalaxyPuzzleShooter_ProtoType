@@ -13,6 +13,7 @@ var missile_puzzle_board: MissilePuzzleBoard
 var player_skill_button: PlayerSkillButton
 var reset_button: ResetButton
 var game_start_text: Control
+var boss_warning_text: Control
 var stage_clear_text: Control
 var game_over_text: Control
 var stage_config: StageConfig
@@ -33,6 +34,7 @@ func initialize(
 	player_skill_button: PlayerSkillButton,
 	reset_button: ResetButton,
 	game_start_text: Control,
+	boss_warning_text: Control,
 	stage_clear_text: Control,
 	game_over_text: Control,
 	stage_config: StageConfig) -> void:
@@ -46,6 +48,7 @@ func initialize(
 	self.player_skill_button = player_skill_button
 	self.reset_button = reset_button
 	self.game_start_text = game_start_text
+	self.boss_warning_text = boss_warning_text
 	self.stage_clear_text = stage_clear_text
 	self.game_over_text = game_over_text
 	self.stage_config = stage_config

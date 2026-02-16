@@ -13,17 +13,51 @@ func get_state_type() -> StateType:
 	return StateType.BOSS_STAGE
 
 func begin() -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	var tween = tree.create_tween()
+
+	tween.tween_interval(0.2)
+	await tween.finished
+
+	_context.missile_puzzle_board.set_input_enable(false)
+	await _perform_boss_warning()
+	tween.tween_interval(0.5)
+	await tween.finished
+
+	LogManager.info("Halo", "BossStageFlowState")
+
 	_context.missile_puzzle_board.set_input_enable(true)
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
 	# TODO: 추후 플로우 구현할 것
-	if true:
+	if false:
 		return StateType.STAGE_CLEAR
 		
 	return StateType.NONE
 
 func end() -> void:
 	_context.missile_puzzle_board.set_input_enable(false)
+
+#endregion
+
+#region Methods
+
+func _perform_boss_warning() -> void:
+	var warning_text := _context.boss_warning_text
+	warning_text.modulate.a = 0.0
+	warning_text.show()
+	
+	var tree := Engine.get_main_loop() as SceneTree
+	var tween = tree.create_tween()
+	for i in range(4):
+		tween.tween_property(warning_text, "modulate:a", 1.0, 0.2)
+		tween.tween_interval(0.5)
+		tween.tween_property(warning_text, "modulate:a", 0.0, 0.2)
+		tween.tween_interval(0.2)
+	await tween.finished
+	
+	warning_text.hide()
+	
 
 #endregion

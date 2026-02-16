@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://c42kqsngxwrcr" path="res://game/ui/player_skill_button.tscn" id="9_fll6v"]
 [ext_resource type="PackedScene" uid="uid://csjmag1couymw" path="res://game/ui/reset_button.tscn" id="9_ol8lf"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_effect_service", "_player_skill_button", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_stage_clear_text", "_game_over_text")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_effect_service", "_player_skill_button", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_boss_warning_text", "_stage_clear_text", "_game_over_text")]
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
@@ -28,6 +28,7 @@ _reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/Gam
 _missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
 _missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
 _game_start_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameStartText")
+_boss_warning_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/BossWarningText")
 _stage_clear_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/StageClearText")
 _game_over_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameOverText")
 _stage_config = ExtResource("2_ety1j")
@@ -161,6 +162,7 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="GameStartText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -173,6 +175,17 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/normal_font_size = 20
 text = "Game Start"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossWarningText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "WARNING !!"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
