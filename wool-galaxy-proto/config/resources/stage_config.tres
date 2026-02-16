@@ -5,3 +5,4 @@
 [resource]
 script = ExtResource("1_85v25")
 enemy_list = Array[String](["enemy_0", "enemy_1", "enemy_2"])
+enemy_spawn_delay_min_max = Vector2(0.5, 2)
