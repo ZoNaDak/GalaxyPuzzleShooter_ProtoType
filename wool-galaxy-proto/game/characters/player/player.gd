@@ -119,8 +119,9 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 				return
 			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("player_bullet_m")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
+			var damage: Array[int] = [player_config.red_missile_value]
 			bullet.set_data(get_type(), projectile_start_point.global_position,
-				move_dir, [player_config.red_missile_value])
+				move_dir, damage)
 		Enums.MissileColorType.BLUE:
 			do_heal_mp(player_config.blue_missile_value)
 		Enums.MissileColorType.GREEN:
@@ -130,8 +131,9 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 			for i in enemy_spawn_point_arr.size():
 				var bullet: Bullet = _callable_context.spawn_bullet_callable.call("player_bullet_s")
 				var move_dir = (enemy_spawn_point_arr[i].global_position - projectile_start_point.global_position).normalized()
+				var damage: Array[int] = [player_config.yellow_missile_value]
 				bullet.set_data(get_type(), projectile_start_point.global_position,
-					move_dir, [player_config.yellow_missile_value])
+					move_dir, damage)
 
 	missile_data.decrease_amount()
 	if (missile_data.amount == 0):

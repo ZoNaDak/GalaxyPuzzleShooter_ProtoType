@@ -11,7 +11,7 @@ extends ProjectileBase
 @export var move_speed: float = 10.0
 @export var max_laser_level: int = 3
 @export var step_up_duration: float = 1
-@export var laser_widht_arr: Array[int]
+@export var laser_width_arr: Array[int]
 @export var damage_tick_time: float = 0.25
 
 var move_dir: Vector2
@@ -46,8 +46,8 @@ func initialize(despawn_callable: Callable) -> void:
 	laser_level = 0
 	cur_damage_tick_time = 0.0
 
-	line_renderer.points = [global_position, global_position]
-	line_renderer.width = laser_widht_arr[laser_level]
+	line_renderer.points = [Vector2.ZERO, Vector2.ZERO]
+	line_renderer.width = laser_width_arr[laser_level]
 
 func _process(delta: float) -> void:
 	if line_renderer.points.size() < 2:
@@ -55,23 +55,25 @@ func _process(delta: float) -> void:
 		
 	line_renderer.points[1] = raycast.target_position
 
-	if _target != null:
+	if _target != null and is_instance_valid(_target):
 		if cur_damage_tick_time >= damage_tick_time:
 			cur_damage_tick_time = 0.0
 			var _damage = damage_arr[laser_level]
 			_target.do_damage(_damage)
 		else:
 			cur_damage_tick_time += delta
+	else:
+		_target = null
 			
 
 func _physics_process(delta: float) -> void:
-	if _target != null:
+	if _target != null and is_instance_valid(_target):
 		if laser_level >= max_laser_level - 1:
 			return
 		collided_duration += delta
 		if collided_duration >= step_up_duration * (laser_level + 1):
 			laser_level += 1
-			line_renderer.width = laser_widht_arr[laser_level]
+			line_renderer.width = laser_width_arr[laser_level]
 	else:
 		if raycast.is_colliding():
 			var character = (raycast.get_collider() as Area2D).owner as Character

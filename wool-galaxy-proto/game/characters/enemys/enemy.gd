@@ -73,6 +73,8 @@ func _process(delta: float) -> void:
 		StateType.START_MOVE:
 			start_move(delta)
 		StateType.IDLE:
+			if enemy_config.fire_type == FireType.LASER && _cur_laser != null:
+				return
 			check_fire(delta)
 
 func _exit_tree() -> void:
@@ -134,7 +136,7 @@ func _fire() -> void:
 			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("enemy_bullet_0")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
-				move_dir, enemy_config.fire_value)
+				move_dir, enemy_config.fire_value_arr)
 		FireType.LASER:
 			if _cur_laser != null:
 				return
@@ -142,12 +144,12 @@ func _fire() -> void:
 			_cur_laser = _callable_context.spawn_laser_callable.call("enemy_laser_0")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			_cur_laser.set_data(get_type(), projectile_start_point.global_position,
-				move_dir, enemy_config.fire_value)
+				move_dir, enemy_config.fire_value_arr)
 		FireType.HEAL:
 			for enemy in _callable_context.get_all_enemy_callable.call():
 				if enemy == self || enemy == null:
 					continue
-				enemy.do_heal_hp(enemy_config.fire_value[0])
+				enemy.do_heal_hp(enemy_config.fire_value_arr[0])
 
 func do_heal_hp(heal_value: int) -> void:
 	super.do_heal_hp(heal_value)
