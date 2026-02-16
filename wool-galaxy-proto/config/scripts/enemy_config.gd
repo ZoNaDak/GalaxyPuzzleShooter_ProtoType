@@ -9,4 +9,4 @@ extends Resource
 
 @export var fire_type: Enemy.FireType = Enemy.FireType.BULLET
 @export var fire_delay: float = 2.0
-@export var fire_value: int = 5
+@export var fire_value: Array[int] = [5]
