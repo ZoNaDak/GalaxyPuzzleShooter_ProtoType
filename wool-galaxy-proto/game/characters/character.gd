@@ -40,6 +40,7 @@ func notify_changed_mp() -> void:
 func do_damage(damage: int) -> void:
 	data.cur_hp -= damage
 	if data.cur_hp <= 0:
+		data.cur_hp = 0
 		die()
 	notify_changed_hp()
 

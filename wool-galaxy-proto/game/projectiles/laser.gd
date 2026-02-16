@@ -12,11 +12,15 @@ extends ProjectileBase
 @export var max_laser_level: int = 3
 @export var step_up_duration: float = 1
 @export var laser_widht_arr: Array[int]
+@export var damage_tick_time: float = 0.25
 
 var move_dir: Vector2
 var collided_duration: float
 
 var laser_level = 0
+var cur_damage_tick_time = 0.0
+
+var _target: Character
 
 #region Callable
 
@@ -40,6 +44,7 @@ func initialize(despawn_callable: Callable) -> void:
 
 	collided_duration = 0.0
 	laser_level = 0
+	cur_damage_tick_time = 0.0
 
 	line_renderer.points = [global_position, global_position]
 	line_renderer.width = laser_widht_arr[laser_level]
@@ -50,19 +55,33 @@ func _process(delta: float) -> void:
 		
 	line_renderer.points[1] = raycast.target_position
 
+	if _target != null:
+		if cur_damage_tick_time >= damage_tick_time:
+			cur_damage_tick_time = 0.0
+			var _damage = damage_arr[laser_level]
+			_target.do_damage(_damage)
+		else:
+			cur_damage_tick_time += delta
+			
+
 func _physics_process(delta: float) -> void:
-	if raycast.is_colliding():
+	if _target != null:
 		if laser_level >= max_laser_level - 1:
 			return
-
 		collided_duration += delta
 		if collided_duration >= step_up_duration * (laser_level + 1):
 			laser_level += 1
 			line_renderer.width = laser_widht_arr[laser_level]
 	else:
-		raycast.target_position += move_speed * delta * move_dir
-		collided_duration = 0.0
-		laser_level = 0
+		if raycast.is_colliding():
+			var character = (raycast.get_collider() as Area2D).owner as Character
+			if character_type != character.get_type():
+				_target = character
+				collided_duration = 0.0
+				cur_damage_tick_time = 0.0
+				laser_level = 0
+		else:
+			raycast.target_position += move_speed * delta * move_dir
 
 #endregion
 
@@ -74,6 +93,6 @@ func set_data(character_type: Enums.CharacterType,
 	self.character_type = character_type
 	self.global_position = start_pos
 	self.move_dir = move_dir
-	self.damage = damage
+	self.damage_arr = damage_arr
 
 #endregion

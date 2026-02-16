@@ -41,11 +41,11 @@ func _process(delta: float) -> void:
 
 @warning_ignore("shadowed_variable")
 func set_data(character_type: Enums.CharacterType,
-	start_pos: Vector2, move_dir: Vector2, damage: int) -> void:
+	start_pos: Vector2, move_dir: Vector2, damage_arr: Array[int]) -> void:
 	self.character_type = character_type
 	self.global_position = start_pos
 	self.move_dir = move_dir
-	self.damage = damage
+	self.damage_arr = damage_arr
 
 func _check_out_of_screen() -> void:
 	if global_position.x < 0 or global_position.x > get_viewport().size.x \
@@ -62,7 +62,7 @@ func _on_area_entered(other_area: Area2D) -> void:
 		return
 
 	if character.get_type() != character_type:
-		character.do_damage(damage)
+		character.do_damage(damage_arr[0])
 		_despawn_callable.call(self)
 
 #endregion

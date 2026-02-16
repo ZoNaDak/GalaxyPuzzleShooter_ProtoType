@@ -27,7 +27,7 @@ signal on_unequip_missile(index: int)
 func _init(hp: int, mp: int, max_force_shield_value: int):
 	super._init(hp, mp)
 	self.max_force_shield_value = max_force_shield_value
-	self.cur_force_shield_value = max_force_shield_value
+	self.cur_force_shield_value = 0
 
 	equipped_missile_datas.resize(Consts.MISSILE_SLOT_COUNT)
 	for i in equipped_missile_datas.size():

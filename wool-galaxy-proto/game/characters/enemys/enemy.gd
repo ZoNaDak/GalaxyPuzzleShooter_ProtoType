@@ -129,7 +129,7 @@ func _fire() -> void:
 			var bullet: Bullet = _callable_context.spawn_bullet_callable.call("enemy_bullet_0")
 			var move_dir = (target.global_position - projectile_start_point.global_position).normalized()
 			bullet.set_data(get_type(), projectile_start_point.global_position,
-				move_dir, enemy_config.fire_value[0])
+				move_dir, enemy_config.fire_value)
 		FireType.LASER:
 			if _cur_laser != null:
 				return
@@ -142,7 +142,7 @@ func _fire() -> void:
 			for enemy in _callable_context.get_all_enemy_callable.call():
 				if enemy == self:
 					continue
-				enemy.do_heal_hp(enemy_config.fire_value)
+				enemy.do_heal_hp(enemy_config.fire_value[0])
 
 func do_heal_hp(heal_value: int) -> void:
 	super.do_heal_hp(heal_value)

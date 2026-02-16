@@ -7,7 +7,7 @@ extends Node2D
 
 var character_type: Enums.CharacterType
 
-var damage: int
+var damage_arr: Array[int]
 
 #endregion
 
