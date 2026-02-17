@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://djuag7yqutj5o"]
+
+[ext_resource type="Texture2D" uid="uid://fe1g8hu4rl0m" path="res://game/characters/boss_enemys/resources/boss_enemy.png" id="1_gg2bm"]
+[ext_resource type="Script" uid="uid://p17ermjfcon0" path="res://game/characters/boss_enemys/boss_enemy.gd" id="1_rupu0"]
+[ext_resource type="Resource" uid="uid://dji6dvkqb57f8" path="res://config/resources/boss_enemy_config.tres" id="2_mar52"]
+[ext_resource type="Texture2D" uid="uid://cpkisupfcof5e" path="res://assets/art/UI/Icon/lock_on.png" id="2_rupu0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gg2bm"]
+size = Vector2(28, 27)
+
+[node name="BossEnemy" type="Node2D" node_paths=PackedStringArray("lock_on_ui", "fire_0_start_point_arr", "fire_1_start_point", "heal_hp_effect_pivot")]
+z_index = 1
+script = ExtResource("1_rupu0")
+boss_enemy_config = ExtResource("2_mar52")
+lock_on_ui = NodePath("LockOnUI")
+fire_0_start_point_arr = [NodePath("Fire0Points/Fire0StartPoint0"), NodePath("Fire0Points/Fire0StartPoint1")]
+fire_1_start_point = NodePath("Fire1StartPoint")
+heal_hp_effect_pivot = NodePath("HealHpEffectPivot")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_gg2bm")
+
+[node name="LockOnUI" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(0, 1)
+texture = ExtResource("2_rupu0")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 12
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_gg2bm")
+
+[node name="Fire0Points" type="Node2D" parent="."]
+
+[node name="Fire0StartPoint0" type="Marker2D" parent="Fire0Points"]
+position = Vector2(-8, 16)
+
+[node name="Fire0StartPoint1" type="Marker2D" parent="Fire0Points"]
+position = Vector2(8, 16)
+
+[node name="Fire1StartPoint" type="Marker2D" parent="."]
+position = Vector2(0, 15)
+
+[node name="HealHpEffectPivot" type="Marker2D" parent="."]
+position = Vector2(3, -3)
+gizmo_extents = 2.0

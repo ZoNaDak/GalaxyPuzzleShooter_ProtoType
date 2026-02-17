@@ -109,9 +109,6 @@ func _check_player_skill_cooltime(delta: float) -> void:
 #endregion
 
 func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
-	LogManager.info("Fire Missile : %s"
-		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
-
 	match missile_data.color:
 		Enums.MissileColorType.RED:
 			var target = _callable_context.get_locked_enemy_callable.call()
@@ -134,6 +131,9 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 				var damage: Array[int] = [player_config.yellow_missile_value]
 				bullet.set_data(get_type(), projectile_start_point.global_position,
 					move_dir, damage)
+	
+	LogManager.info("Fire Missile : %s"
+		% [Enums.MissileColorType.find_key(missile_data.color)], "Player")
 
 	missile_data.decrease_amount()
 	if (missile_data.amount == 0):

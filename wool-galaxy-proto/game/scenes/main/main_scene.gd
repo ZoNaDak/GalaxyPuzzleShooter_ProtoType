@@ -9,6 +9,7 @@ extends BaseScene
 
 @export var _player: Player
 @export var _player_ui: PlayerUI
+@export var _boss_enemy_hp_ui: BossEnemyHpUI
 
 @export var _enemy_service: EnemyService
 @export var _projectile_service: ProjectileService
@@ -21,6 +22,7 @@ extends BaseScene
 @export var _missile_puzzle_board: MissilePuzzleBoard
 
 @export var _game_start_text: Control
+@export var _boss_warning_text: Control
 @export var _stage_clear_text: Control
 @export var _game_over_text: Control
 
@@ -36,6 +38,7 @@ func _ready() -> void:
 	_main_flow.start_flow()
 
 func _initialize():
+	_boss_enemy_hp_ui.visible = false
 	_projectile_service.initialize()
 
 	var enemy_callable_context := EnemyCallableContext.new()
@@ -46,18 +49,28 @@ func _initialize():
 		_projectile_service.despawn_projectile,
 		_effect_service.play_effect
 	)
-	_enemy_service.initialize(enemy_callable_context)
+	var boss_callable_context := BossEnemyCallableContext.new()
+	boss_callable_context.initialize_in_scene(
+		func(): return _player,
+		_projectile_service.spawn_bullet,
+		_effect_service.play_effect,
+		_effect_service.stop_effect,
+	)
+	_enemy_service.initialize(
+		enemy_callable_context, boss_callable_context)
 	
 	_game_start_text.visible = false
+	_boss_warning_text.visible = false
 	_stage_clear_text.visible = false
 	_game_over_text.visible = false
 
 	var context: MainFlowContext = MainFlowContext.new()
-	context.initialize(_player, _player_ui,
+	context.initialize(_player, _player_ui, _boss_enemy_hp_ui,
 		_enemy_service, _projectile_service, _effect_service,
 		_missile_slot_board, _missile_puzzle_board,
 		_player_skill_button, _reset_button,
-		_game_start_text, _stage_clear_text, _game_over_text,
+		_game_start_text, _boss_warning_text,
+		_stage_clear_text, _game_over_text,
 		_stage_config)
 
 	_main_flow.initialize(context)

@@ -5,6 +5,7 @@ class_name MainFlowContext
 
 var player: Player
 var player_ui: PlayerUI
+var boss_enemy_ui: BossEnemyHpUI
 var enemy_service: EnemyService
 var projectile_service: ProjectileService
 var effect_service: EffectService
@@ -13,6 +14,7 @@ var missile_puzzle_board: MissilePuzzleBoard
 var player_skill_button: PlayerSkillButton
 var reset_button: ResetButton
 var game_start_text: Control
+var boss_warning_text: Control
 var stage_clear_text: Control
 var game_over_text: Control
 var stage_config: StageConfig
@@ -25,6 +27,7 @@ var stage_config: StageConfig
 func initialize(
 	player: Player,
 	player_ui: PlayerUI,
+	boss_enemy_ui: BossEnemyHpUI,
 	enemy_service: EnemyService,
 	projectile_service: ProjectileService,
 	effect_service: EffectService,
@@ -33,11 +36,13 @@ func initialize(
 	player_skill_button: PlayerSkillButton,
 	reset_button: ResetButton,
 	game_start_text: Control,
+	boss_warning_text: Control,
 	stage_clear_text: Control,
 	game_over_text: Control,
 	stage_config: StageConfig) -> void:
 	self.player = player
 	self.player_ui = player_ui
+	self.boss_enemy_ui = boss_enemy_ui
 	self.enemy_service = enemy_service
 	self.projectile_service = projectile_service
 	self.effect_service = effect_service
@@ -46,6 +51,7 @@ func initialize(
 	self.player_skill_button = player_skill_button
 	self.reset_button = reset_button
 	self.game_start_text = game_start_text
+	self.boss_warning_text = boss_warning_text
 	self.stage_clear_text = stage_clear_text
 	self.game_over_text = game_over_text
 	self.stage_config = stage_config
