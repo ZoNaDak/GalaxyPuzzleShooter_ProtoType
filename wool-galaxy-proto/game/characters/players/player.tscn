@@ -25,6 +25,7 @@ border_width_bottom = 1
 border_color = Color(1, 1, 1, 0)
 
 [node name="Player" type="Node2D" node_paths=PackedStringArray("projectile_start_point", "heal_hp_effect_pivot", "heal_mp_effect_pivot", "force_shield_effect", "force_shield_ui")]
+z_index = 1
 script = ExtResource("1_5hw72")
 player_config = ExtResource("2_mnys6")
 projectile_start_point = NodePath("ProjectileStartPoint")

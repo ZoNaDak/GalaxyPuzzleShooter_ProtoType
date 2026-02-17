@@ -53,7 +53,8 @@ func _initialize():
 	boss_callable_context.initialize_in_scene(
 		func(): return _player,
 		_projectile_service.spawn_bullet,
-		_effect_service.play_effect
+		_effect_service.play_effect,
+		_effect_service.stop_effect,
 	)
 	_enemy_service.initialize(
 		enemy_callable_context, boss_callable_context)

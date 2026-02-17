@@ -159,7 +159,21 @@ func _play_boss_fire_0() -> void:
 	_is_firing = false
 
 func _play_boss_fire_1() -> void:
-	pass
+	_is_firing = true
+	var bullet_key = "boss_enemy_bullet_1"
+	var move_dir = Vector2.DOWN
+
+	var _charging_effect: GPUParticles2D = _callable_context.play_effect_callable.call(
+		"charging_bullet_effect", fire_1_start_point.global_position)
+	var tween = create_tween()
+	tween.tween_interval(4.0)
+
+	await tween.finished
+	_callable_context.stop_effect_callable.call(_charging_effect)
+	_fire_bullet(bullet_key, fire_1_start_point.global_position,
+			move_dir, boss_enemy_config.fire1_value_arr)
+
+	_is_firing = false
 
 func _play_boss_fire_2() -> void:
 	_spawn_random_enemy(0)

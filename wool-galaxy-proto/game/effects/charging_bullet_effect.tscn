@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjyacsc24rx7s"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sqpio"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, 8, 0)
+emission_shape = 3
+emission_box_extents = Vector3(16, 8, 1)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+radial_velocity_min = -15.000022
+radial_velocity_max = -5.0000224
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+color = Color(0.1882353, 0.88235295, 0.7254902, 1)
+
+[node name="ChargingBulletEffect" type="GPUParticles2D"]
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_sqpio")

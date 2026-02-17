@@ -9,6 +9,7 @@
 size = Vector2(28, 27)
 
 [node name="BossEnemy" type="Node2D" node_paths=PackedStringArray("lock_on_ui", "fire_0_start_point_arr", "fire_1_start_point", "heal_hp_effect_pivot")]
+z_index = 1
 script = ExtResource("1_rupu0")
 boss_enemy_config = ExtResource("2_mar52")
 lock_on_ui = NodePath("LockOnUI")
