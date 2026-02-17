@@ -67,7 +67,7 @@ func get_is_game_over() -> bool:
 	return _context.player.state == Character.StateType.DEAD
 
 func get_is_clear_boss_stage() -> bool:
-	if _context.enemy_service._boss_enemy.state == Character.StateType.DEAD:
+	if _context.enemy_service.boss_enemy.state == Character.StateType.DEAD:
 		return true
 	else:
 		return false

@@ -17,7 +17,7 @@ const BOSS_ENEMY_SCENE_PATH: String = "res://game/characters/boss_enemys/%s.tscn
 @export var _enemy_parent: Node2D
 
 var _enemy_arr: Array[Enemy]
-var _boss_enemy: BossEnemy
+var boss_enemy: BossEnemy
 var _locked_enemy: Character
 
 #region Callable
@@ -50,7 +50,7 @@ func initialize(enemy_callable_context: EnemyCallableContext,
 
 	for i in range(_enemy_spawn_point_arr.size()):
 		_enemy_arr.append(null)
-	_boss_enemy = null
+	boss_enemy = null
 	_locked_enemy = null
 
 #endregion
@@ -83,8 +83,8 @@ func despawn_enemy(spawn_index: int) -> void:
 				_enemy_arr[i].lock_on()
 				break
 		
-		if _locked_enemy == null and _boss_enemy != null:
-			_boss_enemy.lock_on()
+		if _locked_enemy == null and boss_enemy != null:
+			boss_enemy.lock_on()
 	
 	_enemy_arr[spawn_index].queue_free()
 	_enemy_arr[spawn_index] = null
@@ -109,16 +109,16 @@ func spawn_boss_enemy(key: String, boss_enemy_hp_ui: BossEnemyHpUI,
 	despawn_enemy_callable: Callable) -> BossEnemy:
 	LogManager.info("spawn_boss_enemy : %s" % [key], "EnemyService")
 	var boss_enemy_scene: PackedScene = load(BOSS_ENEMY_SCENE_PATH % [key])
-	_boss_enemy = boss_enemy_scene.instantiate()
+	boss_enemy = boss_enemy_scene.instantiate()
 	var spawn_pos := _boss_enemy_spawn_point.position
-	_boss_enemy.initialize(spawn_pos, boss_enemy_hp_ui,
+	boss_enemy.initialize(spawn_pos, boss_enemy_hp_ui,
 		_boss_enemy_callable_context, _lock_on_enemy,
 		spawn_random_enemy_callable,
 		despawn_enemy_callable)
-	_enemy_parent.add_child(_boss_enemy)
+	_enemy_parent.add_child(boss_enemy)
 
 	if _locked_enemy == null:
-		_boss_enemy.lock_on()
-	return _boss_enemy
+		boss_enemy.lock_on()
+	return boss_enemy
 
 #endregion

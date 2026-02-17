@@ -48,5 +48,3 @@ position = Vector2(0, 15)
 [node name="HealHpEffectPivot" type="Marker2D" parent="."]
 position = Vector2(3, -3)
 gizmo_extents = 2.0
-
-[connection signal="input_event" from="Area2D" to="." method="_on_lock_on"]

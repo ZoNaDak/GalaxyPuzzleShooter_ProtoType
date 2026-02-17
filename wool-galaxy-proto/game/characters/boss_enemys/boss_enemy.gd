@@ -185,7 +185,7 @@ func _fire_bullet(bullet_key: String, start_pos: Vector2,
 	bullet.set_data(get_type(), start_pos, move_dir, damage_arr)
 
 func _spawn_random_enemy(spawn_index: int) -> void:
-	var spawned_enemy = _spawn_random_enemy_callable.call(spawn_index)
+	var spawned_enemy: Enemy = _spawn_random_enemy_callable.call(spawn_index)
 	_spawned_enemy_arr.append(spawned_enemy)
 
 func check_spawned_enemy() -> void:

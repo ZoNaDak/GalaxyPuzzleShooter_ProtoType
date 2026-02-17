@@ -66,5 +66,3 @@ theme_override_styles/background = SubResource("StyleBoxFlat_21oyr")
 theme_override_styles/fill = SubResource("StyleBoxFlat_jti7f")
 value = 25.0
 show_percentage = false
-
-[connection signal="input_event" from="Area2D" to="." method="_on_lock_on"]
