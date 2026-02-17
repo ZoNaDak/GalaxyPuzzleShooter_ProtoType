@@ -82,6 +82,9 @@ func despawn_enemy(spawn_index: int) -> void:
 			if i != spawn_index and _enemy_arr[i] != null:
 				_enemy_arr[i].lock_on()
 				break
+		
+		if _locked_enemy == null and _boss_enemy != null:
+			_boss_enemy.lock_on()
 	
 	_enemy_arr[spawn_index].queue_free()
 	_enemy_arr[spawn_index] = null
