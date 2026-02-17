@@ -7,4 +7,6 @@ script = ExtResource("1_ic4xf")
 max_hp = 400
 max_mp = 0
 move_speed = 80.0
-fire_delay = 4.0
+fire_delay = 5.0
+fire0_value_arr = Array[int]([7])
+fire1_value_arr = Array[int]([80])

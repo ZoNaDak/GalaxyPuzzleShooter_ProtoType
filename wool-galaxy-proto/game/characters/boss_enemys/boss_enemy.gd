@@ -14,6 +14,8 @@ const FIRST_FIRE_DELAY: float = 0.5
 
 @export var boss_enemy_config: BossEnemyConfig
 @export var lock_on_ui: Node2D
+@export var fire_0_start_point_arr: Array[Marker2D]
+@export var fire_1_start_point: Marker2D
 @export var heal_hp_effect_pivot: Marker2D
 
 var boss_enemy_data: BossEnemyData
@@ -22,7 +24,7 @@ var _hp_ui: BossEnemyHpUI
 var _spawn_pos: Vector2
 
 var _cur_fire_delay: float
-var _is_charging_fire: bool
+var _is_firing: bool
 
 var _spawned_enemy_arr: Array[Enemy]
 
@@ -59,7 +61,7 @@ func initialize(spawn_pos: Vector2,
 	_hp_ui.initialize(boss_enemy_data.max_hp)
 	lock_on_ui.visible = false
 	_cur_fire_delay = 0.0
-	_is_charging_fire = false
+	_is_firing = false
 	_spawned_enemy_arr = []
 
 	state = StateType.START_MOVE
@@ -110,7 +112,7 @@ func start_move(delta: float) -> void:
 		state = StateType.IDLE
 
 func check_fire(delta: float) -> void:
-	if _is_charging_fire:
+	if _is_firing:
 		return
 	
 	if _cur_fire_delay <= 0.0:
@@ -128,24 +130,47 @@ func _fire() -> void:
 
 	LogManager.info("Fire : %d" % [fire_type], "BossEnemy")
 	match fire_type:
-		0:
-			_play_boss_fire_0()
-		1:
-			_play_boss_fire_1()
-		2:
-			_play_boss_fire_2()
+		0: _play_boss_fire_0()
+		1: _play_boss_fire_1()
+		2: _play_boss_fire_2()
 
 func _play_boss_fire_0() -> void:
-	pass
+	_is_firing = true
+	var bullet_key = "boss_enemy_bullet_0"
+	var move_dir = Vector2.DOWN
+
+	var tween = create_tween()
+	for i in 2:
+		tween.tween_callback(_fire_bullet.bind(
+			bullet_key, fire_0_start_point_arr[i].global_position,
+			move_dir, boss_enemy_config.fire0_value_arr))
+	tween.tween_interval(0.5)
+	for i in 2:
+		tween.tween_callback(_fire_bullet.bind(
+			bullet_key, fire_0_start_point_arr[i].global_position,
+			move_dir, boss_enemy_config.fire0_value_arr))
+	tween.tween_interval(0.5)
+	for i in 2:
+		tween.tween_callback(_fire_bullet.bind(
+			bullet_key, fire_0_start_point_arr[i].global_position,
+			move_dir, boss_enemy_config.fire0_value_arr))
+	await tween.finished
+
+	_is_firing = false
 
 func _play_boss_fire_1() -> void:
 	pass
 
 func _play_boss_fire_2() -> void:
-	spawn_random_enemy(0)
-	spawn_random_enemy(2)
+	_spawn_random_enemy(0)
+	_spawn_random_enemy(2)
 
-func spawn_random_enemy(spawn_index: int) -> void:
+func _fire_bullet(bullet_key: String, start_pos: Vector2,
+	move_dir: Vector2, damage_arr: Array[int]) -> void:
+	var bullet: Bullet = _callable_context.spawn_bullet_callable.call(bullet_key)
+	bullet.set_data(get_type(), start_pos, move_dir, damage_arr)
+
+func _spawn_random_enemy(spawn_index: int) -> void:
 	var spawned_enemy = _spawn_random_enemy_callable.call(spawn_index)
 	_spawned_enemy_arr.append(spawned_enemy)
 

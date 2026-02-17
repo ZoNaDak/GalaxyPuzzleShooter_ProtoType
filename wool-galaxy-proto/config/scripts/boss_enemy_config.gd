@@ -8,4 +8,5 @@ extends Resource
 @export var move_speed: float = 100.0
 
 @export var fire_delay: float = 2.0
-# @export var fire_value_arr: Array[int] = [5]
+@export var fire0_value_arr: Array[int] = [5]
+@export var fire1_value_arr: Array[int] = [5]

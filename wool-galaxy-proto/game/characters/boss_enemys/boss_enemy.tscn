@@ -8,10 +8,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gg2bm"]
 size = Vector2(28, 27)
 
-[node name="BossEnemy" type="Node2D" node_paths=PackedStringArray("lock_on_ui", "heal_hp_effect_pivot")]
+[node name="BossEnemy" type="Node2D" node_paths=PackedStringArray("lock_on_ui", "fire_0_start_point_arr", "fire_1_start_point", "heal_hp_effect_pivot")]
 script = ExtResource("1_rupu0")
 boss_enemy_config = ExtResource("2_mar52")
 lock_on_ui = NodePath("LockOnUI")
+fire_0_start_point_arr = [NodePath("Fire0Points/Fire0StartPoint0"), NodePath("Fire0Points/Fire0StartPoint1")]
+fire_1_start_point = NodePath("Fire1StartPoint")
 heal_hp_effect_pivot = NodePath("HealHpEffectPivot")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -30,6 +32,17 @@ collision_mask = 16
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_gg2bm")
+
+[node name="Fire0Points" type="Node2D" parent="."]
+
+[node name="Fire0StartPoint0" type="Marker2D" parent="Fire0Points"]
+position = Vector2(-8, 16)
+
+[node name="Fire0StartPoint1" type="Marker2D" parent="Fire0Points"]
+position = Vector2(8, 16)
+
+[node name="Fire1StartPoint" type="Marker2D" parent="."]
+position = Vector2(0, 15)
 
 [node name="HealHpEffectPivot" type="Marker2D" parent="."]
 position = Vector2(3, -3)

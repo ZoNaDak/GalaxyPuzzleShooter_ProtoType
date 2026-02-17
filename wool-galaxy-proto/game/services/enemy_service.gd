@@ -42,11 +42,11 @@ var enemy_arr: Array[Enemy]:
 #region Lifecycle
 
 func initialize(enemy_callable_context: EnemyCallableContext,
-	_boss_enemy_callable_context: BossEnemyCallableContext) -> void:
+	boss_enemy_callable_context: BossEnemyCallableContext) -> void:
 	_enemy_callable_context = enemy_callable_context
 	_enemy_callable_context.initialize_in_enemy_service(
 		get_all_enemy_arr)
-	_boss_enemy_callable_context = _boss_enemy_callable_context
+	_boss_enemy_callable_context = boss_enemy_callable_context
 
 	for i in range(_enemy_spawn_point_arr.size()):
 		_enemy_arr.append(null)
