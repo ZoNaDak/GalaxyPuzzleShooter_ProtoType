@@ -17,6 +17,7 @@ func get_state_type() -> StateType:
 func begin() -> void:
 	_wait_cur_time = 0.0
 	_context.stage_clear_text.visible = true
+	SoundManager.stop_bgm(true)
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
