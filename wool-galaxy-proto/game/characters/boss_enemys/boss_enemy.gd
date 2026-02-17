@@ -168,6 +168,11 @@ func refresh_hp_ui() -> void:
 	_hp_ui.set_cur_hp(data.cur_hp)
 
 func die() -> void:
+	for i in _spawned_enemy_arr.size():
+		var spawned_enemy = _spawned_enemy_arr[i]
+		spawned_enemy.die()
+		_despawn_enemy_callable.call(spawned_enemy.spawn_index)
+	_spawned_enemy_arr.clear()
 	super.die()
 
 #endregion
