@@ -22,7 +22,10 @@ func begin() -> void:
 
 	_context.boss_enemy_ui.visible = true
 	_context.enemy_service.spawn_boss_enemy(
-		_context.stage_config.boss_enemy, _context.boss_enemy_ui)
+		_context.stage_config.boss_enemy,
+		_context.boss_enemy_ui,
+		spawn_random_enemy,
+		_context.enemy_service.despawn_enemy)
 
 	_context.missile_puzzle_board.set_input_enable(true)
 
@@ -68,5 +71,15 @@ func get_is_clear_boss_stage() -> bool:
 		return true
 	else:
 		return false
+
+#region Spawn Methods
+
+func spawn_random_enemy(spawn_index: int) -> Enemy:
+	var config_index: int = randi() % _context.stage_config.enemy_list.size()
+	var key: String = _context.stage_config.enemy_list[config_index]
+	var result: Enemy = _context.enemy_service.spawn_enemy(key, spawn_index)
+	return result
+
+#endregion
 
 #endregion

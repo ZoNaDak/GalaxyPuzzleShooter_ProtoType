@@ -73,8 +73,6 @@ func _process(delta: float) -> void:
 		StateType.START_MOVE:
 			start_move(delta)
 		StateType.IDLE:
-			if enemy_config.fire_type == FireType.LASER && _cur_laser != null:
-				return
 			check_fire(delta)
 
 func _exit_tree() -> void:
@@ -127,9 +125,6 @@ func check_fire(delta: float) -> void:
 		_cur_fire_delay -= delta
 
 func _fire() -> void:
-	LogManager.info("Fire : %s"
-		% [FireType.find_key(enemy_config.fire_type)], "Enemy")
-	
 	match enemy_config.fire_type:
 		FireType.BULLET:
 			var target = _callable_context.get_player_callable.call()
@@ -150,6 +145,9 @@ func _fire() -> void:
 				if enemy == self || enemy == null:
 					continue
 				enemy.do_heal_hp(enemy_config.fire_value_arr[0])
+	
+	LogManager.info("Fire : %s"
+		% [FireType.find_key(enemy_config.fire_type)], "Enemy")
 
 func do_heal_hp(heal_value: int) -> void:
 	super.do_heal_hp(heal_value)

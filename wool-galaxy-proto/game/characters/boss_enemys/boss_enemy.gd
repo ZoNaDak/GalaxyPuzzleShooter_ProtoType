@@ -22,11 +22,16 @@ var _hp_ui: BossEnemyHpUI
 var _spawn_pos: Vector2
 
 var _cur_fire_delay: float
+var _is_charging_fire: bool
+
+var _spawned_enemy_arr: Array[Enemy]
 
 #region Callable
 
 var _callable_context: BossEnemyCallableContext
 var _lock_on_callable: Callable
+var _spawn_random_enemy_callable: Callable
+var _despawn_enemy_callable: Callable
 
 #endregion
 
@@ -38,11 +43,15 @@ var _lock_on_callable: Callable
 func initialize(spawn_pos: Vector2,
 	boss_enemy_hp_ui: BossEnemyHpUI,
 	callable_context: BossEnemyCallableContext,
-	lock_on_callable: Callable) -> void:
+	lock_on_callable: Callable,
+	spawn_random_enemy_callable: Callable,
+	despawn_enemy_callable: Callable) -> void:
 	_spawn_pos = spawn_pos
 	self._hp_ui = boss_enemy_hp_ui
 	self._callable_context = callable_context
 	self._lock_on_callable = lock_on_callable
+	self._spawn_random_enemy_callable = spawn_random_enemy_callable
+	self._despawn_enemy_callable = despawn_enemy_callable
 
 	position = spawn_pos + Vector2(0, -ENEMY_SPAWN_Y_DIST)
 	boss_enemy_data = BossEnemyData.new(boss_enemy_config.max_hp, boss_enemy_config.max_mp)
@@ -50,6 +59,8 @@ func initialize(spawn_pos: Vector2,
 	_hp_ui.initialize(boss_enemy_data.max_hp)
 	lock_on_ui.visible = false
 	_cur_fire_delay = 0.0
+	_is_charging_fire = false
+	_spawned_enemy_arr = []
 
 	state = StateType.START_MOVE
 
@@ -58,6 +69,7 @@ func _process(delta: float) -> void:
 		StateType.START_MOVE:
 			start_move(delta)
 		StateType.IDLE:
+			check_spawned_enemy()
 			check_fire(delta)
 
 #endregion
@@ -98,6 +110,9 @@ func start_move(delta: float) -> void:
 		state = StateType.IDLE
 
 func check_fire(delta: float) -> void:
+	if _is_charging_fire:
+		return
+	
 	if _cur_fire_delay <= 0.0:
 		_cur_fire_delay = boss_enemy_config.fire_delay
 		_fire()
@@ -105,8 +120,42 @@ func check_fire(delta: float) -> void:
 		_cur_fire_delay -= delta
 
 func _fire() -> void:
-	LogManager.info("Fire : %s"
-		% [""], "BossEnemy")
+	var fire_type: int = -1
+	if _spawned_enemy_arr.size() > 0:
+		fire_type = randi() % 2
+	else:
+		fire_type = randi() % 3
+
+	LogManager.info("Fire : %d" % [fire_type], "BossEnemy")
+	match fire_type:
+		0:
+			_play_boss_fire_0()
+		1:
+			_play_boss_fire_1()
+		2:
+			_play_boss_fire_2()
+
+func _play_boss_fire_0() -> void:
+	pass
+
+func _play_boss_fire_1() -> void:
+	pass
+
+func _play_boss_fire_2() -> void:
+	spawn_random_enemy(0)
+	spawn_random_enemy(2)
+
+func spawn_random_enemy(spawn_index: int) -> void:
+	var spawned_enemy = _spawn_random_enemy_callable.call(spawn_index)
+	_spawned_enemy_arr.append(spawned_enemy)
+
+func check_spawned_enemy() -> void:
+	for i in range(_spawned_enemy_arr.size() - 1, -1, -1):
+		var spawned_enemy = _spawned_enemy_arr[i]
+		if spawned_enemy.state == Character.StateType.DEAD:
+			_despawn_enemy_callable.call(spawned_enemy.spawn_index)
+			_spawned_enemy_arr.remove_at(i)
+			
 
 func lock_on() -> void:
 	lock_on_ui.visible = true
