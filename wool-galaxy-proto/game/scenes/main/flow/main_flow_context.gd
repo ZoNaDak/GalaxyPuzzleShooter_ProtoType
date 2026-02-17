@@ -5,6 +5,7 @@ class_name MainFlowContext
 
 var player: Player
 var player_ui: PlayerUI
+var boss_enemy_ui: BossEnemyHpUI
 var enemy_service: EnemyService
 var projectile_service: ProjectileService
 var effect_service: EffectService
@@ -26,6 +27,7 @@ var stage_config: StageConfig
 func initialize(
 	player: Player,
 	player_ui: PlayerUI,
+	boss_enemy_ui: BossEnemyHpUI,
 	enemy_service: EnemyService,
 	projectile_service: ProjectileService,
 	effect_service: EffectService,
@@ -40,6 +42,7 @@ func initialize(
 	stage_config: StageConfig) -> void:
 	self.player = player
 	self.player_ui = player_ui
+	self.boss_enemy_ui = boss_enemy_ui
 	self.enemy_service = enemy_service
 	self.projectile_service = projectile_service
 	self.effect_service = effect_service

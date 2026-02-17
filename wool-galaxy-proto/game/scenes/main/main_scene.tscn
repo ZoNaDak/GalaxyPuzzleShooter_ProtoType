@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://fv8rl2w2jdc6"]
+[gd_scene load_steps=16 format=3 uid="uid://fv8rl2w2jdc6"]
 
 [ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
 [ext_resource type="Resource" uid="uid://ynmvtclpp0eo" path="res://config/resources/stage_config.tres" id="2_ety1j"]
@@ -14,12 +14,14 @@
 [ext_resource type="PackedScene" uid="uid://pkqx1hawwdqv" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn" id="9_by1y7"]
 [ext_resource type="PackedScene" uid="uid://c42kqsngxwrcr" path="res://game/ui/player_skill_button.tscn" id="9_fll6v"]
 [ext_resource type="PackedScene" uid="uid://csjmag1couymw" path="res://game/ui/reset_button.tscn" id="9_ol8lf"]
+[ext_resource type="PackedScene" uid="uid://cwt31w5bdfqdg" path="res://game/ui/boss_enemy_hp_ui.tscn" id="12_pygkp"]
 
-[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_enemy_service", "_projectile_service", "_effect_service", "_player_skill_button", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_boss_warning_text", "_stage_clear_text", "_game_over_text")]
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_boss_enemy_hp_ui", "_enemy_service", "_projectile_service", "_effect_service", "_player_skill_button", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_boss_warning_text", "_stage_clear_text", "_game_over_text")]
 script = ExtResource("1_lxwxr")
 _main_flow = NodePath("MainFlow")
 _player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
 _player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI/PlayerUIBar")
+_boss_enemy_hp_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/BossEnemyUI")
 _enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
 _projectile_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService")
 _effect_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EffectService")
@@ -143,6 +145,8 @@ layout_mode = 1
 
 [node name="Reset" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI" instance=ExtResource("9_ol8lf")]
 layout_mode = 1
+
+[node name="BossEnemyUI" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer" instance=ExtResource("12_pygkp")]
 
 [node name="GameStateTextUI" type="Control" parent="Canvas/VBoxContainer/Control"]
 anchors_preset = 0

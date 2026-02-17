@@ -17,6 +17,7 @@ const FIRST_FIRE_DELAY: float = 0.5
 @export var heal_hp_effect_pivot: Marker2D
 
 var boss_enemy_data: BossEnemyData
+var _hp_ui: BossEnemyHpUI
 
 var _spawn_pos: Vector2
 
@@ -35,16 +36,18 @@ var _lock_on_callable: Callable
 
 @warning_ignore("shadowed_variable")
 func initialize(spawn_pos: Vector2,
+	boss_enemy_hp_ui: BossEnemyHpUI,
 	callable_context: BossEnemyCallableContext,
 	lock_on_callable: Callable) -> void:
 	_spawn_pos = spawn_pos
+	self._hp_ui = boss_enemy_hp_ui
 	self._callable_context = callable_context
 	self._lock_on_callable = lock_on_callable
 
 	position = spawn_pos + Vector2(0, -ENEMY_SPAWN_Y_DIST)
 	boss_enemy_data = BossEnemyData.new(boss_enemy_config.max_hp, boss_enemy_config.max_mp)
 	data = boss_enemy_data
-	refresh_hp_ui()
+	_hp_ui.initialize(boss_enemy_data.max_hp)
 	lock_on_ui.visible = false
 	_cur_fire_delay = 0.0
 
@@ -113,8 +116,10 @@ func lock_off() -> void:
 	lock_on_ui.visible = false
 
 func refresh_hp_ui() -> void:
-	pass
-	# hp_ui.value = float(data.cur_hp) / float(data.max_hp) * 100.0
+	_hp_ui.set_cur_hp(data.cur_hp)
+
+func die() -> void:
+	super.die()
 
 #endregion
 

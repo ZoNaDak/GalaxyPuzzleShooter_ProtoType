@@ -9,6 +9,7 @@ extends BaseScene
 
 @export var _player: Player
 @export var _player_ui: PlayerUI
+@export var _boss_enemy_hp_ui: BossEnemyHpUI
 
 @export var _enemy_service: EnemyService
 @export var _projectile_service: ProjectileService
@@ -37,6 +38,7 @@ func _ready() -> void:
 	_main_flow.start_flow()
 
 func _initialize():
+	_boss_enemy_hp_ui.visible = false
 	_projectile_service.initialize()
 
 	var enemy_callable_context := EnemyCallableContext.new()
@@ -62,7 +64,7 @@ func _initialize():
 	_game_over_text.visible = false
 
 	var context: MainFlowContext = MainFlowContext.new()
-	context.initialize(_player, _player_ui,
+	context.initialize(_player, _player_ui, _boss_enemy_hp_ui,
 		_enemy_service, _projectile_service, _effect_service,
 		_missile_slot_board, _missile_puzzle_board,
 		_player_skill_button, _reset_button,

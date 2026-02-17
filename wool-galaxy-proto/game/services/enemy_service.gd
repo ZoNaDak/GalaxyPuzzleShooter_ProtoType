@@ -101,12 +101,12 @@ func get_locked_enemy() -> Character:
 func get_enemy_spawn_point_arr() -> Array[Node2D]:
 	return _enemy_spawn_point_arr
 
-func spawn_boss_enemy(key: String) -> void:
+func spawn_boss_enemy(key: String, boss_enemy_hp_ui: BossEnemyHpUI) -> void:
 	LogManager.info("spawn_boss_enemy : %s" % [key], "EnemyService")
 	var boss_enemy_scene: PackedScene = load(BOSS_ENEMY_SCENE_PATH % [key])
 	_boss_enemy = boss_enemy_scene.instantiate()
 	var spawn_pos := _boss_enemy_spawn_point.position
-	_boss_enemy.initialize(spawn_pos,
+	_boss_enemy.initialize(spawn_pos, boss_enemy_hp_ui,
 		_boss_enemy_callable_context, _lock_on_enemy)
 	_enemy_parent.add_child(_boss_enemy)
 

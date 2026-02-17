@@ -20,14 +20,19 @@ func begin() -> void:
 	await _perform_boss_warning()
 	await tree.create_timer(0.5).timeout
 
-	_context.enemy_service.spawn_boss_enemy(_context.stage_config.boss_enemy)
+	_context.boss_enemy_ui.visible = true
+	_context.enemy_service.spawn_boss_enemy(
+		_context.stage_config.boss_enemy, _context.boss_enemy_ui)
 
 	_context.missile_puzzle_board.set_input_enable(true)
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
-	# TODO: 추후 플로우 구현할 것
-	if false:
+	if get_is_game_over():
+		return StateType.GAME_OVER
+
+	if get_is_clear_boss_stage():
+		_context.boss_enemy_ui.visible = false
 		return StateType.STAGE_CLEAR
 		
 	return StateType.NONE
@@ -54,6 +59,14 @@ func _perform_boss_warning() -> void:
 	await tween.finished
 	
 	warning_text.hide()
-	
+
+func get_is_game_over() -> bool:
+	return _context.player.state == Character.StateType.DEAD
+
+func get_is_clear_boss_stage() -> bool:
+	if _context.enemy_service._boss_enemy.state == Character.StateType.DEAD:
+		return true
+	else:
+		return false
 
 #endregion
