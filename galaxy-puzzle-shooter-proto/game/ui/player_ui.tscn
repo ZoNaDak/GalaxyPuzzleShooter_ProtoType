@@ -1,0 +1,109 @@
+[gd_scene load_steps=6 format=3 uid="uid://bq76q3cjshmr0"]
+
+[ext_resource type="Script" uid="uid://b5qtgdijkxugg" path="res://game/ui/player_ui.gd" id="1_w7c1a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mgx4w"]
+bg_color = Color(1, 1, 1, 0.39215687)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyem0"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_by1y7"]
+bg_color = Color(1, 1, 1, 0.39215687)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3m0lk"]
+bg_color = Color(0, 0, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0)
+
+[node name="PlayerUI" type="Control" node_paths=PackedStringArray("_player_hp_UI", "_player_hp_label", "_player_mp_UI", "_player_mp_label")]
+custom_minimum_size = Vector2(120, 16)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -8.0
+offset_right = 60.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+script = ExtResource("1_w7c1a")
+_player_hp_UI = NodePath("HBoxContainer/PlayerHpUI")
+_player_hp_label = NodePath("HBoxContainer/PlayerHpUI/Label")
+_player_mp_UI = NodePath("HBoxContainer/PlayerMpUI")
+_player_mp_label = NodePath("HBoxContainer/PlayerMpUI/Label")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="PlayerHpUI" type="ProgressBar" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_mgx4w")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qyem0")
+value = 10.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="HBoxContainer/PlayerHpUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "10/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerMpUI" type="ProgressBar" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_by1y7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_3m0lk")
+value = 80.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="HBoxContainer/PlayerMpUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "1/10"
+horizontal_alignment = 1
+vertical_alignment = 1

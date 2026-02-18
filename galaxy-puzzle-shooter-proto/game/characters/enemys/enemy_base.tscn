@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://cnv517rdn34vs"]
+
+[ext_resource type="Script" uid="uid://cqatxm7ef82be" path="res://game/characters/enemys/enemy.gd" id="1_21oyr"]
+[ext_resource type="Texture2D" uid="uid://cpkisupfcof5e" path="res://assets/art/UI/Icon/lock_on.png" id="2_21oyr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21oyr"]
+bg_color = Color(1, 1, 1, 0.39215687)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jti7f"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0)
+
+[node name="EnemyBase" type="Node2D" node_paths=PackedStringArray("projectile_start_point", "hp_ui", "lock_on_ui", "heal_hp_effect_pivot")]
+script = ExtResource("1_21oyr")
+projectile_start_point = NodePath("ProjectileStartPoint")
+hp_ui = NodePath("Control/EnemyHpUI")
+lock_on_ui = NodePath("LockOnUI")
+heal_hp_effect_pivot = NodePath("HealHpEffectPivot")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="LockOnUI" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_21oyr")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 12
+collision_mask = 16
+
+[node name="ProjectileStartPoint" type="Marker2D" parent="."]
+
+[node name="HealHpEffectPivot" type="Marker2D" parent="."]
+position = Vector2(2, -2)
+gizmo_extents = 2.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="EnemyHpUI" type="ProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 31.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_21oyr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jti7f")
+value = 25.0
+show_percentage = false

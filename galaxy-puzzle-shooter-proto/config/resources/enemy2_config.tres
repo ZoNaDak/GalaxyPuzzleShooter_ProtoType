@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EnemyConfig" load_steps=2 format=3 uid="uid://cor5myis65o1d"]
+
+[ext_resource type="Script" uid="uid://dgt6wuwiws01g" path="res://config/scripts/enemy_config.gd" id="1_dc4hq"]
+
+[resource]
+script = ExtResource("1_dc4hq")
+fire_type = 2
+fire_delay = 3.0

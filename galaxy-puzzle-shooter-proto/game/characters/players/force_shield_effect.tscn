@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnh5x6tsvipfb"]
+
+[ext_resource type="Texture2D" uid="uid://c37gxdp2vr6mm" path="res://assets/art/Vfx/force_shield.png" id="1_nkbfa"]
+
+[node name="ForceShieldEffect" type="Sprite2D"]
+texture = ExtResource("1_nkbfa")

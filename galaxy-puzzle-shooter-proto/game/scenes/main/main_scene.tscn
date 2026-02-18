@@ -1,0 +1,274 @@
+[gd_scene load_steps=16 format=3 uid="uid://fv8rl2w2jdc6"]
+
+[ext_resource type="Script" uid="uid://b582mxuj5s2kx" path="res://game/scenes/main/main_scene.gd" id="1_lxwxr"]
+[ext_resource type="Resource" uid="uid://ynmvtclpp0eo" path="res://config/resources/stage_config.tres" id="2_ety1j"]
+[ext_resource type="Texture2D" uid="uid://b5ne7212byurj" path="res://game/world/resources/background.png" id="2_n0hcn"]
+[ext_resource type="PackedScene" uid="uid://1yv2fwak0riq" path="res://game/scenes/main/flow/main_flow.tscn" id="2_qyem0"]
+[ext_resource type="PackedScene" uid="uid://1semffj55mi0" path="res://game/ui/missile_puzzle/missile_puzzle_board/missile_puzzle_board.tscn" id="3_exta3"]
+[ext_resource type="PackedScene" uid="uid://dburoiggif5h" path="res://game/ui/missile_slot/missile_slot_board.tscn" id="3_owm1g"]
+[ext_resource type="PackedScene" uid="uid://lnqpbeq7glha" path="res://game/characters/players/player.tscn" id="3_poqg5"]
+[ext_resource type="PackedScene" uid="uid://bq76q3cjshmr0" path="res://game/ui/player_ui.tscn" id="4_i3qem"]
+[ext_resource type="Script" uid="uid://bqyot2gdwdw45" path="res://game/services/enemy_service.gd" id="5_3m0lk"]
+[ext_resource type="Script" uid="uid://cnvo86l7fr8p7" path="res://game/services/projectile_service.gd" id="7_ol8lf"]
+[ext_resource type="Script" uid="uid://catbe1e34g5ek" path="res://game/services/effect_service.gd" id="8_jxxs8"]
+[ext_resource type="PackedScene" uid="uid://pkqx1hawwdqv" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/missile_puzzle_piece.tscn" id="9_by1y7"]
+[ext_resource type="PackedScene" uid="uid://c42kqsngxwrcr" path="res://game/ui/player_skill_button.tscn" id="9_fll6v"]
+[ext_resource type="PackedScene" uid="uid://csjmag1couymw" path="res://game/ui/reset_button.tscn" id="9_ol8lf"]
+[ext_resource type="PackedScene" uid="uid://cwt31w5bdfqdg" path="res://game/ui/boss_enemy_hp_ui.tscn" id="12_pygkp"]
+
+[node name="MainScene" type="Node" node_paths=PackedStringArray("_main_flow", "_player", "_player_ui", "_boss_enemy_hp_ui", "_enemy_service", "_projectile_service", "_effect_service", "_player_skill_button", "_reset_button", "_missile_slot_board", "_missile_puzzle_board", "_game_start_text", "_boss_warning_text", "_stage_clear_text", "_game_over_text")]
+script = ExtResource("1_lxwxr")
+_main_flow = NodePath("MainFlow")
+_player = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Player")
+_player_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI/PlayerUIBar")
+_boss_enemy_hp_ui = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/BossEnemyUI")
+_enemy_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService")
+_projectile_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService")
+_effect_service = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EffectService")
+_player_skill_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI/PlayerSkillButton")
+_reset_button = NodePath("Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI/Reset")
+_missile_slot_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissileSlotBoard")
+_missile_puzzle_board = NodePath("Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer/MissilePuzzleBoard")
+_game_start_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameStartText")
+_boss_warning_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/BossWarningText")
+_stage_clear_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/StageClearText")
+_game_over_text = NodePath("Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer/GameOverText")
+_stage_config = ExtResource("2_ety1j")
+metadata/_custom_type_script = "uid://drvmeticmvie4"
+
+[node name="MainFlow" parent="." instance=ExtResource("2_qyem0")]
+
+[node name="Canvas" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Canvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Control" type="Control" parent="Canvas/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="GameViewportContainer" type="SubViewportContainer" parent="Canvas/VBoxContainer/Control"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+stretch = true
+
+[node name="GameViewport" type="SubViewport" parent="Canvas/VBoxContainer/Control/GameViewportContainer"]
+handle_input_locally = false
+size = Vector2i(180, 160)
+render_target_update_mode = 4
+
+[node name="GameView" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport"]
+
+[node name="Background" type="Parallax2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView"]
+repeat_size = Vector2(160, 160)
+autoscroll = Vector2(0, 50)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/Background"]
+position = Vector2(90, 0)
+texture = ExtResource("2_n0hcn")
+region_rect = Rect2(0, 0, 639.89, 640)
+
+[node name="Player" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" instance=ExtResource("3_poqg5")]
+position = Vector2(90, 120)
+
+[node name="EnemyService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_enemy_spawn_point_arr", "_boss_enemy_spawn_point", "_enemy_parent")]
+script = ExtResource("5_3m0lk")
+_enemy_spawn_point_arr = [NodePath("EnemySpawnPoints/EnemySpawnPoint0"), NodePath("EnemySpawnPoints/EnemySpawnPoint1"), NodePath("EnemySpawnPoints/EnemySpawnPoint2")]
+_boss_enemy_spawn_point = NodePath("EnemySpawnPoints/BossEnemySpawnPoint")
+_enemy_parent = NodePath("EnemyParent")
+metadata/_custom_type_script = "uid://bqyot2gdwdw45"
+
+[node name="EnemySpawnPoints" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService"]
+
+[node name="EnemySpawnPoint0" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(40, 60)
+gizmo_extents = 5.0
+
+[node name="EnemySpawnPoint1" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(90, 40)
+gizmo_extents = 5.0
+
+[node name="EnemySpawnPoint2" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(140, 60)
+gizmo_extents = 5.0
+
+[node name="BossEnemySpawnPoint" type="Marker2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService/EnemySpawnPoints"]
+position = Vector2(90, 48)
+
+[node name="EnemyParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EnemyService"]
+
+[node name="ProjectileService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_projectile_parent")]
+script = ExtResource("7_ol8lf")
+_projectile_parent = NodePath("ProjectileParent")
+
+[node name="ProjectileParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/ProjectileService"]
+
+[node name="EffectService" type="Node" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView" node_paths=PackedStringArray("_effect_parent")]
+script = ExtResource("8_jxxs8")
+_effect_parent = NodePath("EffectParent")
+
+[node name="EffectParent" type="Node2D" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/GameView/EffectService"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport"]
+
+[node name="PlayerUI" type="Control" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="PlayerSkillButton" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI" instance=ExtResource("9_fll6v")]
+layout_mode = 1
+
+[node name="PlayerUIBar" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI" instance=ExtResource("4_i3qem")]
+layout_mode = 1
+
+[node name="Reset" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer/PlayerUI" instance=ExtResource("9_ol8lf")]
+layout_mode = 1
+
+[node name="BossEnemyUI" parent="Canvas/VBoxContainer/Control/GameViewportContainer/GameViewport/CanvasLayer" instance=ExtResource("12_pygkp")]
+
+[node name="GameStateTextUI" type="Control" parent="Canvas/VBoxContainer/Control"]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Canvas/VBoxContainer/Control/GameStateTextUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GameStartText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
+theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 20
+text = "Game Start"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossWarningText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "WARNING !!"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StageClearText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
+theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 20
+text = "Stage Clear"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOverText" type="RichTextLabel" parent="Canvas/VBoxContainer/Control/GameStateTextUI/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.3652176, 1, 0.94855994, 1)
+theme_override_colors/font_outline_color = Color(0.9852559, 0.00074179115, 0.97567385, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_constants/shadow_outline_size = 1
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 20
+text = "Game Over"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomUI" type="Control" parent="Canvas/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="Background" type="ColorRect" parent="Canvas/VBoxContainer/BottomUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.22579157, 0.24015701, 0.31443942, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Canvas/VBoxContainer/BottomUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Canvas/VBoxContainer/BottomUI/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="MissileSlotBoard" parent="Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer" instance=ExtResource("3_owm1g")]
+layout_mode = 2
+
+[node name="MissilePuzzleBoard" parent="Canvas/VBoxContainer/BottomUI/MarginContainer/VBoxContainer" instance=ExtResource("3_exta3")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+_missilePuzzlePieceScene = ExtResource("9_by1y7")

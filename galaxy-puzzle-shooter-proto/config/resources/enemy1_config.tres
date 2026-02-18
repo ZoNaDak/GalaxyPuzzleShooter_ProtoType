@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EnemyConfig" load_steps=2 format=3 uid="uid://bsk28qajro572"]
+
+[ext_resource type="Script" uid="uid://dgt6wuwiws01g" path="res://config/scripts/enemy_config.gd" id="1_lcdj5"]
+
+[resource]
+script = ExtResource("1_lcdj5")
+fire_type = 1
+fire_delay = 0.5
+fire_value_arr = Array[int]([1, 2, 5])

@@ -1,0 +1,72 @@
+[gd_scene load_steps=4 format=3 uid="uid://frdkbp0s87l1"]
+
+[ext_resource type="Script" uid="uid://26j367q7qwlj" path="res://game/ui/missile_slot/missile_slot.gd" id="1_v1xbs"]
+[ext_resource type="Texture2D" uid="uid://cifyq242kcl0v" path="res://game/ui/missile_slot/resources/missile_slot.png" id="2_0v7yj"]
+[ext_resource type="Texture2D" uid="uid://cu3iphbh1uc2v" path="res://game/ui/missile_puzzle/missile_puzzle_pieces/resources/red_missile_m.png" id="2_gs14t"]
+
+[node name="MissileSlot" type="Control" node_paths=PackedStringArray("_missile_texture", "_missile_amount")]
+custom_minimum_size = Vector2(52, 20)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 34.0
+offset_bottom = 18.0
+script = ExtResource("1_v1xbs")
+_missile_texture = NodePath("Control/MissileImage")
+_missile_amount = NodePath("Control/Label")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_0v7yj")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MissileImage" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -8.0
+offset_right = 16.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_gs14t")
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.5
+offset_top = -11.5
+offset_right = 3.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 11
+text = "1"
+vertical_alignment = 1

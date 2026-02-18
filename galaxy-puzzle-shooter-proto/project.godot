@@ -1,0 +1,50 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="GalaxyPuzzleShooter_ProtoType"
+config/version="0.0.1"
+run/main_scene="res://game/scenes/title/title_scene.tscn"
+config/features=PackedStringArray("4.5", "GL Compatibility")
+run/max_fps=60
+config/icon="uid://cpau44w7jmq8y"
+
+[autoload]
+
+LogManager="*res://core/autoloads/log_manager.gd"
+GameManager="*res://core/autoloads/game_manager.gd"
+SystemUIManager="*res://core/autoloads/system_ui/system_ui_manager.tscn"
+SoundManager="*res://core/autoloads/sound_manager.gd"
+
+[display]
+
+window/size/viewport_width=180
+window/size/viewport_height=320
+window/size/resizable=false
+window/size/borderless=true
+window/size/window_width_override=360
+window/size/window_height_override=640
+window/stretch/mode="canvas_items"
+window/handheld/orientation=1
+
+[layer_names]
+
+2d_physics/layer_1="MissilePuzzlePiece_Body"
+2d_physics/layer_2="MissilePuzzlePiece_Head"
+2d_physics/layer_3="ClickInput"
+2d_physics/layer_4="Character"
+2d_physics/layer_5="Bullet"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

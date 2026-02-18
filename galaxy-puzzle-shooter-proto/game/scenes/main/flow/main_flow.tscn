@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://1yv2fwak0riq"]
+
+[ext_resource type="Script" uid="uid://cy3vlq61sy3ce" path="res://game/scenes/main/flow/main_flow.gd" id="1_main_flow"]
+
+[node name="MainFlow" type="Node"]
+script = ExtResource("1_main_flow")

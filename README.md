@@ -1,36 +1,49 @@
-# WoolGalaxy_ProtoType
-털실갤럭시 프로토타입
+# GalaxyPuzzleShooter_ProtoType
+A top-down shooter with puzzle mechanics
 
-## 폴더 구조
+## Folder Structure
+
+```
 res://
-├── addons/                  # 외부 플러그인
+├── addons/                  # External plugins
 │
-├── core/                   # 게임의 핵심 시스템
-│   ├── autoloads/           # Autoload에 등록할 스크립트들
-│   └── utils/               # 정적 함수 모음
+├── core/                    # Core game systems
+│   ├── autoloads/           # Autoload scripts
+│   ├── common/              # Common base classes and scripts
+│   └── utils/               # Static utility functions
 │
-├── assets/                  # "여러 곳에서 공통으로 쓰는" 원시 리소스
-│   ├── fonts/               # 폰트 파일 (.ttf, .otf)
-│   ├── audio/               # 공용 효과음 (UI 클릭음 등)
+├── config/                  # Configuration
+│   ├── resources/           # Custom resources for configuration
+│   └── scripts/             # Configuration scripts
+│
+├── assets/                  # Shared raw resources
+│   ├── fonts/               # Font files
+│   ├── audio/               # Shared audio
 │   │   ├── music/
 │   │   └── sfx/
-│   └── art/                 # 공용 스프라이트 (쉐이더용 노이즈, 기본 도형 등)
+│   ├── art/                 # Shared sprites
+│   └── shaders/             # Shader files
 │
-└── game/                    # 실제 게임 로직 및 콘텐츠 (가장 중요한 폴더)
-    ├── characters/          # 캐릭터 관련 (플레이어 + 적)
-    │   ├── player/          # [자급자족 원칙] 플레이어의 모든 것
-    │   │   ├── assets/      # 플레이어 전용 스프라이트/애니메이션
-    │   │   ├── states/      # 상태 머신을 쓴다면 상태 스크립트들
+└── game/                    # Game logic and content
+    ├── characters/          # Characters
+    │   ├── player/          # Everything about the player
+    │   │   ├── assets/      # Player-specific sprites/animations
+    │   │   ├── states/      # State machine scripts
     │   │   ├── player.tscn
     │   │   └── player.gd
-    │   └── enemies/         # 적들도 종류별로 폴더링
+    │   └── enemies/         # Enemies
     │
-    ├── data/                # 게임 전반에 쓰이는 데이터 (ItemData 등 Custom Resource)
+    ├── data/                # Game data
     │
-    ├── world/               # 맵, 레벨 디자인 관련
-    │   ├── levels/          # 실제 플레이 가능한 씬 (Level_01.tscn)
-    │   └── backgrounds/     # 패럴랙스 배경 이미지 등
+    ├── effects/             # Effects
     │
-    ├── objects/             # 상호작용 가능한 아이템, 투사체 등
+    ├── projectiles/         # Projectiles
     │
-    └── ui/                  # UI 시스템
+    ├── scenes/              # Game scenes
+    │
+    ├── services/            # Game services
+    │
+    ├── world/               # Maps and level design
+    │
+    └── ui/                  # UI system
+```
