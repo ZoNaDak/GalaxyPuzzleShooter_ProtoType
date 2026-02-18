@@ -23,6 +23,7 @@ var _bgm_volume_db: float = linear_to_db(BGM_VOLUME)
 
 var _sfx_players: Array[AudioStreamPlayer] = []
 var _sfx_volume_db: float = linear_to_db(SFX_VOLUME)
+var _sfx_cache: Dictionary = {}
 
 #endregion
 
@@ -113,17 +114,15 @@ func play_sfx(sfx_name: String, loop: bool = false) -> AudioStreamPlayer:
 		LogManager.warn("No available SFX player for: %s" % sfx_name, "SoundManager")
 		return null
 
-	var path := SFX_PATH % sfx_name
-	var stream := load(path) as AudioStream
+	var stream := _load_sfx(sfx_name)
 	if stream == null:
-		LogManager.error("SFX not found: %s" % path, "SoundManager")
 		return null
 
 	if loop:
 		stream = stream.duplicate()
 		if stream is AudioStreamWAV:
 			stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-			stream.loop_end = stream.data.size() / (int(stream.stereo) + 1) / (1 if stream.format == AudioStreamWAV.FORMAT_8_BITS else 2)
+			stream.loop_end = _calculate_wav_loop_end(stream)
 		elif stream is AudioStreamMP3 or stream is AudioStreamOggVorbis:
 			stream.loop = true
 
@@ -145,5 +144,26 @@ func _get_available_sfx_player() -> AudioStreamPlayer:
 		if not player.playing:
 			return player
 	return null
+
+func _load_sfx(sfx_name: String) -> AudioStream:
+	if _sfx_cache.has(sfx_name):
+		return _sfx_cache[sfx_name]
+
+	var path := SFX_PATH % sfx_name
+	var stream := load(path) as AudioStream
+	if stream == null:
+		LogManager.error("SFX not found: %s" % path, "SoundManager")
+		return null
+
+	_sfx_cache[sfx_name] = stream
+	return stream
+
+# Calculate the loop end point in sample frames for AudioStreamWAV.
+# data.size() is in bytes, so divide by channel count and bytes per sample.
+@warning_ignore("integer_division")
+func _calculate_wav_loop_end(stream: AudioStreamWAV) -> int:
+	var channel_count := 2 if stream.stereo else 1
+	var bytes_per_sample := 1 if stream.format == AudioStreamWAV.FORMAT_8_BITS else 2
+	return stream.data.size() / channel_count / bytes_per_sample
 
 #endregion
