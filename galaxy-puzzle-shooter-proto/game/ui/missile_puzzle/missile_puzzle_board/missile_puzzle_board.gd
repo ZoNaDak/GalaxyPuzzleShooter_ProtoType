@@ -370,6 +370,7 @@ func reset_board() -> void:
 	SoundManager.play_sfx("click_reset_button")
 	clear_board()
 	_setup_missile_puzzle_board()
+	set_input_enable(true)
 	_cur_reset_cooltime = RESET_COOLTIME
 	refresh_reset_cooltime_ui()
 

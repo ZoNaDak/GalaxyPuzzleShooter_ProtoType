@@ -5,6 +5,7 @@ class_name EnemyCallableContext
 
 var get_player_callable: Callable
 var get_all_enemy_callable: Callable
+var get_boss_enemy_callable: Callable
 var spawn_bullet_callable: Callable
 var spawn_laser_callable: Callable
 var despawn_projectile_callable: Callable
@@ -28,7 +29,9 @@ func initialize_in_scene(get_player_callable: Callable,
 
 @warning_ignore("shadowed_variable")
 func initialize_in_enemy_service(
-	get_all_enemy_callable: Callable) -> void:
+	get_all_enemy_callable: Callable,
+	get_boss_enemy_callable: Callable) -> void:
 	self.get_all_enemy_callable = get_all_enemy_callable
+	self.get_boss_enemy_callable = get_boss_enemy_callable
 
 #endregion

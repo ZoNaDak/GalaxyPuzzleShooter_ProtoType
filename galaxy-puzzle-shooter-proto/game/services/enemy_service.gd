@@ -45,7 +45,8 @@ func initialize(enemy_callable_context: EnemyCallableContext,
 	boss_enemy_callable_context: BossEnemyCallableContext) -> void:
 	_enemy_callable_context = enemy_callable_context
 	_enemy_callable_context.initialize_in_enemy_service(
-		get_all_enemy_arr)
+		get_all_enemy_arr,
+		func() -> BossEnemy: return boss_enemy)
 	_boss_enemy_callable_context = boss_enemy_callable_context
 
 	for i in range(_enemy_spawn_point_arr.size()):

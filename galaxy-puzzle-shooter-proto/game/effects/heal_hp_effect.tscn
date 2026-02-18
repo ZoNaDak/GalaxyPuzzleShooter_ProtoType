@@ -25,6 +25,7 @@ color = Color(0, 1, 0, 1)
 color_ramp = SubResource("GradientTexture1D_isdin")
 
 [node name="HealHpEffect" type="GPUParticles2D"]
+z_index = 2
 emitting = false
 amount = 4
 texture = ExtResource("1_ehs5i")
