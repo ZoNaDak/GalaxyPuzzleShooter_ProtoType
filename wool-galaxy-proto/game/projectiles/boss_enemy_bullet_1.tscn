@@ -11,7 +11,7 @@ height = 16.0
 script = ExtResource("1_m4ju1")
 area = NodePath("Area2D")
 move_speed = 80.0
-start_sfx_key = "fire_charing_lager"
+start_sfx_key = "fire_charing_laser"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_m4ju1")
