@@ -22,7 +22,7 @@ func begin() -> void:
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:
 	if _wait_cur_time >= Consts.READY_STAGE_WAIT_DURATION:
-		return StateType.BOSS_STAGE
+		return StateType.COMMON_STAGE
 	_wait_cur_time += delta_time
 	return StateType.NONE
 
