@@ -14,6 +14,8 @@ extends ProjectileBase
 @export var laser_width_arr: Array[int]
 @export var damage_tick_time: float = 0.25
 
+@export var damage_sfx_key: String
+
 var move_dir: Vector2
 var collided_duration: float
 
@@ -60,6 +62,7 @@ func _process(delta: float) -> void:
 			cur_damage_tick_time = 0.0
 			var _damage = damage_arr[laser_level]
 			_target.do_damage(_damage)
+			SoundManager.play_sfx(damage_sfx_key)
 		else:
 			cur_damage_tick_time += delta
 	else:

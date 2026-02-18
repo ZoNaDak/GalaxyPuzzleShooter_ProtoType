@@ -7,6 +7,7 @@ extends ProjectileBase
 
 @export var area: Area2D
 @export var move_speed: float = 10.0
+@export var start_sfx_key: String
 
 var move_dir: Vector2
 
@@ -30,6 +31,7 @@ func get_type() -> Enums.ProjectileType:
 func initialize(despawn_callable: Callable) -> void:
 	area.monitoring = true
 	_despawn_callable = despawn_callable
+	SoundManager.play_sfx(start_sfx_key)
 
 func _process(delta: float) -> void:
 	_check_out_of_screen()

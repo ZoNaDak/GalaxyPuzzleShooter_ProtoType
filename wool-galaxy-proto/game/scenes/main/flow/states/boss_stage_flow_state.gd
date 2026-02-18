@@ -51,7 +51,8 @@ func _perform_boss_warning() -> void:
 	var warning_text := _context.boss_warning_text
 	warning_text.modulate.a = 0.0
 	warning_text.show()
-	
+	var warning_sfx := SoundManager.play_sfx("boss_warning", true)
+
 	var tree := Engine.get_main_loop() as SceneTree
 	var tween = tree.create_tween()
 	for i in range(4):
@@ -60,6 +61,7 @@ func _perform_boss_warning() -> void:
 		tween.tween_property(warning_text, "modulate:a", 0.0, 0.2)
 		tween.tween_interval(0.2)
 	await tween.finished
+	SoundManager.stop_sfx(warning_sfx)
 	
 	warning_text.hide()
 

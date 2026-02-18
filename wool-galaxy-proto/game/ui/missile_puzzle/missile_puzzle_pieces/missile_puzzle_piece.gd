@@ -123,6 +123,7 @@ func _gui_input(event: InputEvent) -> void:
 		and event.button_index == MOUSE_BUTTON_LEFT \
 		and not _callable_context.get_is_full_missile_slot_callable.call():
 		_state = MissilePieceState.SETUP_FOR_MOVE
+		SoundManager.play_sfx("click_missile_puzzle_piece")
 
 #endregion
 
@@ -329,6 +330,7 @@ func _check_collision_when_moved(other_area: Area2D) -> void:
 	_clear_collision_events()
 	_callable_context.unreserve_missile_slot_callable.call()
 	_state = MissilePieceState.BUMPED
+	SoundManager.play_sfx("bump_missile_puzzle_piece")
 
 #endregion
 

@@ -367,6 +367,7 @@ func reset_board() -> void:
 	if _cur_reset_cooltime > 0:
 		return
 
+	SoundManager.play_sfx("click_reset_button")
 	clear_board()
 	_setup_missile_puzzle_board()
 	_cur_reset_cooltime = RESET_COOLTIME

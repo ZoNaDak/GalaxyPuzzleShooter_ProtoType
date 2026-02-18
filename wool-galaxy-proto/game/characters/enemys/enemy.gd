@@ -141,6 +141,7 @@ func _fire() -> void:
 			_cur_laser.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, enemy_config.fire_value_arr)
 		FireType.HEAL:
+			SoundManager.play_sfx("heal")
 			for enemy in _callable_context.get_all_enemy_callable.call():
 				if enemy == self || enemy == null:
 					continue
