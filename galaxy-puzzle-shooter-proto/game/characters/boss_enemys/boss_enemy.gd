@@ -197,7 +197,11 @@ func check_spawned_enemy() -> void:
 		if spawned_enemy.state == Character.StateType.DEAD:
 			_despawn_enemy_callable.call(spawned_enemy.spawn_index)
 			_spawned_enemy_arr.remove_at(i)
-			
+
+func do_heal_hp(heal_value: int) -> void:
+	super.do_heal_hp(heal_value)
+	_callable_context.play_effect_callable.call(
+		"heal_hp_effect", heal_hp_effect_pivot.global_position)
 
 func lock_on() -> void:
 	lock_on_ui.visible = true

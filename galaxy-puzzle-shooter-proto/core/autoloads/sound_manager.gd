@@ -12,6 +12,25 @@ const BGM_VOLUME: float = 0.4
 const SFX_VOLUME: float = 0.25
 const MAX_SFX_PLAYERS: int = 20
 
+const BGM_NAMES: Array[String] = [
+	"Drifting Over Dark Orbits",
+]
+
+const SFX_NAMES: Array[String] = [
+	"boss_spawn_enemy",
+	"boss_warning",
+	"bump_missile_puzzle_piece",
+	"charging_laser",
+	"click_missile_puzzle_piece",
+	"click_player_skill",
+	"click_reset_button",
+	"click_title_button",
+	"damage_laser",
+	"fire_bullet",
+	"fire_charing_laser",
+	"heal",
+]
+
 #endregion
 
 #region Variables
@@ -20,6 +39,8 @@ var _bgm_player: AudioStreamPlayer
 var _current_bgm: String = ""
 var _bgm_tween: Tween
 var _bgm_volume_db: float = linear_to_db(BGM_VOLUME)
+
+var _bgm_cache: Dictionary = {}
 
 var _sfx_players: Array[AudioStreamPlayer] = []
 var _sfx_volume_db: float = linear_to_db(SFX_VOLUME)
@@ -40,6 +61,27 @@ func _ready() -> void:
 		player.volume_db = _sfx_volume_db
 		add_child(player)
 		_sfx_players.append(player)
+
+	_preload_all_audio()
+
+func _preload_all_audio() -> void:
+	for bgm_name in BGM_NAMES:
+		var path := BGM_PATH % bgm_name
+		var stream := load(path) as AudioStream
+		if stream:
+			_bgm_cache[bgm_name] = stream
+		else:
+			LogManager.error("BGM preload failed: %s" % path, "SoundManager")
+
+	for sfx_name in SFX_NAMES:
+		var path := SFX_PATH % sfx_name
+		var stream := load(path) as AudioStream
+		if stream:
+			_sfx_cache[sfx_name] = stream
+		else:
+			LogManager.error("SFX preload failed: %s" % path, "SoundManager")
+
+	LogManager.info("Audio preloaded - BGM: %d, SFX: %d" % [_bgm_cache.size(), _sfx_cache.size()], "SoundManager")
 
 #endregion
 
@@ -78,10 +120,9 @@ func stop_bgm(fade_out: bool = false) -> void:
 	LogManager.info("stop_bgm", "SoundManager")
 
 func _start_bgm(bgm_name: String, fade_in: bool) -> void:
-	var path := BGM_PATH % bgm_name
-	var stream := load(path) as AudioStream
+	var stream: AudioStream = _bgm_cache.get(bgm_name)
 	if stream == null:
-		LogManager.error("BGM not found: %s" % path, "SoundManager")
+		LogManager.error("BGM not found in cache: %s" % bgm_name, "SoundManager")
 		return
 
 	_bgm_player.stream = stream

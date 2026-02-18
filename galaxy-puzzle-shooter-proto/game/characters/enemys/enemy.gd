@@ -146,6 +146,9 @@ func _fire() -> void:
 				if enemy == self || enemy == null:
 					continue
 				enemy.do_heal_hp(enemy_config.fire_value_arr[0])
+			var boss_enemy = _callable_context.get_boss_enemy_callable.call()
+			if boss_enemy != null:
+				boss_enemy.do_heal_hp(enemy_config.fire_value_arr[0])
 	
 	LogManager.info("Fire : %s"
 		% [FireType.find_key(enemy_config.fire_type)], "Enemy")
