@@ -10,6 +10,7 @@ radius = 3.0
 script = ExtResource("1_qttwe")
 area = NodePath("Area2D")
 move_speed = 80.0
+start_sfx_key = "fire_bullet"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_qttwe")

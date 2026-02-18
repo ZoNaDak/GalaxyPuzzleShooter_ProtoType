@@ -120,8 +120,10 @@ func _fire_missile(missile_index: int, missile_data: MissileData) -> void:
 			bullet.set_data(get_type(), projectile_start_point.global_position,
 				move_dir, damage)
 		Enums.MissileColorType.BLUE:
+			SoundManager.play_sfx("heal")
 			do_heal_mp(player_config.blue_missile_value)
 		Enums.MissileColorType.GREEN:
+			SoundManager.play_sfx("heal")
 			do_heal_hp(player_config.green_missile_value)
 		Enums.MissileColorType.YELLOW:
 			var enemy_spawn_point_arr = _callable_context.get_enemy_spawn_point_arr_callable.call()
@@ -155,6 +157,7 @@ func do_player_skill() -> void:
 		or player_data.cur_mp < player_config.player_skill_mp_cost:
 		return
 
+	SoundManager.play_sfx("click_player_skill")
 	player_data.charge_full_force_shield()
 	force_shield_effect.visible = true
 	force_shield_ui.visible = true

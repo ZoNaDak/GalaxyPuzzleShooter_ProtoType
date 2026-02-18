@@ -39,6 +39,7 @@ func _on_start_button_pressed() -> void:
 	if _is_changing_scene or not _is_initialized:
 		return
 	_is_changing_scene = true
+	SoundManager.play_sfx("click_title_button")
 
 	await SystemUIManager.fade_out(0.5)
 	GameManager.change_state(GameManager.GameState.MAIN)

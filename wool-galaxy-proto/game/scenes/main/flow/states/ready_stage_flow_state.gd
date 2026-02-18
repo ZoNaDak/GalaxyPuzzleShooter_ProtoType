@@ -17,6 +17,7 @@ func get_state_type() -> StateType:
 func begin() -> void:
 	_wait_cur_time = 0.0
 	_context.game_start_text.visible = true
+	SoundManager.play_bgm("Drifting Over Dark Orbits", true)
 
 @warning_ignore("unused_parameter")
 func update(delta_time: float) -> StateType:

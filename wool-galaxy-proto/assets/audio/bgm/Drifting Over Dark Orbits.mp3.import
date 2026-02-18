@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://t24l7vqes7i1"
+path="res://.godot/imported/Drifting Over Dark Orbits.mp3-fb990b27f32ddaff4755dd86c2ef0130.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/bgm/Drifting Over Dark Orbits.mp3"
+dest_files=["res://.godot/imported/Drifting Over Dark Orbits.mp3-fb990b27f32ddaff4755dd86c2ef0130.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
