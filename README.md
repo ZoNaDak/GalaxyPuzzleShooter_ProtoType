@@ -47,3 +47,9 @@ res://
     │
     └── ui/                  # UI system
 ```
+
+## License
+
+Copyright (c) 2025 ZoNaDak. All Rights Reserved.
+This project is shared as a portfolio for viewing purposes only.
+See [LICENSE](./LICENSE) for details.
